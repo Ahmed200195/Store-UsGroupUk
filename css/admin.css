@@ -1,0 +1,492 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400&display=swap");
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Cairo";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/cairo/v28/SLXgc1nY6HkvangtZmpQdkhzfH5lkSs2SgRjCAGMQ1z0hOA-a1biLD-H.woff2) format("woff2");
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+:root {
+    --blue: #2185d5;
+    --blackLight: #3a4750;
+    --blackDark: #303841;
+    --gray: #f3f3f3;
+}
+
+/* ---------------------------------- */
+
+/* start in input number in check code page admine */
+.checkCode input[type="number"] {
+    display: block;
+    border: none;
+    padding: 0;
+    width: 10.5ch;
+    background: repeating-linear-gradient( 90deg, dimgrey 0, dimgrey 1ch, transparent 0, transparent 1.8ch ) 0 100% / 10ch 2px no-repeat;
+    font: 4.5ch droid sans mono, consolas, monospace;
+    letter-spacing: 0.8ch;
+}
+
+.checkCode input::-webkit-outer-spin-button,
+.checkCode input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.checkCode input[type="number"]:focus {
+    outline: none;
+    color: dodgerblue;
+}
+
+/* end in input numbet in check code page admine */
+
+/*----------------------------------------- start in sidebar -----------------------------------------*/
+
+aside {
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
+    background-color: var(--blue);
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    -webkit-transition: transform 0.3s ease-in-out;
+    -moz-transition: transform 0.3s ease-in-out;
+    -ms-transition: transform 0.3s ease-in-out;
+    -o-transition: transform 0.3s ease-in-out;
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+}
+
+.openCloseAnimation {
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+    -moz-transform: translateX(0%);
+    -ms-transform: translateX(0%);
+    -o-transform: translateX(0%);
+}
+
+.openClose {
+    display: none;
+    z-index: 200;
+}
+
+@media screen and (max-width: 992px) {
+    aside {
+        position: fixed;
+        right: 0;
+        width: 50vw;
+        height: 100vh;
+        z-index: 999;
+        transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+        -o-transform: translateX(100%);
+    }
+
+    .openClose {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    aside {
+        position: fixed;
+        right: 0;
+        width: 70vw;
+        height: 100vh;
+        z-index: 999;
+        transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+        -o-transform: translateX(100%);
+    }
+
+    .openClose {
+        display: block;
+    }
+}
+
+aside .menu,
+aside .titleSide {
+    color: var(--gray);
+}
+
+.desplegable {
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    -webkit-transition: max-height 0.3s ease-out;
+    -moz-transition: max-height 0.3s ease-out;
+    -ms-transition: max-height 0.3s ease-out;
+    -o-transition: max-height 0.3s ease-out;
+}
+
+.open {
+    max-height: 500px;
+    transition: max-height 0.8s ease-out;
+    -webkit-transition: max-height 0.8s ease-out;
+    -moz-transition: max-height 0.8s ease-out;
+    -ms-transition: max-height 0.8s ease-out;
+    -o-transition: max-height 0.8s ease-out;
+}
+
+.hidden {
+    height: auto;
+}
+
+/* style close open sidebar */
+#btn {
+    position: relative;
+    width: 20px;
+    height: 30px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    background: var(--blackDark);
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    padding: 20px;
+}
+
+    #btn span {
+        position: absolute;
+        width: 20px;
+        height: 4px;
+        top: 50%;
+        left: 50%;
+        background: var(--gray);
+        border-radius: 2px;
+        overflow: hidden;
+        transition: all 0.3s linear;
+    }
+
+        #btn span::before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 100%;
+            top: 0;
+            right: 0;
+            background: var(--gray);
+            transition: all 0.3s linear;
+        }
+
+        #btn span:nth-child(1) {
+            animation: span-first-off 0.5s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        #btn span:nth-child(2) {
+            animation: span-second-off 0.5s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        #btn span:nth-child(3) {
+            animation: span-third-off 0.5s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+    #btn.on:hover span::before {
+        width: 100%;
+        transition: all 0.3s linear;
+    }
+
+    #btn.on span:nth-child(1) {
+        animation: span-first-on 0.5s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    #btn.on span:nth-child(2) {
+        animation: span-second-on 0.5s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    #btn.on span:nth-child(3) {
+        animation: span-third-on 0.5s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+@keyframes span-first-on {
+    0% {
+        transform: translate(-50%, -300%);
+    }
+
+    30% {
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+}
+
+@keyframes span-first-off {
+    0% {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    30% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -300%);
+    }
+}
+
+@keyframes span-second-on {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+
+    25% {
+        background: gray;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        transform: translate(-150%, -50%) scale(0);
+    }
+}
+
+@keyframes span-second-off {
+    0% {
+        transform: translate(-150%, -50%) scale(0);
+    }
+
+    25% {
+        background: gray;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes span-third-on {
+    0% {
+        transform: translate(-50%, 200%);
+    }
+
+    30% {
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+}
+
+@keyframes span-third-off {
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    30% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, 200%);
+    }
+}
+/* overlay */
+.overlaySide {
+    position: fixed;
+    z-index: 100;
+    background-color: var(--blackDark);
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    -webkit-transition: transform 0.3s ease-in-out;
+    -moz-transition: transform 0.3s ease-in-out;
+    -ms-transition: transform 0.3s ease-in-out;
+    -o-transition: transform 0.3s ease-in-out;
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    opacity: 0.8;
+}
+
+.hideSideOverlay {
+    position: fixed;
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -o-transform: translateX(100%);
+}
+/*----------------------------------- end in sidebar----------------------------------------- */
+
+/*----------------------------------- start in main ---------------------------------------- */
+main {
+    background-color: var(--gray);
+    direction: rtl;
+    width: 100%;
+}
+
+.titleMain {
+    text-shadow: 0px 4px 4px #282828;
+}
+
+.placeImg {
+    --b: 5px;
+    --c: #0000 25%, #0074d9 0;
+    padding: 10px;
+    background: conic-gradient(from 90deg at top var(--b) left var(--b), var(--c)) 0 0, conic-gradient(from 180deg at top var(--b) right var(--b), var(--c)) 100% 0, conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--c)) 0 100%, conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--c)) 100% 100%;
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    transition: 0.6s;
+    cursor: pointer;
+}
+
+    .placeImg:hover {
+        background-size: 51% 51%;
+    }
+
+.chooseImage label {
+    background-color: var(--blackLight);
+    color: var(--gray);
+}
+
+table thead tr {
+    background-color: var(--blackLight);
+    color: var(--gray);
+}
+
+table tbody tr td {
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+}
+
+table tbody tr:hover td {
+    background-color: var(--gray);
+    cursor: pointer;
+}
+
+/*------------------------------- end in main ------------------------------  */
+
+/* ----------------------------- start in dashpord --------------------------- */
+.dashpord .cards .card {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+}
+
+    .dashpord .cards .card:hover {
+        transform: translateY(-0.2rem);
+        cursor: pointer;
+        -webkit-transform: translateY(-0.2rem);
+        -moz-transform: translateY(-0.2rem);
+        -ms-transform: translateY(-0.2rem);
+        -o-transform: translateY(-0.2rem);
+    }
+/* ----------------------------- end in dashpord --------------------------- */
+
+/* start in setting  */
+.setting form .inputSetting label {
+    color: var(--blackLight);
+}
+
+.setting form .inputSetting input {
+    box-shadow: 0 6.7px 5.3px rgba(0, 0, 0, 0.044), 0 22.3px 17.9px rgba(0, 0, 0, 0.066), 0 100px 80px rgba(0, 0, 0, 0.11);
+    color: var(--blackDark);
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+}
+
+    .setting form .inputSetting input:focus {
+        border: 1px solid var(--blackLight);
+    }
+
+.setting form .inputSetting .icon {
+    background-color: var(--blackLight);
+}
+
+/* end in setting  */
+
+/* start in slider */
+
+/* animation in delete row */
+.fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+    position: relative;
+}
+
+@keyframes fadeOut {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* end in slider */
+
+/* start in page add product */
+
+.addProduct input,
+.addProduct textarea,
+.addProduct .boxImg {
+    border: 1px solid #000;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+}
+
+    .addProduct input:hover,
+    .addProduct textarea,
+    .addProduct .boxImg {
+        box-shadow: 0 0 5pt 0.5pt #d3d3d3;
+    }
+
+    .addProduct input:focus,
+    .addProduct textarea {
+        box-shadow: 0 0 5pt 2pt #d3d3d3;
+        outline-width: 0px;
+    }
+
+    .addProduct input::-webkit-outer-spin-button,
+    .addProduct input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+/* end in page add product  */
+
+/* ------------------------------- start in display category ------------------------------ */
+
+/* ------------------------------- end in display category ------------------------------ */
