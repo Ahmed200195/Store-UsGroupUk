@@ -48,12 +48,14 @@
 
         </section>
         <!-- end in loader -->
+
         <!-- Back to top button -->
         <a
             class="backToTop fixed bottom-4 right-6 bg-[#3c3b6e] w-12 h-12 rounded-md text-white text-center transition duration-300 opacity-0 invisible z-50 hover:bg-[#222143] focus:outline-none"></a>
+
         <!-- start in navbar -->
         <!-- component -->
-        <header class="bg-white">
+        <header class="bg-white fixed top-0 w-full z-50">
             <div class="container mx-auto px-4 py-8 flex items-center">
                 <!-- logo -->
                 <div class="mr-auto md:w-16 flex-shrink-0">
@@ -61,7 +63,7 @@
                 </div>
 
                 <!-- search -->
-                <div class="w-full  xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden xl:flex items-center">
+                <div class="w-full xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden xl:flex items-center">
                     <select class="bg-transparent uppercase font-normal text-sm p-4 mr-4" name="" id="">
                         <option>all categories</option>
                     </select>
@@ -85,9 +87,6 @@
                         </li>
                         <li class="ml-2 lg:ml-4 relative inline-block">
                             <div class="cursor-pointer openCart">
-                                <div class=" absolute -top-1 right-0 z-10 bg-yellow-400 text-xs font-normal px-1 py-0.5 rounded-sm">
-                                    12
-                                </div>
                                 <svg class=" h-9 lg:h-10 p-2 text-[#3c3b6e]" aria-hidden="true" focusable="false" data-prefix="far"
                                     data-icon="shopping-cart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
                                     class="svg-inline--fa fa-shopping-cart fa-w-18 fa-9x">
@@ -123,7 +122,7 @@
                 </div>
                 <!-- cart empty -->
                 <div class="emptyCart flex flex-col justify-center items-center h-[80%]">
-                    <img src="../images/cartEmpty.png" alt="">
+                    <img src="puplic/images/cartEmpty.png" alt="">
                     <h3 class="capitalize text-center">your cart is empty</h3>
                 </div>
                 <!-- info product -->

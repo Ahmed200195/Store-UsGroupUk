@@ -74,6 +74,7 @@
     <Content Include="Admin\SliderImg.aspx" />
     <Content Include="Admin\Setting.aspx" />
     <Content Include="Client\Home.aspx" />
+    <Content Include="Client\DetailsProduct.aspx" />
     <Content Include="css\admin.css" />
     <Content Include="css\style.css" />
     <Content Include="css\tailwind.css" />
@@ -161,6 +162,13 @@
     </Compile>
     <Compile Include="Client\Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\DetailsProduct.aspx.cs">
+      <DependentUpon>DetailsProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Client\DetailsProduct.aspx.designer.cs">
+      <DependentUpon>DetailsProduct.aspx</DependentUpon>
     </Compile>
     <Compile Include="ClsBasic.cs" />
     <Compile Include="User Check\CodeEmail.aspx.cs">

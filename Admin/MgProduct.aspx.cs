@@ -70,6 +70,7 @@ namespace Store.Admin
                 }
                 else
                 {
+                    sqlBgProduct.Update();
                     sqlProduct.UpdateParameters["NameAr"].DefaultValue = txtNameAr.Value;
                     sqlProduct.UpdateParameters["NameEn"].DefaultValue = txtNameEn.Value;
                     sqlProduct.UpdateParameters["Price"].DefaultValue = txtPrice.Value;
@@ -82,7 +83,6 @@ namespace Store.Admin
                     sqlProduct.UpdateParameters["SId"].DefaultValue = ddlSize.SelectedValue;
                     sqlProduct.UpdateParameters["Id"].DefaultValue = Request.QueryString["id"];
                     sqlProduct.Update();
-                    sqlBgProduct.Update();
                 }
             }
         }
