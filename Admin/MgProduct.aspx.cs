@@ -70,7 +70,10 @@ namespace Store.Admin
                 }
                 else
                 {
-                    sqlBgProduct.Update();
+                    if (FileUpload2.HasFile)
+                    {
+                        sqlBgProduct.Update();
+                    }
                     sqlProduct.UpdateParameters["NameAr"].DefaultValue = txtNameAr.Value;
                     sqlProduct.UpdateParameters["NameEn"].DefaultValue = txtNameEn.Value;
                     sqlProduct.UpdateParameters["Price"].DefaultValue = txtPrice.Value;
@@ -145,15 +148,12 @@ namespace Store.Admin
 
         protected void sqlBgProduct_Updating(object sender, SqlDataSourceCommandEventArgs e)
         {
-            if (FileUpload2.HasFile)
-            {
-                e.Command.Parameters["@Id"].Value = Request.QueryString["id"];
-                int len = FileUpload2.PostedFile.ContentLength;
-                byte[] pic = new byte[len + 1];
-                FileUpload2.PostedFile.InputStream.Read(pic, 0, len);
-                ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.Image;
-                e.Command.Parameters["@Photo"].Value = pic;
-            }
+            e.Command.Parameters["@Id"].Value = Request.QueryString["id"];
+            int len = FileUpload2.PostedFile.ContentLength;
+            byte[] pic = new byte[len + 1];
+            FileUpload2.PostedFile.InputStream.Read(pic, 0, len);
+            ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.Image;
+            e.Command.Parameters["@Photo"].Value = pic;
         }
     }
 }

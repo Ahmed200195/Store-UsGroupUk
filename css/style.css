@@ -614,7 +614,7 @@ input[type="radio"]:checked:after {
     justify-content: center;
     gap: 15px;
     width: 100%;
-    background-color: var(--sea-green);
+    background-color: var(--sea-green) !important;
     color: var(--white);
     font-weight: var(--fw-500);
     padding: 18px;
