@@ -60,6 +60,8 @@
                             <asp:DropDownList ID="ddlSize" CssClass="bg-gray-100 border-2 w-3/4 p-2.5" runat="server" DataSourceID="sqlSizes" DataTextField="Name" DataValueField="Id"></asp:DropDownList>
                             <asp:SqlDataSource ID="sqlSizes" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' SelectCommand="SELECT * FROM [Size]" />
                         </div>
+                    </div>
+                    <div class="flex md:flex-row flex-col items-center gap-x-5 w-full">
                         <div class="flex items-center justify-center gap-2 w-full">
                             <label for="ddlColor" class="w-1/4">اللون</label>
                             <asp:DropDownList ID="ddlColor" CssClass="bg-gray-100 border-2 w-3/4 p-2.5" runat="server" DataSourceID="sqlColors" DataTextField="Name" DataValueField="Id">
@@ -74,8 +76,7 @@
                         </div>
                     </div>
                     <!-- info -->
-                    <div
-                        class="flex md:flex-row flex-col items-center gap-x-5 w-full">
+                    <div class="flex md:flex-row flex-col items-center gap-x-5 w-full">
                         <div class="flex items-center justify-center gap-2 w-full">
                             <label for="" class="w-1/4">الوصف بالعربي</label>
                             <textarea id="txtInfoAr" runat="server" class="w-3/4" rows="5"></textarea>
@@ -86,15 +87,25 @@
                             <textarea id="txtInfoEn" runat="server" class="w-3/4" rows="5"></textarea>
                         </div>
                     </div>
+
+                    <div class="flex md:flex-row flex-col items-center gap-x-5 w-full">
+                        <div class="flex items-center justify-center gap-2 w-full">
+                            <label for="" class="w-1/4">العدد</label>
+                            <input id="txtCnt" runat="server"
+                                type="number"
+                                class="border-2 rounded w-3/4 p-2 text-right" />
+                        </div>
+                        <div class="flex items-center justify-center gap-2 w-full">
+                            <label for="<%= FileUpload2.ClientID %>" class="w-1/4">خلفية المنتج</label>
+                            <asp:FileUpload ID="FileUpload2" CssClass="border-2 rounded w-3/4 p-2 text-left" runat="server" accept=".png,.jpg,.jpeg,.gif" />
+                            <div id="preview2" class="flex justify-center p-3" runat="server"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- images -->
             <div class="p-8 rounded-md w-full">
-                <div class="flex items-center justify-center gap-2 w-full">
-                    <label for="<%= FileUpload2.ClientID %>" class="w-1/4">خلفية المنتج</label>
-                    <asp:FileUpload ID="FileUpload2" CssClass="border-2 rounded w-3/4 p-2 text-left" runat="server" accept=".png,.jpg,.jpeg,.gif" />
-                    <div id="preview2" class="flex justify-center p-3" runat="server"></div>
-                </div>
+                
                 <div class="relative mt-10">
 
                     <div
@@ -186,10 +197,10 @@
                 <asp:SqlDataSource ID="sqlProduct" runat="server"
                     ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>'
                     DeleteCommand="DELETE FROM [Product] WHERE [Id] = @Id"
-                    InsertCommand="INSERT INTO [Product] ([NameAr], [NameEn], [Price], [Discount], [infoAr], [infoEn], [Photo], [DId], [BId], [CId], [SId]) VALUES (@NameAr, @NameEn, @Price, @Discount, @infoAr, @infoEn, @Photo, @DId, @BId, @CId, @SId); SELECT @Identity=Scope_Identity();"
+                    InsertCommand="INSERT INTO [Product] ([NameAr], [NameEn], [Price], [Discount], [infoAr], [infoEn], [Photo], [Cnt], [DId], [BId], [CId], [SId]) VALUES (@NameAr, @NameEn, @Price, @Discount, @infoAr, @infoEn, @Photo, @Cnt, @DId, @BId, @CId, @SId); SELECT @Identity=Scope_Identity();"
                     OnInserted="sqlProduct_Inserted" OnInserting="sqlProduct_Inserting" OnUpdated="sqlProduct_Updated"
                     SelectCommand="SELECT * FROM [Product] WHERE ([Id] = @Id)"
-                    UpdateCommand="UPDATE [Product] SET [NameAr] = @NameAr, [NameEn] = @NameEn, [Price] = @Price, [Discount] = @Discount, [infoAr] = @infoAr, [infoEn] = @infoEn, [DId] = @DId, [BId] = @BId, [CId] = @CId, [SId] = @SId WHERE [Id] = @Id">
+                    UpdateCommand="UPDATE [Product] SET [NameAr] = @NameAr, [NameEn] = @NameEn, [Price] = @Price, [Discount] = @Discount, [infoAr] = @infoAr, [infoEn] = @infoEn, [Cnt] = @Cnt, [DId] = @DId, [BId] = @BId, [CId] = @CId, [SId] = @SId WHERE [Id] = @Id">
                     <DeleteParameters>
                         <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                     </DeleteParameters>
@@ -200,6 +211,7 @@
                         <asp:Parameter Name="Discount" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="infoAr" Type="String"></asp:Parameter>
                         <asp:Parameter Name="infoEn" Type="String"></asp:Parameter>
+                        <asp:Parameter Name="Cnt" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="DId" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="BId" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="CId" Type="Int32"></asp:Parameter>
@@ -216,6 +228,7 @@
                         <asp:Parameter Name="Discount" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="infoAr" Type="String"></asp:Parameter>
                         <asp:Parameter Name="infoEn" Type="String"></asp:Parameter>
+                        <asp:Parameter Name="Cnt" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="DId" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="BId" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="CId" Type="Int32"></asp:Parameter>

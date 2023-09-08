@@ -263,10 +263,10 @@ function filterProdcut(
             </p>
             <div class="flex justify-between items-center mt-4">
               <div class="flex qty h-9">
-                <button class="px-2 py-1 rounded-l-md mins">-</button>
+                <button type="button" class="px-2 py-1 rounded-l-md mins">-</button>
                 <span class="flex justify-center items-center w-11 text-center numberQty">${productCount ? productCount.textContent : "1"
                 }</span>
-                <button class="px-2 py-1 rounded-r-md plus">+</button>
+                <button type="button" class="px-2 py-1 rounded-r-md plus">+</button>
               </div>
               <div class="suptotalTotalPrice">
                 <h2 class="text-sm font-semibold leading-5 md:text-base text-heading">

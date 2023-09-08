@@ -31,7 +31,7 @@ namespace Store.Client
                 ltCategory.Text += $@"
                         <div class=""carousel-cell"">
                           <div class=""flex flex-col justify-center items-center gap-4 md:mr-4 mr-2"">
-                            <a href=""ShowProduct.aspx?dept={row["Id"]}"" target=""_blank""
+                            <a href=""ShowProduct.aspx?dept={row["Id"]}&size=0&color=0&sortBy=0&search=0"" target=""_blank""
                             <figure class=""relative rounded-lg"">
                               <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" class=""rounded-lg object-fill"" alt="""" />
                             </figure>
@@ -98,7 +98,7 @@ namespace Store.Client
                             <div class=""container mx-auto px-8"">
                                 <div class=""flex justify-between items-center"">
                                     <h1 class=""titleMain"">{dept["NameEn"]}</h1>
-                                    <a href=""ShowProduct.aspx?dept={dept["Id"]}"" target=""_blank"" class=""text-[#3c3b6e] text-xl"">view all</a>
+                                    <a href=""ShowProduct.aspx?dept={dept["Id"]}&size=0&color=0&sortBy=0&search=0"" target=""_blank"" class=""text-[#3c3b6e] text-xl"">view all</a>
                                 </div>
                                 <div class=""product-card-container-outer"">
                                 <div class=""product-card-container pt-4 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-start items-center gap-4 transition-all delay-150 ease-in"">";
@@ -114,8 +114,6 @@ namespace Store.Client
                         finalPrice = product["Discount"].ToString();
                     }
                     ltProdcutsByDept.Text += $@"
-                                    
-                                        <!-- 1 -->
                                         <div
                                             class=""productElement relative  flex w-full  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "">
                                             <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={product["Id"]}"" target=""_blank"">

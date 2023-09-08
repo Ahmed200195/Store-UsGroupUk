@@ -64,11 +64,15 @@
 
                 <!-- search -->
                 <div class="w-full xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden xl:flex items-center">
-                    <select class="bg-transparent uppercase font-normal text-sm p-4 mr-4" name="" id="">
-                        <option>all categories</option>
-                    </select>
-                    <input class="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4"
-                        type="text" placeholder="I'm searching for ..." />
+                    <asp:DropDownList ID="ddlDept" CssClass="bg-transparent uppercase font-normal text-sm p-4 mr-4" runat="server" DataSourceID="sqlDept" DataTextField="NameEn" DataValueField="Id">
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="sqlDept" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' SelectCommand="SELECT * FROM [Dept]" />
+
+                    <asp:TextBox ID="txtSearch" CssClass="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4" placeholder="I'm searching for ..." ClientIDMode="Static" runat="server" onkeypress="return EnterEvent(event)"></asp:TextBox>    
+                    <asp:Button ID="btnSearch" runat="server" style="display:none" OnClick="btnSearch_Click" />
+
+                    <%--<input class="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4"
+                        type="text" placeholder="I'm searching for ..." />--%>
 
                     <i class="fa-solid fa-magnifying-glass ml-auto h-5 px-4 text-[#3c3b6e]"></i>
                 </div>
@@ -131,10 +135,10 @@
                 <!-- check out cart -->
                 <div
                     class="checkout relative bottom-0 mb-5 w-full px-5 py-3 md:py-4 flex items-center justify-between gap-x-5 rounded-md text-sm sm:text-base text-white focus:outline-none transition duration-300 bg-heading hover:bg-gray-600">
-                    <button class="btnCheckout">Proceed To Checkout</button>
+                    <button type="button" class="btnCheckout">Proceed To Checkout</button>
                     <div class="bg-white w-[2px] h-full"></div>
                     <div>
-                        <span class="subtotal"></span><span>kd</span>
+                        <span class="subtotal"></span><span>$</span>
                     </div>
                 </div>
             </div>
@@ -219,5 +223,12 @@
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <!-- start main js -->
     <script src="../js/main.js"></script>
+    <script>
+        function EnterEvent(e) {
+            if (e.keyCode == 13) {
+                __doPostBack('<%=btnSearch.UniqueID%>', "");
+            }
+        }
+    </script>
 </body>
 </html>

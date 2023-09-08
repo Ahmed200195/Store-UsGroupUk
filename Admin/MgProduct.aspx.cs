@@ -27,6 +27,7 @@ namespace Store.Admin
                         txtDisc.Value = row["Discount"].ToString();
                         txtInfoAr.Value = row["infoAr"].ToString();
                         txtInfoEn.Value = row["infoEn"].ToString();
+                        txtCnt.Value = row["Cnt"].ToString();
                         ddlSize.SelectedValue = row["SId"].ToString();
                         if (!Convert.IsDBNull(row["Photo"]))
                         {
@@ -62,6 +63,7 @@ namespace Store.Admin
                     sqlProduct.InsertParameters["Discount"].DefaultValue = txtDisc.Value;
                     sqlProduct.InsertParameters["infoAr"].DefaultValue = txtInfoAr.Value;
                     sqlProduct.InsertParameters["infoEn"].DefaultValue = txtInfoEn.Value;
+                    sqlProduct.InsertParameters["Cnt"].DefaultValue = txtCnt.Value;
                     sqlProduct.InsertParameters["DId"].DefaultValue = ddlDept.SelectedValue;
                     sqlProduct.InsertParameters["BId"].DefaultValue = ddlBrand.SelectedValue;
                     sqlProduct.InsertParameters["CId"].DefaultValue = ddlColor.SelectedValue;
@@ -80,6 +82,7 @@ namespace Store.Admin
                     sqlProduct.UpdateParameters["Discount"].DefaultValue = txtDisc.Value;
                     sqlProduct.UpdateParameters["infoAr"].DefaultValue = txtInfoAr.Value;
                     sqlProduct.UpdateParameters["infoEn"].DefaultValue = txtInfoEn.Value;
+                    sqlProduct.UpdateParameters["Cnt"].DefaultValue = txtCnt.Value;
                     sqlProduct.UpdateParameters["DId"].DefaultValue = ddlDept.SelectedValue;
                     sqlProduct.UpdateParameters["BId"].DefaultValue = ddlBrand.SelectedValue;
                     sqlProduct.UpdateParameters["CId"].DefaultValue = ddlColor.SelectedValue;
