@@ -47,6 +47,7 @@
             </div>
         </div>
     </section>
+    
     <!-- end in featured product -->
 
     <!-- start in  product bugs -->
@@ -54,4 +55,21 @@
     <asp:Literal ID="ltProdcutsByDept" runat="server"></asp:Literal>
 
     <!-- end in  product bugs -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+        function checkOut() {
+            let arrtemplate = [];
+            arrtemplate.push("3");
+            arrtemplate.push("r");
+            arrtemplate.push("ewrwe");
+            var obj = { dvInfoProduct: document.getElementById("dvInfoProduct").innerHTML };
+            $.ajax({
+                type: "POST",
+                url: "Home.aspx/GetReport",
+                data: JSON.stringify(obj),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+            });
+        }
+    </script>
 </asp:Content>

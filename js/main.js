@@ -105,7 +105,7 @@ function addToCart(button) {
     const productCount = document.querySelector(".coountProduct");
 
     // function add id to element to filter elements
-    addIdToProduct();
+    
     const dataId = productContainer.dataset.id;
 
     // add element if exists or not
@@ -204,13 +204,6 @@ function counterCart() {
         emptyCart.style.display = "none";
         displayProduct.style.display = "block";
     }
-}
-
-function addIdToProduct() {
-    let productElement = document.querySelectorAll(".productElement");
-    productElement.forEach((product, index) => {
-        product.setAttribute("data-id", index);
-    });
 }
 
 function deleteIdToArray(elementCart) {

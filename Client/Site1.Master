@@ -129,7 +129,7 @@
                     <h3 class="capitalize text-center">your cart is empty</h3>
                 </div>
                 <!-- info product -->
-                <div class="infoProduct pr-3 overflow-y-scroll">
+                <div id="dvInfoProduct" class="infoProduct pr-3 overflow-y-scroll" runat="server">
                 </div>
 
                 <!-- check out cart -->
@@ -159,7 +159,8 @@
                     <input type="text" placeholder="Address" class="w-full rounded-md px-2 py-2 outline-none mb-3">
                     <input type="text" placeholder="Street" class="w-full rounded-md px-2 py-2 outline-none mb-3">
                     <input type="text" placeholder="landmark" class="w-full rounded-md px-2 py-2 outline-none mb-3">
-                    <input type="submit" value="send">
+
+                    <input type="submit" value="send" onclick="checkOut()">
                 </div>
             </div>
         </section>
@@ -219,16 +220,19 @@
         </section>
         <!-- end in footer -->
     </form>
-    <!-- start splide carsoule -->
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <!-- start main js -->
     <script src="../js/main.js"></script>
+    <!-- start splide carsoule -->
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    
     <script>
         function EnterEvent(e) {
             if (e.keyCode == 13) {
                 __doPostBack('<%=btnSearch.UniqueID%>', "");
             }
         }
+
+        
     </script>
 </body>
 </html>

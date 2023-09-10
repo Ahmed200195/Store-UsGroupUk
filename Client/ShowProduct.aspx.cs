@@ -23,16 +23,13 @@ namespace Store.Client
         {
                 OrginalUrl = HttpContext.Current.Request.Url.AbsoluteUri;
             if (!IsPostBack)
-            {
+            { 
                 TextBox txtSearch = Master.FindControl("txtSearch") as TextBox;
                 txtSearch.Text = Request.QueryString["search"] == "0" ? string.Empty : Request.QueryString["search"];
-                if (!IsPostBack)
-                {
-                    ddlColors.DataBind();
-                    ddlColors.Items.Insert(0, new ListItem() { Value = "0", Text = "default" });
-                    ddlColors.SelectedValue = Request.QueryString["color"];
-                    ddlSortBy.SelectedIndex = int.Parse(Request.QueryString["sortBy"]);
-                }
+                ddlColors.DataBind();
+                ddlColors.Items.Insert(0, new ListItem() { Value = "0", Text = "default" });
+                ddlColors.SelectedValue = Request.QueryString["color"];
+                ddlSortBy.SelectedIndex = int.Parse(Request.QueryString["sortBy"]);
                 switch (ddlSortBy.SelectedIndex)
                 {
                     case 0:
