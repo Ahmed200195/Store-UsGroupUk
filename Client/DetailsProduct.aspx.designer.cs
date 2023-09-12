@@ -42,31 +42,22 @@ namespace Store.Client
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl InfoProdcut;
 
         /// <summary>
-        /// ltSizes control.
+        /// snColor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltSizes;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl snColor;
 
         /// <summary>
-        /// ddlColors control.
+        /// snSize control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlColors;
-
-        /// <summary>
-        /// sqlColors control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlColors;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl snSize;
 
         /// <summary>
         /// ltPrice control.

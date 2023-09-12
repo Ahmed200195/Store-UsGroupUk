@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.53.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>packages\HtmlAgilityPack.1.11.53\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -73,12 +76,14 @@
     <Content Include="Admin\ViewProduct.aspx" />
     <Content Include="Admin\SliderImg.aspx" />
     <Content Include="Admin\Setting.aspx" />
+    <Content Include="Admin\LinkProduct.aspx" />
     <Content Include="Client\Home.aspx" />
     <Content Include="Client\DetailsProduct.aspx" />
     <Content Include="Client\ShowProduct.aspx" />
     <Content Include="css\admin.css" />
     <Content Include="css\style.css" />
     <Content Include="css\tailwind.css" />
+    <Content Include="Global.asax" />
     <Content Include="images\admin\addProduct.svg" />
     <Content Include="images\admin\imageEmpty.png" />
     <Content Include="images\admin\noData.svg" />
@@ -96,6 +101,7 @@
     <Content Include="images\land_tool\land_3.jpg" />
     <Content Include="images\land_tool\land_4.jpg" />
     <Content Include="images\logo.png" />
+    <Content Include="images\logoTwo.png" />
     <Content Include="images\slider\slide_1.jpg" />
     <Content Include="images\slider\slide_2.jpg" />
     <Content Include="images\wave.svg" />
@@ -150,6 +156,13 @@
     <Compile Include="Admin\Setting.aspx.designer.cs">
       <DependentUpon>Setting.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\LinkProduct.aspx.cs">
+      <DependentUpon>LinkProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\LinkProduct.aspx.designer.cs">
+      <DependentUpon>LinkProduct.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Client\Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -179,6 +192,9 @@
       <DependentUpon>ShowProduct.aspx</DependentUpon>
     </Compile>
     <Compile Include="ClsBasic.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="User Check\CodeEmail.aspx.cs">
       <DependentUpon>CodeEmail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

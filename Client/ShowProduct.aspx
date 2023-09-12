@@ -3,12 +3,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <section class="flex showProduct relative" style="margin-top: 135px;">
+    <section class="flex showProduct relative">
         <div class="overlayShowProduct w-screen h-screen fixed z-50 top-0"></div>
         <!-- start open filter -->
         <div
             class="opneFilter hidden fixed top-1/4 bg-[#b22234] text-white  py-2 px-2 z-40 rounded-r cursor-pointer">
-            <span class="capitalize tracking-wide">filter</span>
+            <span class="capitalize tracking-wide"><%= Application["lang"].ToString() == "en" ? "Advanced Search" : "بحث متقدم" %></span>
         </div>
         <!-- end open filter -->
         <div class="filterElement relative w-1/4 overflow-scroll ">
@@ -20,7 +20,7 @@
             <div class="listFilter absolute z-10 border-r-4 transition-all duration-300" id="fixed-element">
                 <!-- categories -->
                 <div class="categories gap-4 border-b-2  w-full px-4">
-                    <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]">categories</h1>
+                    <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]"><%= Application["lang"].ToString() == "en" ? "Categories" : "الاقسام" %></h1>
                     <ul>
                         <asp:Literal ID="ltCategories" runat="server"></asp:Literal>
                     </ul>
@@ -28,20 +28,20 @@
 
                 <!-- size -->
                 <div class="size gap-4 border-b-2 px-4 pb-5">
-                    <h1 class="mt-5 mb-2  capitalize font-bold text-xl text-[#3c3b6e]">size</h1>
+                    <h1 class="mt-5 mb-2  capitalize font-bold text-xl text-[#3c3b6e]"><%= Application["lang"].ToString() == "en" ? "Size" : "القياس" %></h1>
                     <div class="checkElement flex flex-wrap gap-2">
                         <asp:Literal ID="ltSizes" runat="server"></asp:Literal>
                     </div>
                 </div>
                 <!-- color -->
                 <section class="px-4 pb-5 border-b-2">
-                    <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]">color</h1>
+                    <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]"><%= Application["lang"].ToString() == "en" ? "Color" : "اللون" %></h1>
                     <asp:DropDownList ID="ddlColors" AutoPostBack="true" CssClass="bg-gray-50 border border-gray-300  text-sm rounded-lg text-[#3c3v6e]  block w-full p-2.5  dark:border-gray-600 dark:placeholder-[#3c3b6e] capitalize" runat="server" DataSourceID="sqlColors" DataTextField="Name" DataValueField="Id" OnSelectedIndexChanged="ddlColors_SelectedIndexChanged"></asp:DropDownList>
                     <asp:SqlDataSource ID="sqlColors" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' SelectCommand="SELECT * FROM [Color] ORDER BY [Id]"></asp:SqlDataSource>
                 </section>
                 <!-- sort -->
                 <section class="px-4 pb-5 border-b-2">
-                    <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]">sort by</h1>
+                    <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]"><%= Application["lang"].ToString() == "en" ? "Sort By" : "ترتيب حسب" %></h1>
                     <asp:DropDownList ID="ddlSortBy" CssClass="bg-gray-50 border border-gray-300  text-sm rounded-lg text-[#3c3v6e]  block w-full p-2.5  dark:border-gray-600 dark:placeholder-[#3c3b6e] capitalize" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSortBy_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Text="default" />
                         <asp:ListItem Text="name" />
@@ -49,7 +49,7 @@
                         <asp:ListItem Text="price:high to low" />
                     </asp:DropDownList>
                 </section>
-                <!-- sale -->
+                <%--<!-- sale -->
                 <section class="px-4 pb-5">
                     <h1 class="mt-5 mb-2 capitalize font-bold text-xl text-[#3c3b6e]">sale</h1>
                     <div class="flex items-center mb-4">
@@ -66,7 +66,7 @@
                             not
                                 sale</label>
                     </div>
-                </section>
+                </section>--%>
             </div>
         </div>
 

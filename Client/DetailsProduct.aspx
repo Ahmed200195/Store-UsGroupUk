@@ -1,11 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Client/Site1.Master" AutoEventWireup="true" CodeBehind="DetailsProduct.aspx.cs" Inherits="Store.Client.DetailsProduct" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <!-- start in carsoule -->
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <main style="margin-top: 135px">
+    <main>
         <article>
-            <section class="section product sectionProduct productDetails productElement" aria-label="product" data-id="10">
+            <section class="section product sectionProduct productDetails productElement" aria-label="product" data-id="<%=Request.QueryString["id"] %>" data-count="3" >
                 <div class="container px-4 mx-auto">
                     <div class="product-slides relative overflow-hidden">
                         <div class="slider-banner flex" data-slider>
@@ -24,7 +26,7 @@
                     </div>
 
                     <div class="product-content">
-                        <p class="text-xs product-subtitle">Product name</p>
+                        <p class="text-xs product-subtitle"><%= Application["lang"].ToString() == "en" ? "Product name" : "اسم المنتج" %></p>
 
                         <h1 id="titleProduct" class="text-3xl product-title product-name" runat="server">Fall Limited Edition Sneakers</h1>
 
@@ -34,18 +36,10 @@
                 withstand everything the weather can offer.
                         </p>
 
-                        <div class="size">
-                            <h1 class="text-xl capitalize text-[#3c3b6e] my-4">select size
+                        <div class="flex justify-between items-center my-3">
+                            <h1 class="color text-[#504f85] font-bold capitalize"><%=  Application["lang"].ToString() == "en" ? "Color" : "اللون" %> :<span id="snColor" class="text-gray-400 font-medium" runat="server">red</span>
                             </h1>
-                            <div class="checkElement flex gap-4">
-                                <asp:Literal ID="ltSizes" runat="server"></asp:Literal>
-                            </div>
-                        </div>
-
-                        <div class="color">
-                            <h1 class="text-xl capitalize text-[#3c3b6e] my-4">color</h1>
-                            <asp:DropDownList ID="ddlColors" CssClass="bg-gray-50 border border-gray-300  text-sm rounded-lg text-[#3c3v6e]  block w-full p-2.5  dark:border-gray-600 dark:placeholder-[#3c3b6e] capitalize" runat="server" DataSourceID="sqlColors" DataTextField="Name" DataValueField="Id"></asp:DropDownList>
-                            <asp:SqlDataSource ID="sqlColors" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' SelectCommand="SELECT * FROM [Color] ORDER BY [Id]"></asp:SqlDataSource>
+                            <h1 class="size text-[#504f85] font-bold capitalize"><%=  Application["lang"].ToString() == "en" ? "Size" : "القياس" %> :<span id="snSize" class="text-gray-400 font-" runat="server">70</span></h1>
                         </div>
 
                         <div class="wrapper">
@@ -67,7 +61,7 @@
 
                             <button type="button" class="cart-btn add-to-cart">
                                 <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
-                                <span class="span">Add to cart</span>
+                                <span class="span"><%=  Application["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة" %></span>
                             </button>
                         </div>
                     </div>
@@ -82,12 +76,12 @@
         <div class="grid lg:grid-cols-2 grid-cols-1">
             <!-- element 1 -->
             <figure class="lg:flex justify-center items-center h-3/4 hidden ">
-                <img src="../images/detailsProduct/undraw_empty_cart_co35.svg" class="h-full" alt="">
+                <img src="../images/detailsProduct/undraw_empty_cart_co35.svg" class="h-full" alt=""/>
             </figure>
             <!-- element 2 -->
             <div>
-                <h1 class="titleMain text-center mb-5">frequently bought together</h1>
-                <div class="main-carousel carouselShared">
+                <h1 class="titleMain text-center mb-5"><%=  Application["lang"].ToString() == "en" ? "frequently bought together" : "اشترى في كثير من الأحيان جنبا إلى جنب" %></h1>
+                <div class="main-carousel carouselShared mb-6">
 
                     <asp:Literal ID="ltFrequentlyProduct" runat="server"></asp:Literal>
 
@@ -95,5 +89,6 @@
             </div>
         </div>
     </section>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <!-- end in  -->
 </asp:Content>

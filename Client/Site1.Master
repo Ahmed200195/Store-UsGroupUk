@@ -2,51 +2,34 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<%= Application["lang"] %>" dir="<%= Application["lang"].ToString() == "en" ? "ltr" : "rtl" %>">
 <head runat="server">
-    <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>idnex</title>
     <!-- start in css -->
-    <link href="../css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css" />
     <!-- start in tailwind css -->
-    <link href="../css/tailwind.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/tailwind.css" />
     <!-- start in carsoule -->
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css" />
     <!-- start in fontawsome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <!-- start in google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
     <link href="https://fonts.googleapis.com/css2?family=Lemonada:wght@300;400&family=Montserrat&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
-<body>
+<body class="">
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <!-- start in loader -->
-        <section id="global">
-
-            <div class="relative w-full h-full">
-                <div class="absolute top-2/4 left-2/4">
-                    <div id="top" class="mask">
-                        <div class="plane"></div>
-                    </div>
-                    <div id="middle" class="mask">
-                        <div class="plane"></div>
-                    </div>
-
-                    <div id="bottom" class="mask">
-                        <div class="plane"></div>
-                    </div>
-
-                    <p class="titlleLoading"><i>LOADING...</i></p>
-                </div>
-            </div>
-
-        </section>
+        <div class="containerLoader" id="containerLoader">
+            <span class="loader"></span>
+        </div>
         <!-- end in loader -->
 
         <!-- Back to top button -->
@@ -54,94 +37,147 @@
             class="backToTop fixed bottom-4 right-6 bg-[#3c3b6e] w-12 h-12 rounded-md text-white text-center transition duration-300 opacity-0 invisible z-50 hover:bg-[#222143] focus:outline-none"></a>
 
         <!-- start in navbar -->
-        <!-- component -->
-        <header class="bg-white fixed top-0 w-full z-50">
-            <div class="container mx-auto px-4 py-8 flex items-center">
-                <!-- logo -->
-                <div class="mr-auto md:w-16 flex-shrink-0">
-                    <h1 class="text-3xl font-normal capitalize">logo</h1>
-                </div>
 
-                <!-- search -->
-                <div class="w-full xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden xl:flex items-center">
-                    <asp:DropDownList ID="ddlDept" CssClass="bg-transparent uppercase font-normal text-sm p-4 mr-4" runat="server" DataSourceID="sqlDept" DataTextField="NameEn" DataValueField="Id">
-                            </asp:DropDownList>
+        <!-- component -->
+        <%
+            if (Application["lang"].ToString() == "en")
+            {
+        %>
+
+        <%  }
+            else
+            {
+        %>
+
+        <%
+            }
+        %>
+        <header class="bg-white fixed top-0 w-full z-50">
+            <div class="container mx-auto px-4 py-2 flex items-center">
+                <!-- logo -->
+                <%
+                    if (Application["lang"].ToString() == "en")
+                    {
+                %>
+                <div class="mr-auto md:w-16 flex-shrink-0">
+                    <%  }
+                        else
+                        {
+                    %>
+                    <div class="ml-auto md:w-16 flex-shrink-0">
+                        <%
+                            }
+                        %>
+                        <a href="Home.aspx">
+                            <img src="../images/logoTwo.png" class="w-16 md:w-28" alt="" />
+                        </a>
+                    </div>
+
+                    <!-- search -->
+                    <%
+                        if (Application["lang"].ToString() == "en")
+                        {
+                    %>
+                    <div
+                        class="search  scale-0 mx-auto xl:max-w-lg 2xl:max-w-2xl bg-gray-100 transition-all delay-500 rounded-md hidden md:flex md:w-full md:scale-100 items-center fixed top-[90px]  w-11/12 -translate-x-2/4 -translate-y-2/4  sm:relative sm:top-0 sm:left-0 sm:-translate-x-0 sm:-translate-y-0 ">
+                        <%  }
+                            else
+                            {
+                        %>
+                        <div
+                            class="md:w-full mx-auto xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md flex items-center fixed top-[90px] left-2/4 w-11/12 -translate-x-2/4 -translate-y-2/4  sm:relative sm:top-0 sm:left-0 sm:-translate-x-0 sm:-translate-y-0 ">
+                            <%
+                                }
+                            %>
+
+                            <asp:DropDownList ID="ddlDept" CssClass="bg-transparent uppercase font-normal text-sm p-4 mr-4 w-auto" runat="server" DataSourceID="sqlDept" DataValueField="Id"></asp:DropDownList>
                             <asp:SqlDataSource ID="sqlDept" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' SelectCommand="SELECT * FROM [Dept]" />
 
-                    <asp:TextBox ID="txtSearch" CssClass="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4" placeholder="I'm searching for ..." ClientIDMode="Static" runat="server" onkeypress="return EnterEvent(event)"></asp:TextBox>    
-                    <asp:Button ID="btnSearch" runat="server" style="display:none" OnClick="btnSearch_Click" />
+                            <input id="txtSearch" type="text" class="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4" runat="server" />
 
-                    <%--<input class="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4"
-                        type="text" placeholder="I'm searching for ..." />--%>
+                            <%--<asp:TextBox ID="txtSearch" CssClass="w-full h-auto border-l outline-none border-gray-300 bg-transparent font-semibold text-sm pl-4" TextMode="Search" runat="server" placeholder="I'm searching for ..." />--%>
 
-                    <i class="fa-solid fa-magnifying-glass ml-auto h-5 px-4 text-[#3c3b6e]"></i>
-                </div>
+                            <asp:Button ID="btnSearch" runat="server" Style="display: none;" OnClick="btnSearch_Click" />
 
-                <!-- phone number -->
-                <div class="ml-auto md:w-48 hidden sm:flex flex-col place-items-end text-[#3c3b6e]">
-                    <span class="font-normal md:text-xl">8 800 332 65-66</span>
-                    <span class="font-semibold text-sm text-gray-400">Support 24/7</span>
-                </div>
+                            <i class="fa-solid fa-magnifying-glass ml-auto h-5 px-4 text-[#3c3b6e]"></i>
+                        </div>
 
-                <!-- buttons -->
-                <nav class="contents">
-                    <ul class="ml-4 xl:w-48 flex items-center justify-end">
-                        <li class="ml-2 lg:ml-4 relative inline-block">
-                            <a class="uppercase text-[#3c3b6e]" href="#">english</a>
-                        </li>
-                        <li class="ml-2 lg:ml-4 relative inline-block">
-                            <div class="cursor-pointer openCart">
-                                <svg class=" h-9 lg:h-10 p-2 text-[#3c3b6e] svg-inline--fa fa-shopping-cart fa-w-18 fa-9x" aria-hidden="true" focusable="false" data-prefix="far"
-                                    data-icon="shopping-cart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path fill="currentColor"
-                                        d="M551.991 64H144.28l-8.726-44.608C133.35 8.128 123.478 0 112 0H12C5.373 0 0 5.373 0 12v24c0 6.627 5.373 12 12 12h80.24l69.594 355.701C150.796 415.201 144 430.802 144 448c0 35.346 28.654 64 64 64s64-28.654 64-64a63.681 63.681 0 0 0-8.583-32h145.167a63.681 63.681 0 0 0-8.583 32c0 35.346 28.654 64 64 64 35.346 0 64-28.654 64-64 0-18.136-7.556-34.496-19.676-46.142l1.035-4.757c3.254-14.96-8.142-29.101-23.452-29.101H203.76l-9.39-48h312.405c11.29 0 21.054-7.869 23.452-18.902l45.216-208C578.695 78.139 567.299 64 551.991 64zM208 472c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm256 0c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm23.438-200H184.98l-31.31-160h368.548l-34.78 160z">
-                                    </path>
-                                </svg>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
 
-                <!-- cart count -->
-                <div class="ml-4 hidden sm:flex flex-col font-normal text-[#3c3b6e]">
-                    <span class="text-xs">Your Cart</span>
-                    <span>kd2,650,59</span>
-                </div>
-            </div>
+                        <!-- buttons -->
+                        <nav class="contents">
+                            <ul class="ml-4 xl:w-48 flex items-center justify-end">
+                                <li class="iconSearchMobile">
+                                    <i class="fa-solid fa-magnifying-glass ml-auto h-5 px-4 text-[#3c3b6e]"></i>
+                                </li>
+                                <li class="ml-2 lg:ml-4 relative inline-block">
 
-            <hr />
+                                    <button id="btnToggleLang" class="uppercase text-[#3c3b6e] text-2xl" runat="server" onserverclick="btnToggleLang_ServerClick">عربي</button>
+                                </li>
+                                <li class="ml-2 lg:ml-4 relative inline-block">
+                                    <div class="cursor-pointer openCart">
+                                        <svg class=" h-9 lg:h-10 p-2 text-[#3c3b6e] svg-inline--fa fa-shopping-cart fa-w-18 fa-9x" aria-hidden="true" focusable="false" data-prefix="far"
+                                            data-icon="shopping-cart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                            <path fill="currentColor"
+                                                d="M551.991 64H144.28l-8.726-44.608C133.35 8.128 123.478 0 112 0H12C5.373 0 0 5.373 0 12v24c0 6.627 5.373 12 12 12h80.24l69.594 355.701C150.796 415.201 144 430.802 144 448c0 35.346 28.654 64 64 64s64-28.654 64-64a63.681 63.681 0 0 0-8.583-32h145.167a63.681 63.681 0 0 0-8.583 32c0 35.346 28.654 64 64 64 35.346 0 64-28.654 64-64 0-18.136-7.556-34.496-19.676-46.142l1.035-4.757c3.254-14.96-8.142-29.101-23.452-29.101H203.76l-9.39-48h312.405c11.29 0 21.054-7.869 23.452-18.902l45.216-208C578.695 78.139 567.299 64 551.991 64zM208 472c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm256 0c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm23.438-200H184.98l-31.31-160h368.548l-34.78 160z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </li>
+                                <li></li>
+                            </ul>
+                        </nav>
+
+                        <!-- cart count -->
+                        <div class="ml-4 hidden sm:flex flex-col font-normal text-[#3c3b6e]">
+                            <span class="text-xs"><%= Application["lang"].ToString() == "en" ? "Your Cart" : "عربتك" %></span>
+                            <span>kd2,650,59</span>
+                        </div>
+                    </div>
+                    <hr />
         </header>
         <!-- end in navbar -->
 
         <!-- start in cart -->
         <section id="cart" class="relative z-30">
             <div class="overlay w-screen h-screen fixed z-20 top-0"></div>
+            <%
+                if (Application["lang"].ToString() == "en")
+                {
+            %>
+            <div class="detailsCartEn fixed top-0 right-0 z-30 p-5 h-screen w-[100vw] sm:w-[70vw] md:w-[50vw] lg:w-[30vw]">
+                <%  }
+                    else
+                    {
+                %>
+                <div class="detailsCartAr fixed top-0 left-0 z-30 p-5 h-screen w-[100vw] sm:w-[70vw] md:w-[50vw] lg:w-[30vw]">
+                    <%
+                        }
+                    %>
+                    <div class="mainText flex justify-between items-center my-5 border-b pb-5">
+                        <h1 class="capitalize m-0 text-xl font-normal md:text-2xl text-heading">
+                            <%= Application["lang"].ToString() == "en" ? "Shoopping cart" : "عربة التسوق" %>
+                        </h1>
+                        <i class="fa-solid fa-xmark text-2xl clsoeCart cursor-pointer"></i>
+                    </div>
+                    <!-- cart empty -->
+                    <div class="emptyCart flex flex-col justify-center items-center h-[80%]">
+                        <img src="../images/cartEmpty.png" alt="" />
+                        <h3 class="capitalize text-center"><%= Application["lang"].ToString() == "en" ? "your cart is empty" : "عربة التسوق فارغة" %></h3>
+                    </div>
+                    <!-- info product -->
+                    <div id="dvInfoProduct" class="infoProduct pr-3 overflow-y-scroll">
+                    </div>
 
-            <div class="detailsCart fixed top-0 right-0 z-30 p-5 h-screen w-[100vw] sm:w-[70vw] md:w-[50vw] lg:w-[30vw]">
-                <div class="mainText flex justify-between items-center my-5 border-b pb-5">
-                    <h1 class="capitalize m-0 text-xl font-normal md:text-2xl text-heading">shooping cart
-                    </h1>
-                    <i class="fa-solid fa-xmark text-2xl clsoeCart cursor-pointer"></i>
-                </div>
-                <!-- cart empty -->
-                <div class="emptyCart flex flex-col justify-center items-center h-[80%]">
-                    <img src="../images/cartEmpty.png" alt="">
-                    <h3 class="capitalize text-center">your cart is empty</h3>
-                </div>
-                <!-- info product -->
-                <div id="dvInfoProduct" class="infoProduct pr-3 overflow-y-scroll" runat="server">
-                </div>
-
-                <!-- check out cart -->
-                <div
-                    class="checkout relative bottom-0 mb-5 w-full px-5 py-3 md:py-4 flex items-center justify-between gap-x-5 rounded-md text-sm sm:text-base text-white focus:outline-none transition duration-300 bg-heading hover:bg-gray-600">
-                    <button type="button" class="btnCheckout">Proceed To Checkout</button>
-                    <div class="bg-white w-[2px] h-full"></div>
-                    <div>
-                        <span class="subtotal"></span><span>$</span>
+                    <!-- check out cart -->
+                    <div
+                        class="checkout relative bottom-0 mb-5 w-full px-5 py-3 md:py-4 flex items-center justify-between gap-x-5 rounded-md text-sm sm:text-base text-white focus:outline-none transition duration-300 bg-heading hover:bg-gray-600">
+                        <button type="button" class="btnCheckout"><%= Application["lang"].ToString() == "en" ? "Proceed To Checkout" : "الشروع في الخروج" %></button>
+                        <div class="bg-white w-[2px] h-full"></div>
+                        <div>
+                            <span class="subtotal"></span><span><%= Application["lang"].ToString() == "en" ? "KD" : "د.ك" %></span>
+                        </div>
                     </div>
                 </div>
-            </div>
         </section>
         <!-- end in cart -->
 
@@ -150,18 +186,13 @@
             <div class="overlayCheckout "></div>
             <i class="fa-solid fa-xmark text-2xl cursor-pointer closeCheckout absolute top-4 right-4 text-white"></i>
             <div class="boxCheckout absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">
-                <h1 class="capitalize text-white mb-2 text-2xl">checkout</h1>
-                <div>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Name" class="w-full rounded-md px-2 py-2 outline-none mb-3">
-                        <input type="number" placeholder="number" class="w-full rounded-md px-2 py-2 outline-none mb-3">
-                    </div>
-                    <input type="text" placeholder="Address" class="w-full rounded-md px-2 py-2 outline-none mb-3">
-                    <input type="text" placeholder="Street" class="w-full rounded-md px-2 py-2 outline-none mb-3">
-                    <input type="text" placeholder="landmark" class="w-full rounded-md px-2 py-2 outline-none mb-3">
-
-                    <input type="submit" value="send" onclick="checkOut()">
+                <h1 class="capitalize text-white mb-2 text-2xl"><%= Application["lang"].ToString() == "en" ? "Checkout" : "الدفع" %></h1>
+                <div class="flex gap-2">
+                    <input id="txtName" type="text" placeholder="<%= Application["lang"].ToString() == "en" ? "Name" : "الاسم" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
+                    <input id="txtPhone" type="tel" placeholder="<%= Application["lang"].ToString() == "en" ? "Phone" : "الهاتف" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
                 </div>
+                <textarea id="txtAddress" placeholder="<%= Application["lang"].ToString() == "en" ? "Address" : "العنوان" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3"></textarea>
+                <input id="sendData" type="button" value="<%= Application["lang"].ToString() == "en" ? "Send" : "إرسال" %>" onclick="checkOut()" class="capitalize tracking-widest rounded-md bg-[#007a3d] cursor-pointer px-5 py-2.5 text-center text-sm font-medium text-white transition-all hover:bg-[#117a3d] focus:outline-none" />
             </div>
         </section>
         <!-- end in checkout -->
@@ -172,7 +203,7 @@
         <!-- start in footer -->
         <section class="bg-gray-200">
             <div class="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
-                <nav class="flex flex-wrap justify-center -mx-5 -my-2">
+                <%--                <nav class="flex flex-wrap justify-center -mx-5 -my-2">
                     <div class="px-5 py-2">
                         <a href="#" class="text-base leading-6 text-[#3c3b6e]">About
                         </a>
@@ -197,15 +228,17 @@
                         <a href="#" class="text-base leading-6 text-[#3c3b6e]">Terms
                         </a>
                     </div>
-                </nav>
-                <div class="flex justify-center mt-8 space-x-6">
-                    <a href="#" class="text-[#d62976] text-xl hover:text-gray-500">
+                </nav>--%>
+                <div class="flex <%= Application["lang"].ToString() == "en" ? "" : "flex-row-reverse" %> justify-center mt-8 space-x-6">
+                    <a href="https://instagram.com/us_group_kw?igshid=NTc4MTIwNjQ2YQ=="
+                        class="text-[#d62976] text-xl hover:text-gray-500">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
-                    <a href="#" class="text-[#3b5998] text-xl hover:text-gray-500">
+                    <a href="https://www.facebook.com/merai89?mibextid=ZbWKwL" class="text-[#3b5998] text-xl hover:text-gray-500">
                         <i class="fa-brands fa-facebook-f"></i>
                     </a>
-                    <a href="https://api.whatsapp.com/send?phone=0112409654" class="text-[#25D366] text-xl hover:text-gray-500">
+                    <a href="https://api.whatsapp.com/send?phone=+965 9798 3633"
+                        class="text-[#25D366] text-xl hover:text-gray-500">
                         <i class="fa-brands fa-whatsapp"></i>
                     </a>
                     <a href="tel:123-456-7890" class="text-[#19a7a4] text-xl hover:text-gray-500">
@@ -224,7 +257,9 @@
     <script src="../js/main.js"></script>
     <!-- start splide carsoule -->
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <!-- sweet alert  -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function EnterEvent(e) {
             if (e.keyCode == 13) {
@@ -232,7 +267,63 @@
             }
         }
 
-        
+        // start in category
+        var category = document.querySelector(".carouselCategory");
+        var flktyCategory = new Flickity(category, {
+            cellAlign: "center",
+            contain: true,
+            autoPlay: 5500,
+            freeScroll: true,
+            groupCells: true,
+            groupCells: 1,
+        });
+        // end in category
+
+        function checkOut() {
+            
+            let name, phone, address, total;
+
+            name = document.getElementById("txtName");
+            phone = document.getElementById("txtPhone");
+            address = document.getElementById("txtAddress");
+            //total = document.getElementsByClassName("subtotal")[0];
+            if (name.value === "" || phone.value === "" || address.value === "") {
+                return;
+            }
+
+            let dataCleint = [];
+            dataCleint.push(name.value.toString());
+            dataCleint.push(phone.value.toString());
+            dataCleint.push(address.value.toString());
+            //dataCleint.push(total.innerHTML.toString());
+            var obj = { dvInfoProduct: document.getElementById("dvInfoProduct").innerHTML, list: dataCleint };
+            $.ajax({
+                type: "POST",
+                url: "Home.aspx/PaidCheckOut",
+                data: JSON.stringify(obj),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function () {
+
+                    name.value = "";
+                    phone.value = "";
+                    address.value = "";
+
+                    
+
+                    //document.getElementById("dvInfoProduct").innerHTML = "";
+                    //document.getElementById("dvInfoProduct").style.display = "none";
+                    //document.getElementsByClassName("emptyCart")[0].style.display = "block";
+                    //total.innerHTML = "0";
+                    //document.getElementsByClassName("checkout")[0].style.display = "none";
+                    langAttributeValue === "en" ? Swal.fire("ok", "You clicked the button!", "success") : Swal.fire("اوكك", "You clicked the button!", "success");
+
+                    //document.querySelectorAll(".elementCart").forEach((element) => {
+                    //    element.remove();
+                    //});
+                }
+            });
+        }
     </script>
 </body>
 </html>

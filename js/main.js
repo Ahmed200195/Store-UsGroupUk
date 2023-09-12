@@ -2,9 +2,15 @@
 
 // function main
 window.onload = () => {
-    let loader = document.getElementById("global");
+    let loader = document.getElementById("containerLoader");
     loader.style.display = "none";
 };
+
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ <html>
+const htmlElement = document.documentElement;
+
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ "lang"
+const langAttributeValue = htmlElement.getAttribute("lang");
 
 function close(element, direction, valueDirection, overlay) {
     element.style[direction] = `${valueDirection}%`;
@@ -29,9 +35,12 @@ function funMinsPlusPriceChange(btnOperation, operation) {
     );
     let price = apperentElement.querySelector(".priceFromCart span");
     let qty = apperentElement.querySelector(".numberQty");
+    let dataCount = apperentElement.dataset.count;
 
     if (operation === "+") {
-        qty.textContent = parseInt(qty.textContent) + 1;
+        if (parseInt(qty.textContent) < dataCount) {
+            qty.textContent = parseInt(qty.textContent) + 1;
+        }
     } else if (operation === "-") {
         if (parseInt(qty.textContent) > 1) {
             qty.textContent = parseInt(qty.textContent) - 1;
@@ -63,30 +72,45 @@ backToTop.addEventListener("click", (e) => {
 });
 //----------------------------------------- end baxk to top ------------------------------------------------
 
+//----------------------------------------- start in search mobile ------------------------------------------------
+// let iconSearchMobile = document.querySelector(".iconSearchMobile");
+// let search = document.querySelector(".search");
+
+// iconSearchMobile.addEventListener("click", (e) => {
+//     search.style.display = "flex";
+//     search.style.transform = "scale(1)";
+// });
+//----------------------------------------- end in search mobile ------------------------------------------------
+
 // ------------------------------------------------ start in cart ------------------------------------------------
-let detailsCart = document.querySelector(".detailsCart");
+let detailsCartEn = document.querySelector(".detailsCartEn");
+let detailsCartAr = document.querySelector(".detailsCartAr");
 let openCart = document.querySelector(".openCart");
 let closeCart = document.querySelector(".clsoeCart");
 let overlay = document.querySelector(".overlay");
 
 function openCartFun() {
     openCart.addEventListener("click", () => {
-        open(detailsCart, "right", 0, overlay);
+        langAttributeValue === "en"
+            ? open(detailsCartEn, "right", 0, overlay)
+            : open(detailsCartAr, "left", 0, overlay);
     });
 }
 openCartFun();
 
 function closeCartFun() {
     closeCart.addEventListener("click", () => {
-        close(detailsCart, "right", -100, overlay);
+        langAttributeValue === "en"
+            ? close(detailsCartEn, "right", -100, overlay)
+            : close(detailsCartAr, "left", -100, overlay);
     });
 }
 closeCartFun();
 
 //add to cart
 
-let addToCartButtons = document.querySelectorAll(" .add-to-cart");
-let selectedProducts = []; // ãÕÝæÝÉ ÊÍÊæí Úáì ÇáÚäÇÕÑ ÇáÊí Êã ÇáÖÛØ ÚáíåÇ
+let addToCartButtons = document.querySelectorAll(".add-to-cart");
+let selectedProducts = []; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 
 addToCartButtons.forEach((button) => {
     button.addEventListener("click", () => addToCart(button));
@@ -100,23 +124,36 @@ function addToCart(button) {
         ".product-price span"
     ).textContent;
     const productImg = productContainer.querySelector(".imgProduct").src;
+    const productColor =
+        productContainer.querySelector(".color span").textContent;
+    const productSize = productContainer.querySelector(".size span").textContent;
 
     // details product page count
     const productCount = document.querySelector(".coountProduct");
 
     // function add id to element to filter elements
-    
     const dataId = productContainer.dataset.id;
+    //
+    const dataCount = productContainer.dataset.count;
 
     // add element if exists or not
-    filterProdcut(dataId, productName, productPrice, productImg, productCount);
-    // ãÌãæÚ ÇáãäÊÌ ÇáæÇÍÏ  ÝÞØ
+    filterProdcut(
+        dataId,
+        dataCount,
+        productName,
+        productPrice,
+        productImg,
+        productCount,
+        productColor,
+        productSize
+    );
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½
     TotalpricePrduct(dataId);
-    // ÍÐÝ ÇáãäÊÌ
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     deletElementCart();
-    // ãÌãæÚ ÌãíÚ ÇáãäÊÌÇÊ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     SuptotalPrice();
-    // áãÚÑÝÉ Çä ßÇä åäÇß ãäÊÌÇÊ Çã áÇ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
     counterCart();
 }
 
@@ -206,6 +243,7 @@ function counterCart() {
     }
 }
 
+
 function deleteIdToArray(elementCart) {
     selectedProducts = selectedProducts.filter(
         (p) => p !== elementCart.dataset.id
@@ -214,10 +252,13 @@ function deleteIdToArray(elementCart) {
 
 function filterProdcut(
     dataId,
+    dataCount,
     productName,
     productPrice,
     productImg,
-    productCount
+    productCount,
+    productColor,
+    productSize
 ) {
     let arrayFilterIndex = selectedProducts.includes(dataId);
     let infoProductCart = document.querySelectorAll(".infoProduct");
@@ -228,11 +269,14 @@ function filterProdcut(
             if (product.dataset.id === dataId) {
                 let numberQtyInput = product.querySelector(".numberQty");
 
-                productCount
-                    ? (numberQtyInput.textContent = parseInt(productCount.textContent))
-                    : (numberQtyInput.textContent =
-                        parseInt(numberQtyInput.textContent) + 1);
-
+                if (productCount) {
+                    numberQtyInput.textContent = parseInt(productCount.textContent);
+                } else {
+                    if (parseInt(numberQtyInput.textContent) < parseInt(dataCount)) {
+                        numberQtyInput.textContent =
+                            parseInt(numberQtyInput.textContent) + 1;
+                    }
+                }
             }
         });
     } else {
@@ -240,8 +284,9 @@ function filterProdcut(
 
         infoProductCart.forEach((cart) => {
             cart.innerHTML += `
-        <div class="elementCart flex mt-2" data-id="${dataId}">
-          <figure class="relative w-1/4 mr-4">
+        <div class="elementCart flex mt-2" data-id="${dataId}" data-count="${dataCount}">
+          <figure class="relative w-1/4  ${langAttributeValue === "en" ? "mr-4" : "ml-4"
+                }  ">
             <img src="${productImg}" class="rounded h-full w-full" alt="" />
             <span class="delete flex justify-center items-center absolute top-0 left-0 w-full h-full text-white">
               <i class="fa-solid fa-xmark"></i>
@@ -252,8 +297,18 @@ function filterProdcut(
               ${productName}
             </h2>
             <p class="priceFromCart capitalize text-sm text-gray-400 mb-2.5">
-              unit price: <span>${productPrice}</span> kd
+             ${langAttributeValue === "en" ? "unit price" : "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+                }: <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "ï¿½.ï¿½"
+                }
             </p>
+            
+            <div class="flex justify-between my-2">
+              <p class="capitalizetext-[#3c3b6e]">${langAttributeValue === "en" ? "color" : "ï¿½ï¿½ï¿½ï¿½ï¿½"
+                } :<span class="text-gray-400"> ${productColor}</span></p>
+              <p class="capitalize text-[#3c3b6e]">${langAttributeValue === "en" ? "size" : "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+                } :<span class="text-gray-400"> ${productSize}</span></p>
+            </div>
+
             <div class="flex justify-between items-center mt-4">
               <div class="flex qty h-9">
                 <button type="button" class="px-2 py-1 rounded-l-md mins">-</button>
@@ -263,14 +318,15 @@ function filterProdcut(
               </div>
               <div class="suptotalTotalPrice">
                 <h2 class="text-sm font-semibold leading-5 md:text-base text-heading">
-                  <span>${productPrice}</span> kd
+                  <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "ï¿½.ï¿½"
+                }
                 </h2>
               </div>
             </div>
           </div>
         </div>
       `;
-            minsPlusNumberCount();
+            minsPlusNumberCount(dataCount);
             SuptotalPrice();
         });
     }
@@ -286,36 +342,36 @@ let overlayCheckout = document.querySelector(".overlayCheckout");
 
 function chekcoutFun() {
     btnCheckout.addEventListener("click", () => {
-        open(containerCheckout, "scale", 100, overlayCheckout);
-        containerCheckout.style.display = "block";
-        close(detailsCart, "right", -100, overlay);
+      open(containerCheckout, "scale", 100, overlayCheckout);
+      containerCheckout.style.display = "block";
+      langAttributeValue === "en"
+        ? close(detailsCartEn, "right", -100, overlay)
+        : close(detailsCartAr, "left", -100, overlay);
     });
     closeCheckout.addEventListener("click", () => {
-        close(containerCheckout, "scale", 0, overlayCheckout);
+      close(containerCheckout, "scale", 0, overlayCheckout);
     });
-}
-chekcoutFun();
-// ------------------------------------------------ end in checkout ------------------------------------------------
+  }
+  chekcoutFun();
 
-// ------------------------------------------------ start in choose filter ------------------------------------------------
-let borderBox = document.querySelectorAll(".checkElement .selectedItem");
-if (borderBox) {
-    borderBox.forEach((selected) => {
-        selected.addEventListener("click", () => {
-            borderBox.forEach((removeClassAll) => {
-                removeClassAll.classList.remove("activeSize");
-            });
-            selected.classList.add("activeSize");
-        });
-    });
-}
-// ------------------------------------------------ end in choose filter ------------------------------------------------
+//let checkOutSend = document.getElementById("sendData");
+// checkOutSend.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     langAttributeValue === "en"
+//       ? Swal.fire("ok", "You clicked the button!", "success")
+//       : Swal.fire("Ø§ÙˆÙƒÙƒ", "You clicked the button!",Â "success");
+//   });
+// ------------------------------------------------ end in checkout ------------------------------------------------
 
 // ----------------------------------------------------end shared functions -------------------------------------------------------
 
-// slider header
+// Define your slide interval in milliseconds (e.g., 3000ms for 3 seconds)
+
+const slideInterval = 5000;
+
 const slides = document.querySelectorAll("[data-slide]");
-const buttons = document.querySelectorAll("[data-button]");
+const prevButton = document.querySelector("[data-prev]");
+const nextButton = document.querySelector("[data-next]");
 
 let currSlide = 0;
 let maxSlide = slides.length - 1;
@@ -323,6 +379,10 @@ let isDragging = false;
 let startPos = 0;
 let currentTranslate = 0;
 let prevTranslate = 0;
+let slideTimer;
+if (slides) {
+    
+
 
 const updateCarousel = () => {
     slides.forEach((slide, index) => {
@@ -330,10 +390,12 @@ const updateCarousel = () => {
     });
 };
 
-const touchStart = (index) => (e) => {
+const touchStart = (e) => {
     isDragging = true;
     startPos = getPositionX(e);
     currentTranslate = prevTranslate;
+    clearInterval(slideTimer);
+    e.preventDefault(); // Add this line
 };
 
 const touchMove = (e) => {
@@ -345,6 +407,7 @@ const touchMove = (e) => {
         slide.style.transform = `translateX(${index * 100 - currSlide * 100 + prevTranslate
             }%)`;
     });
+    e.preventDefault(); // Add this line
 };
 
 const touchEnd = () => {
@@ -357,15 +420,45 @@ const touchEnd = () => {
         currSlide--;
     }
     updateCarousel();
+    startSlideTimer();
 };
 
 const getPositionX = (e) => {
     return e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
 };
 
-slides.forEach((slide, index) => {
-    slide.addEventListener("touchstart", touchStart(index));
-    slide.addEventListener("mousedown", touchStart(index));
+const startSlideTimer = () => {
+    clearInterval(slideTimer); // Clear existing interval
+    slideTimer = setInterval(() => {
+        currSlide++;
+        if (currSlide > maxSlide) {
+            currSlide = 0;
+        }
+        updateCarousel();
+    }, slideInterval);
+};
+
+startSlideTimer();
+
+prevButton.addEventListener("click", () => {
+    currSlide--;
+    if (currSlide < 0) {
+        currSlide = maxSlide;
+    }
+    updateCarousel();
+});
+
+nextButton.addEventListener("click", () => {
+    currSlide++;
+    if (currSlide > maxSlide) {
+        currSlide = 0;
+    }
+    updateCarousel();
+});
+
+slides.forEach((slide) => {
+    slide.addEventListener("touchstart", touchStart);
+    slide.addEventListener("mousedown", touchStart);
     slide.addEventListener("touchmove", touchMove);
     slide.addEventListener("mousemove", touchMove);
     slide.addEventListener("touchend", touchEnd);
@@ -373,35 +466,22 @@ slides.forEach((slide, index) => {
     slide.addEventListener("mouseleave", touchEnd);
 });
 
-buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-        button.dataset.button === "next" ? ++currSlide : --currSlide;
-
-        if (currSlide > maxSlide) {
-            currSlide = 0;
-        } else if (currSlide < 0) {
-            currSlide = maxSlide;
-        }
-
-        updateCarousel();
-    });
-});
-
 updateCarousel();
 
-// end in slider header
+}
 
 // start in category
 var category = document.querySelector(".carouselCategory");
-var flktyCategory = new Flickity(category, {
-    cellAlign: "left",
-    contain: true,
-    autoPlay: 5500,
-    freeScroll: true,
-    wrapAround: true,
-    groupCells: true,
-    groupCells: 1,
-});
+if (category) {
+    var flktyCategory = new Flickity(category, {
+        cellAlign: "center",
+        contain: true,
+        autoPlay: 5500,
+        freeScroll: true,
+        groupCells: true,
+        groupCells: 1,
+    });
+}
 // end in category
 
 // start in details product
@@ -427,19 +507,27 @@ if (productDetails) {
     };
 
     const slider = document.querySelector("[data-slider]");
+    const sliderImg = document.querySelectorAll("[data-slider] figure");
     const nextBtn = document.querySelector("[data-next]");
     const prevBtn = document.querySelector("[data-prev]");
 
     // set the slider default position
     let sliderPos = 0;
 
-    // set the number of total slider items
-    const totalSliderItems = 4;
+    // hide button next and prev if length img is 1
+    if (sliderImg.length === 1) {
+        nextBtn.style.display = "none";
+        prevBtn.style.display = "none";
+    }
 
     // make next slide btn workable
     const slideToNext = function () {
         sliderPos++;
-        slider.style.transform = `translateX(-${sliderPos}00%)`;
+        if (langAttributeValue === "en") {
+            slider.style.transform = `translateX(-${sliderPos}00%)`;
+        } else {
+            slider.style.transform = `translateX(${sliderPos}00%)`;
+        }
 
         sliderEnd();
     };
@@ -449,7 +537,11 @@ if (productDetails) {
     // make prev slide btn workable
     const slideToPrev = function () {
         sliderPos--;
-        slider.style.transform = `translateX(-${sliderPos}00%)`;
+        if (langAttributeValue === "en") {
+            slider.style.transform = `translateX(-${sliderPos}00%)`;
+        } else {
+            slider.style.transform = `translateX(${sliderPos}00%)`;
+        }
 
         sliderEnd();
     };
@@ -458,7 +550,7 @@ if (productDetails) {
 
     // check when slider is end then what should slider btn do
     function sliderEnd() {
-        if (sliderPos >= totalSliderItems - 1) {
+        if (sliderPos >= sliderImg.length - 1) {
             nextBtn.classList.add("disabled");
         } else {
             nextBtn.classList.remove("disabled");
@@ -482,6 +574,8 @@ if (productDetails) {
     const qtyMinusBtn = document.querySelector("[data-qty-minus]");
     const qtyPlusBtn = document.querySelector("[data-qty-plus]");
     const priceProduct = document.querySelector(".spanPrice").textContent;
+    // get data count
+    const countProudct = productDetails.dataset.count;
 
     // set the product default quantity
     let qtyProdcut = 1;
@@ -490,7 +584,10 @@ if (productDetails) {
     let totalPrice = 125;
 
     const increaseProductQty = function () {
-        qtyProdcut++;
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (qtyProdcut < countProudct) {
+            qtyProdcut++;
+        }
         totalPrice = qtyProdcut * priceProduct;
 
         qtyElem.textContent = qtyProdcut;
@@ -511,13 +608,15 @@ if (productDetails) {
 }
 
 // start in shared product
-var category = document.querySelector(".carouselShared");
-var flktyCategory = new Flickity(category, {
-    cellAlign: "left",
-    contain: true,
-    wrapAround: true,
-    groupCells: 2,
-});
+var categoryDtl = document.querySelector(".carouselShared");
+if (categoryDtl) {
+    var flktyCategory = new Flickity(categoryDtl, {
+        cellAlign: "left",
+        contain: true,
+        wrapAround: true,
+        groupCells: 2,
+    });
+}
 // end in shared product
 
 // end in details product
