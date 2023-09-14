@@ -34,7 +34,7 @@ namespace Store.Client
             ltImgSilder.Text += $@"
                             <figure class=""product-banner min-w-full rounded-2xl"">
                                 <img src=""data:image;base64,{Convert.ToBase64String((byte[])dataRow["Photo"])}"" loading=""lazy"" alt=""{dataRow[Name]}""
-                                    class=""imgProduct img-cover w-full h-full rounded-2xl"" />
+                                    class=""imgProduct img-cover w-full h-full rounded-2xl"" loading=""lazy"" />
                             </figure>
                 ";
             foreach (DataRow row in clsBasic.SelectData("*", "ProductPhotos WHERE PId = " + Request.QueryString["id"]).Rows)
@@ -42,7 +42,7 @@ namespace Store.Client
                 ltImgSilder.Text += $@"
                             <figure class=""product-banner min-w-full rounded-2xl"">
                                 <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" loading=""lazy"" alt=""{row["Name"]}""
-                                    class=""img-cover w-full h-full rounded-2xl"" />
+                                    class=""img-cover w-full h-full rounded-2xl"" loading=""lazy"" />
                             </figure>
                 ";
             }
@@ -92,13 +92,13 @@ namespace Store.Client
                     <div class=""carousel-cell w-2/4"">
                         <div
                             class=""productElement  relative  flex flex-col w-[95%] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{row["Id"]}"" data-count=""{row["Cnt"]}"">
-                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}"">
+                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"">
                                 <img class=""imgProduct object-fill w-full h-full"" src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}""
-                                    alt=""product image"" />
+                                    alt=""product image"" loading=""lazy"" />
                                 {disc}
                             </a>
                             <div class=""mt-4 px-5 pb-5"">
-                                <a href=""DetailsProduct.aspx?id={row["Id"]}"" >
+                                <a href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" >
                                     <div>
                                         <h5 class=""text-xl tracking-tight text-[#504f85] product-name"">{row[Name]}</h5>
                                     </div>

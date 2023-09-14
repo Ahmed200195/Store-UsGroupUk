@@ -124,13 +124,13 @@ namespace Store.Client
                     ltProdcut.Text += $@"
                                         <div
                                             class=""productElement relative  flex w-full  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{row["Id"]}"" data-count=""{row["Cnt"]}"">
-                                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}"" target=""_blank"">
+                                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_blank"">
                                                 <img class=""imgProduct object-fill w-full h-full"" src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}""
-                                                    alt=""product image"" />
+                                                    alt=""product image"" loading=""lazy"" />
                                             {disc}
                                             </a>
                                             <div class=""mt-4 px-5 pb-5"">
-                                                <a href=""DetailsProduct.aspx?id={row["Id"]}"" target=""_blank"">
+                                                <a href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_blank"">
                                                     <div>
                                                         <h5 class=""text-xl tracking-tight text-[#504f85] product-name"">{row[Name]}</h5>
                                                     </div>

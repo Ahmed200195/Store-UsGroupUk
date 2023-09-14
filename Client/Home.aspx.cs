@@ -20,7 +20,7 @@ namespace Store.Client
         ClsBasic clsBasic;
         string viewAll, Name, Size, Color, addToCart, Off;
         protected void Page_Load(object sender, EventArgs e)
-        {
+        { 
             //language
                 viewAll = Application["lang"].ToString() == "en" ? "View All" : "عرض الكل";
                 Name = Application["lang"].ToString() == "en" ? "NameEn" : "NameAr";
@@ -39,7 +39,7 @@ namespace Store.Client
             {
                 ltImgSlider.Text += $@"
                             <div class=""slide w-full h-full rounded-xl absolute transition-all duration-500"" data-slide>
-                                <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" class=""w-full h-full  object-cover md:object-fill"">
+                                <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" class=""w-full h-full  object-cover md:object-fill"" loading=""lazy"">
                             </div>";
             }
             ltCategory.Text = string.Empty;
@@ -49,7 +49,7 @@ namespace Store.Client
                         <div class=""carousel-cell"">
                           <div class=""flex flex-col justify-center items-center gap-4 md:mr-4 mr-2"">
                             <figure class=""relative rounded-lg"">
-                              <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" class=""rounded-lg object-fill"" alt="""" />
+                              <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" class=""rounded-lg object-fill"" loading=""lazy"" />
                             </figure>
                             <a href=""ShowProduct.aspx?dept={row["Id"]}&size=0&color=0&sortBy=0&search=0"" target=""_self""
                             <h1 class=""cursor-pointer text-center capitalize text-[#b22234] font-semibold text-xl"">
@@ -83,13 +83,13 @@ namespace Store.Client
                 ltFeaturedProduct.Text += $@"
                     <div
                     class=""productElement relative  flex w-full  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{row["Id"]}"" data-count=""{row["Cnt"]}"">
-                    <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}"" target=""_blank"">
+                    <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_blank"">
                         <img class=""imgProduct object-fill w-full h-full"" src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}""
-                            alt=""product image"" />
+                            alt=""product image"" loading=""lazy"" />
                         {disc}
                     </a>
                     <div class=""mt-4 px-5 pb-5"">
-                        <a href=""DetailsProduct.aspx?id={row["Id"]}"" target=""_blank"">
+                        <a href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_blank"">
                             <div>
                                 <h5 class=""text-xl tracking-tight text-[#504f85] product-name"">{row[Name]}</h5>
                             </div>
@@ -144,13 +144,13 @@ namespace Store.Client
                     ltProdcutsByDept.Text += $@"
                                         <div
                                             class=""productElement relative  flex w-full  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{product["Id"]}""  data-count=""{product["Cnt"]}"">
-                                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={product["Id"]}"" target=""_blank"">
+                                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={product["Id"]}&cnt={product["Cnt"]}"" target=""_blank"">
                                                 <img class=""imgProduct object-fill w-full h-full"" src=""data:image;base64,{Convert.ToBase64String((byte[])product["Photo"])}""
-                                                    alt=""product image"" />
+                                                    alt=""product image"" loading=""lazy"" />
                                             {disc}
                                             </a>
                                             <div class=""mt-4 px-5 pb-5"">
-                                                <a href=""DetailsProduct.aspx?id={product["Id"]}"" target=""_blank"">
+                                                <a href=""DetailsProduct.aspx?id={product["Id"]}&cnt={product["Cnt"]}"" target=""_blank"">
                                                     <div>
                                                         <h5 class=""text-xl tracking-tight text-[#504f85] product-name"">{product[Name]}</h5>
                                                     </div>
@@ -176,9 +176,6 @@ namespace Store.Client
                                                 </div>
                                             </div>
                                         </div>
-
-
-                                    
                     ";
                     disc = string.Empty; discPrice = string.Empty;
                 }
@@ -193,9 +190,22 @@ namespace Store.Client
         [WebMethod]
         public static void PaidCheckOut(string dvInfoProduct, List<string> list)
         {
-            //ClsBasic clsBasic = new ClsBasic();
-            //clsBasic.newOrder(dvInfoProduct, list);
+            ClsBasic clsBasic = new ClsBasic();
+            clsBasic.newOrder(dvInfoProduct, list);
         }
 
+        string dd;
+        [WebMethod(EnableSession = true)]
+        public static void SaveCart(string dvInfoProduct, List<string> dataPk)
+        {
+            HttpContext.Current.Session["dvInfoProduct"] = dvInfoProduct;
+            string ids = string.Empty;
+            foreach (string item in dataPk)
+            {
+                ids += item + ",";
+            }
+            ids = ids.TrimEnd(',');
+            HttpContext.Current.Session["dataPk"] = ids;
+        }
     }
 }

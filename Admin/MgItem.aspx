@@ -28,7 +28,7 @@
                                 <label for="inputFile" class="">صورة الصنف</label>
                                 <asp:FileUpload ID="inputFile" CssClass="border-2 rounded p-2 w-96" runat="server" accept=".png,.jpg,.jpeg,.gif" onchange="loadFile(event)" />
                             </div>
-                            <div id="alertError" class="hidden fixed bottom-3 left-3 max-w-fit flex rounded-lg border-l-[6px] border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-7 py-8 shadow-md">
+                            <%--<div id="alertError" class="hidden fixed bottom-3 left-3 max-w-fit flex rounded-lg border-l-[6px] border-[#F87171] bg-[#F87171] bg-opacity-[15%] px-7 py-8 shadow-md">
                                 <div
                                     class="me-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#F87171] text-[#fff]">
                                     <i class="fa-solid fa-triangle-exclamation"></i>
@@ -36,7 +36,7 @@
                                 <div class="w-full">
                                     <h5 class="text-base font-semibold text-[#B45454]">يرجى ملئ الحقول فارغة</h5>
                                 </div>
-                            </div>
+                            </div>--%>
                             <!-- add to table -->
                             <button
                                 id="btnAddDept"
@@ -107,15 +107,15 @@
                                                     </div>
                                                 </div>
                                             </ItemTemplate>
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:TemplateField>
 
                                         <asp:BoundField DataField="NameAr" HeaderText="اسم الصنف (عربي)" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm" SortExpression="Name">
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:BoundField>
 
                                         <asp:BoundField DataField="NameEn" HeaderText="اسم الصنف (انكليزي)" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm" SortExpression="Name">
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:BoundField>
 
                                         <asp:TemplateField HeaderText="تعديل" ItemStyle-CssClass="py-5 border-b border-r border-gray-200 bg-white text-sm">
@@ -128,7 +128,7 @@
                                                 </div>
                                                 </asp:LinkButton>
                                             </ItemTemplate>
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>

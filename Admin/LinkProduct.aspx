@@ -12,6 +12,10 @@
             <div
                 class="boxCategory relative bg-white border-2 border-t-[#2185d5] w-full p-5 rounded-md">
                 <div class="flex flex-wrap justify-between gap-10 mt-5">
+                    <div>
+                        <label for="txtName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">اسم الربط</label>
+                        <input type="text" id="txtName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" runat="server">
+                    </div>
                     <div
                         class="flex flex-col justify-start items-center gap-10 w-full">
                         <!-- name product -->
@@ -38,11 +42,9 @@
                                 class="flex items-center justify-center w-full lg:mt-0 mt-2">
                                 <label for="select" class="font-semibold block py-2 w-1/4">
                                     المنتجات</label>
-
                                 <div class="relative w-full">
                                     <asp:UpdatePanel runat="server">
                                         <ContentTemplate>
-
                                             <asp:DropDownList ID="ddlProduct" CssClass="bg-gray-100 border-2 w-3/4 p-2.5" runat="server" DataSourceID="sqlProduct" DataTextField="ProdcutName" DataValueField="Id">
                                             </asp:DropDownList>
                                         </ContentTemplate>
@@ -63,7 +65,6 @@
                         <button id="btnAddToLink" class="mt-10 rounded-md px-5 py-3 capitalize space-x-2 cursor-pointer bg-[#3a4750] text-[#f3f3f3]" runat="server" onserverclick="btnAddToLink_ServerClick">
                             اضافة
                         </button>
-
                     </ContentTemplate>
                 </asp:UpdatePanel>
                 <!-- images -->
@@ -72,7 +73,13 @@
                         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                             <div
                                 class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-
+                                <asp:SqlDataSource ID="sqlInfoLink" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' runat="server"
+                                    InsertCommand="INSERT INTO InfoLinkProduct(Name) VALUES(@Name); SELECT @Identity=Scope_Identity();" OnInserted="sqlInfoLink_Inserted">
+                                    <InsertParameters>
+                                        <asp:Parameter Name="Name" DbType="String" />
+                                        <asp:Parameter Name="Identity" Type="Int32" Direction="Output"></asp:Parameter>
+                                    </InsertParameters>
+                                </asp:SqlDataSource>
                                 <asp:SqlDataSource ID="sqlLinkProduct" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>'
                                     SelectCommand="SELECT [Product].[Id], [NameAr], [Price], [Discount], ISNULL([Photo],'x') as [Photo] FROM [Product] WHERE [Id] IN (0) ORDER BY [Id] DESC"
                                      InsertCommand="INSERT INTO LinkProduct VALUES(@Id, @PId)">
@@ -101,15 +108,15 @@
                                                             </div>
                                                         </div>
                                                     </ItemTemplate>
-                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                                 </asp:TemplateField>
 
                                                 <asp:BoundField DataField="NameAr" HeaderText="اسم المنتج" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
-                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                                 </asp:BoundField>
 
                                                 <asp:BoundField DataField="Price" HeaderText="سعر المنتج" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
-                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                                 </asp:BoundField>
 
                                                 <asp:TemplateField HeaderText="إزالة" ItemStyle-CssClass="py-5 border-b border-r border-gray-200 bg-white text-sm">
@@ -122,7 +129,7 @@
                                                 </div>
                                                         </asp:LinkButton>
                                                     </ItemTemplate>
-                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                    <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                                 </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>

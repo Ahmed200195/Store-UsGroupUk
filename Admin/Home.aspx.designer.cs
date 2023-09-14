@@ -7,74 +7,83 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Store.Client
+namespace Store.Admin
 {
 
 
-    public partial class ShowProduct
+    public partial class Home
     {
 
         /// <summary>
-        /// ltCategories control.
+        /// cntClient control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCategories;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cntClient;
 
         /// <summary>
-        /// ddlColors control.
+        /// cntOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlColors;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cntOrders;
 
         /// <summary>
-        /// sqlColors control.
+        /// cntSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlColors;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cntSales;
 
         /// <summary>
-        /// ltSizes control.
+        /// CntRecive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltSizes;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CntRecive;
 
         /// <summary>
-        /// ddlSortBy control.
+        /// CntUnRecive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSortBy;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CntUnRecive;
 
         /// <summary>
-        /// cntProduct control.
+        /// CntProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cntProduct;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CntProduct;
 
         /// <summary>
-        /// ltProdcut control.
+        /// CntDept control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltProdcut;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CntDept;
+
+        /// <summary>
+        /// CntYesProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CntYesProduct;
     }
 }

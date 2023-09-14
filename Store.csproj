@@ -77,6 +77,10 @@
     <Content Include="Admin\SliderImg.aspx" />
     <Content Include="Admin\Setting.aspx" />
     <Content Include="Admin\LinkProduct.aspx" />
+    <Content Include="Admin\Orders.aspx" />
+    <Content Include="Admin\PeOrder.aspx" />
+    <Content Include="Admin\MgLinkProduct.aspx" />
+    <Content Include="Admin\Home.aspx" />
     <Content Include="Client\Home.aspx" />
     <Content Include="Client\DetailsProduct.aspx" />
     <Content Include="Client\ShowProduct.aspx" />
@@ -162,6 +166,34 @@
     </Compile>
     <Compile Include="Admin\LinkProduct.aspx.designer.cs">
       <DependentUpon>LinkProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Orders.aspx.cs">
+      <DependentUpon>Orders.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Orders.aspx.designer.cs">
+      <DependentUpon>Orders.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\PeOrder.aspx.cs">
+      <DependentUpon>PeOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\PeOrder.aspx.designer.cs">
+      <DependentUpon>PeOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\MgLinkProduct.aspx.cs">
+      <DependentUpon>MgLinkProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\MgLinkProduct.aspx.designer.cs">
+      <DependentUpon>MgLinkProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
     <Compile Include="Client\Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>

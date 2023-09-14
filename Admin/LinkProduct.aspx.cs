@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -41,7 +43,22 @@ namespace Store.Admin
 
         protected void btnAddLinkData_ServerClick(object sender, EventArgs e)
         {
+            sqlInfoLink.InsertParameters["Name"].DefaultValue = txtName.Value;
+            sqlInfoLink.Insert();
+        }
 
+        protected void sqlInfoLink_Inserted(object sender, SqlDataSourceStatusEventArgs e)
+        {
+            DataSourceSelectArguments args = new DataSourceSelectArguments();
+            DataView view = (DataView)sqlLinkProduct.Select(args);
+            DataTable dataTable = view.ToTable();
+            foreach (DataRow row in dataTable.Rows)
+            {
+                sqlLinkProduct.InsertParameters["Id"].DefaultValue = e.Command.Parameters["@Identity"].Value.ToString();
+                sqlLinkProduct.InsertParameters["PId"].DefaultValue = row["Id"].ToString();
+                sqlLinkProduct.Insert();
+            }
+            Response.Redirect("MgLinkProduct.aspx");
         }
     }
 }

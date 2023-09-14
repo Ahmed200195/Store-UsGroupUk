@@ -47,8 +47,8 @@ namespace Store.Admin
                     }
                     else
                     {
-                        ScriptManager.RegisterStartupScript(this, typeof(Page), "",
-                        @"hideAlertDiv('alertError');", true);
+                        //ScriptManager.RegisterStartupScript(this, typeof(Page), "",
+                        //@"hideAlertDiv('alertError');", true);
                         return;
                     }
                 }
@@ -59,13 +59,13 @@ namespace Store.Admin
                 cntDept.InnerText = gvDept.Rows.Count.ToString();
                     dvNoData.Visible = gvDept.Rows.Count == 0;
                     gvDept.Visible = gvDept.Rows.Count != 0;
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "",
-                @"hideAlertDiv('alertError');", true);
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "",
+                //@"hideAlertDiv('alertError');", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "",
-                @"hideAlertDiv('alertError');", true);
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "",
+                //@"hideAlertDiv('alertError');", true);
             }
         }
 

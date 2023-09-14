@@ -42,6 +42,15 @@ namespace Store.Client
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+
+        /// <summary>
         /// ddlDept control.
         /// </summary>
         /// <remarks>
@@ -85,6 +94,15 @@ namespace Store.Client
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton btnToggleLang;
+
+        /// <summary>
+        /// dvInfoProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvInfoProduct;
 
         /// <summary>
         /// ContentPlaceHolder1 control.

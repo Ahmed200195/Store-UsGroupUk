@@ -7,74 +7,83 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Store.Client
+namespace Store.Admin
 {
 
 
-    public partial class ShowProduct
+    public partial class PeOrder
     {
 
         /// <summary>
-        /// ltCategories control.
+        /// CntOrder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCategories;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CntOrder;
 
         /// <summary>
-        /// ddlColors control.
+        /// txtName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlColors;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtName;
 
         /// <summary>
-        /// sqlColors control.
+        /// txtPhone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlColors;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPhone;
 
         /// <summary>
-        /// ltSizes control.
+        /// txtAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltSizes;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtAddress;
 
         /// <summary>
-        /// ddlSortBy control.
+        /// sqlProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSortBy;
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlProduct;
 
         /// <summary>
-        /// cntProduct control.
+        /// gvProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cntProduct;
+        protected global::System.Web.UI.WebControls.GridView gvProduct;
 
         /// <summary>
-        /// ltProdcut control.
+        /// totalOrder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltProdcut;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl totalOrder;
+
+        /// <summary>
+        /// btnReceived control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnReceived;
     }
 }

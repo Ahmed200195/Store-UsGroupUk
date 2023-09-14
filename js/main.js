@@ -73,16 +73,17 @@ backToTop.addEventListener("click", (e) => {
 //----------------------------------------- end baxk to top ------------------------------------------------
 
 //----------------------------------------- start in search mobile ------------------------------------------------
-// let iconSearchMobile = document.querySelector(".iconSearchMobile");
-// let search = document.querySelector(".search");
+let iconSearchMobile = document.querySelector(".iconSearchMobile");
+let search = document.querySelector(".search");
 
-// iconSearchMobile.addEventListener("click", (e) => {
-//     search.style.display = "flex";
-//     search.style.transform = "scale(1)";
-// });
+iconSearchMobile.addEventListener("click", (e) => {
+    search.style.display = "flex";
+    search.style.transform = "scale(1)";
+});
 //----------------------------------------- end in search mobile ------------------------------------------------
 
 // ------------------------------------------------ start in cart ------------------------------------------------
+
 let detailsCartEn = document.querySelector(".detailsCartEn");
 let detailsCartAr = document.querySelector(".detailsCartAr");
 let openCart = document.querySelector(".openCart");
@@ -234,10 +235,12 @@ function counterCart() {
 
     if (selectedProducts.length === 0) {
         setTimeout(() => {
+            document.getElementsByClassName("checkout")[0].style.display = "none";
             emptyCart.style.display = "block";
             displayProduct.style.display = "none";
         }, 500);
     } else {
+        document.getElementsByClassName("checkout")[0].style.display = "flex";
         emptyCart.style.display = "none";
         displayProduct.style.display = "block";
     }
@@ -284,52 +287,56 @@ function filterProdcut(
 
         infoProductCart.forEach((cart) => {
             cart.innerHTML += `
-        <div class="elementCart flex mt-2" data-id="${dataId}" data-count="${dataCount}">
-          <figure class="relative w-1/4  ${langAttributeValue === "en" ? "mr-4" : "ml-4"
-                }  ">
-            <img src="${productImg}" class="rounded h-full w-full" alt="" />
-            <span class="delete flex justify-center items-center absolute top-0 left-0 w-full h-full text-white">
-              <i class="fa-solid fa-xmark"></i>
-            </span>
-          </figure>
-          <div class="info w-3/4">
-            <h2 class="capitalize truncate text-sm text-hea mt-1">
-              ${productName}
-            </h2>
-            <p class="priceFromCart capitalize text-sm text-gray-400 mb-2.5">
-             ${langAttributeValue === "en" ? "unit price" : "��� ������"
-                }: <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "�.�"
-                }
-            </p>
-            
-            <div class="flex justify-between my-2">
-              <p class="capitalizetext-[#3c3b6e]">${langAttributeValue === "en" ? "color" : "�����"
-                } :<span class="text-gray-400"> ${productColor}</span></p>
-              <p class="capitalize text-[#3c3b6e]">${langAttributeValue === "en" ? "size" : "������"
-                } :<span class="text-gray-400"> ${productSize}</span></p>
-            </div>
+                <div class="elementCart flex mt-2" data-id="${dataId}" data-count="${dataCount}">
+                <figure class="relative w-1/4  ${langAttributeValue === "en" ? "mr-4" : "ml-4"
+                                }  ">
+                <img src="${productImg}" class="rounded h-full w-full" alt="" />
+                <span class="delete flex justify-center items-center absolute top-0 left-0 w-full h-full text-white">
+                <i class="fa-solid fa-xmark"></i>
+                </span>
+                </figure>
+                <div class="info w-3/4">
+                <h2 class="capitalize truncate text-sm text-hea mt-1">
+                ${productName}
+                </h2>
+                <p class="priceFromCart capitalize text-sm text-gray-400 mb-2.5">
+                ${langAttributeValue === "en" ? "unit price" : "سعر الوحدة"
+                                }: <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "د.ك"
+                                }
+                </p>
 
-            <div class="flex justify-between items-center mt-4">
-              <div class="flex qty h-9">
+                <div class="flex justify-between my-2">
+                <p class="capitalizetext-[#3c3b6e]">${langAttributeValue === "en" ? "color" : "اللون"
+                                } :<span class="text-gray-400"> ${productColor}</span></p>
+                <p class="capitalize text-[#3c3b6e]">${langAttributeValue === "en" ? "size" : "القياس"
+                                } :<span class="text-gray-400"> ${productSize}</span></p>
+                </div>
+
+                <div class="flex justify-between items-center mt-4">
+                <div class="flex ${langAttributeValue === "en" ? "flex-row" : "flex-row-reverse"
+                                } qty h-9">
                 <button type="button" class="px-2 py-1 rounded-l-md mins">-</button>
                 <span class="flex justify-center items-center w-11 text-center numberQty">${productCount ? productCount.textContent : "1"
-                }</span>
+                                }</span>
                 <button type="button" class="px-2 py-1 rounded-r-md plus">+</button>
-              </div>
-              <div class="suptotalTotalPrice">
+                </div>
+                <div class="suptotalTotalPrice">
                 <h2 class="text-sm font-semibold leading-5 md:text-base text-heading">
-                  <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "�.�"
-                }
+                    <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "د.ك"
+                                }
                 </h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+                </div>
+                </div>
+                </div>
+                </div>
+                `;
+
             minsPlusNumberCount(dataCount);
             SuptotalPrice();
+
         });
     }
+    
 }
 
 // ------------------------------------------------ end in cart ------------------------------------------------

@@ -12,7 +12,7 @@ namespace Store
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Application["lang"] = "en";
+            Application["lang"] = "ar";
         }
 
         protected void Session_Start(object sender, EventArgs e)

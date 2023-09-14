@@ -62,8 +62,8 @@
                             </div>
                         </div>
                         <div id="dvAlert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" visible="false" runat="server">
-                            <strong class="font-bold">Holy smokes!</strong>
-                            <span class="block sm:inline">Something seriously bad happened.</span>
+                            <strong class="font-bold">Error!</strong>
+                            <span class="block sm:inline">The code entered is incorrect.</span>
                         </div>
                     </div>
                 </div>

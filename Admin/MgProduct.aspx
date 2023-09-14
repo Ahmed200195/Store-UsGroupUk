@@ -156,15 +156,15 @@
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
-                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                             </asp:TemplateField>
 
                                             <asp:BoundField DataField="Name" HeaderText="الاسم" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm" SortExpression="Name">
-                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                             </asp:BoundField>
 
                                             <asp:BoundField DataField="ContentType" HeaderText="النوع" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm" SortExpression="Name">
-                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                             </asp:BoundField>
 
                                             <asp:TemplateField HeaderText="حذف" ItemStyle-CssClass="py-5 border-b border-r border-gray-200 bg-white text-sm">
@@ -177,7 +177,7 @@
                                                 </div>
                                                     </asp:LinkButton>
                                                 </ItemTemplate>
-                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider" />
+                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>

@@ -26,6 +26,9 @@
 <body class="">
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate></ContentTemplate>
+        </asp:UpdatePanel>
         <!-- start in loader -->
         <div class="containerLoader" id="containerLoader">
             <span class="loader"></span>
@@ -39,19 +42,6 @@
         <!-- start in navbar -->
 
         <!-- component -->
-        <%
-            if (Application["lang"].ToString() == "en")
-            {
-        %>
-
-        <%  }
-            else
-            {
-        %>
-
-        <%
-            }
-        %>
         <header class="bg-white fixed top-0 w-full z-50">
             <div class="container mx-auto px-4 py-2 flex items-center">
                 <!-- logo -->
@@ -123,7 +113,6 @@
                                         </svg>
                                     </div>
                                 </li>
-                                <li></li>
                             </ul>
                         </nav>
 
@@ -134,6 +123,7 @@
                         </div>
                     </div>
                     <hr />
+                
         </header>
         <!-- end in navbar -->
 
@@ -165,7 +155,7 @@
                         <h3 class="capitalize text-center"><%= Application["lang"].ToString() == "en" ? "your cart is empty" : "عربة التسوق فارغة" %></h3>
                     </div>
                     <!-- info product -->
-                    <div id="dvInfoProduct" class="infoProduct pr-3 overflow-y-scroll">
+                    <div id="dvInfoProduct" class="infoProduct pr-3 overflow-y-scroll" runat="server">
                     </div>
 
                     <!-- check out cart -->
@@ -203,32 +193,6 @@
         <!-- start in footer -->
         <section class="bg-gray-200">
             <div class="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
-                <%--                <nav class="flex flex-wrap justify-center -mx-5 -my-2">
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-[#3c3b6e]">About
-                        </a>
-                    </div>
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-[#3c3b6e]">Blog
-                        </a>
-                    </div>
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-[#3c3b6e]">Team
-                        </a>
-                    </div>
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-[#3c3b6e]">Pricing
-                        </a>
-                    </div>
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-[#3c3b6e]">Contact
-                        </a>
-                    </div>
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-[#3c3b6e]">Terms
-                        </a>
-                    </div>
-                </nav>--%>
                 <div class="flex <%= Application["lang"].ToString() == "en" ? "" : "flex-row-reverse" %> justify-center mt-8 space-x-6">
                     <a href="https://instagram.com/us_group_kw?igshid=NTc4MTIwNjQ2YQ=="
                         class="text-[#d62976] text-xl hover:text-gray-500">
@@ -237,12 +201,9 @@
                     <a href="https://www.facebook.com/merai89?mibextid=ZbWKwL" class="text-[#3b5998] text-xl hover:text-gray-500">
                         <i class="fa-brands fa-facebook-f"></i>
                     </a>
-                    <a href="https://api.whatsapp.com/send?phone=+965 9798 3633"
+                    <a href="whatsapp://send?phone=+96597983633"
                         class="text-[#25D366] text-xl hover:text-gray-500">
                         <i class="fa-brands fa-whatsapp"></i>
-                    </a>
-                    <a href="tel:123-456-7890" class="text-[#19a7a4] text-xl hover:text-gray-500">
-                        <i class="fa-solid fa-phone"></i>
                     </a>
 
                 </div>
@@ -261,6 +222,7 @@
     <!-- sweet alert  -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
         function EnterEvent(e) {
             if (e.keyCode == 13) {
                 __doPostBack('<%=btnSearch.UniqueID%>', "");
@@ -280,14 +242,24 @@
         // end in category
 
         function checkOut() {
-            
+
             let name, phone, address, total;
 
             name = document.getElementById("txtName");
             phone = document.getElementById("txtPhone");
             address = document.getElementById("txtAddress");
-            //total = document.getElementsByClassName("subtotal")[0];
+
             if (name.value === "" || phone.value === "" || address.value === "") {
+                langAttributeValue === "en" ? Swal.fire({
+                    icon: 'error',
+                    title: 'Sorry',
+                    text: 'Please fill out the form completely',
+                })
+                : Swal.fire({
+                    icon: 'error',
+                    title: 'عذراً',
+                    text: 'يرجى تعبئة النموذج كاملاً',
+                });
                 return;
             }
 
@@ -296,7 +268,7 @@
             dataCleint.push(phone.value.toString());
             dataCleint.push(address.value.toString());
             //dataCleint.push(total.innerHTML.toString());
-            var obj = { dvInfoProduct: document.getElementById("dvInfoProduct").innerHTML, list: dataCleint };
+            var obj = { dvInfoProduct: document.getElementById('<%= dvInfoProduct.ClientID %>').innerHTML, list: dataCleint };
             $.ajax({
                 type: "POST",
                 url: "Home.aspx/PaidCheckOut",
@@ -308,22 +280,77 @@
                     name.value = "";
                     phone.value = "";
                     address.value = "";
-
                     
+                    document.querySelectorAll(".elementCart").forEach((element) => {
+                        element.remove();
+                        SuptotalPrice();
+                        deleteIdToArray(element);
+                    });
+                    counterCart();
+                    langAttributeValue === "en"
+                        ? Swal.fire({
+                            icon: 'success',
+                            title: 'Sent successfully',
+                            text: 'Your information has been sent with your orders to the seller',
+                        })
+                        : Swal.fire({
+                            icon: 'success',
+                            title: 'تم ارسال بنجاح',
+                            text: 'تم ارسال معلومات خاص بك مع الطلبات الى البائع',
+                        });
 
-                    //document.getElementById("dvInfoProduct").innerHTML = "";
-                    //document.getElementById("dvInfoProduct").style.display = "none";
-                    //document.getElementsByClassName("emptyCart")[0].style.display = "block";
-                    //total.innerHTML = "0";
-                    //document.getElementsByClassName("checkout")[0].style.display = "none";
-                    langAttributeValue === "en" ? Swal.fire("ok", "You clicked the button!", "success") : Swal.fire("اوكك", "You clicked the button!", "success");
-
-                    //document.querySelectorAll(".elementCart").forEach((element) => {
-                    //    element.remove();
-                    //});
+                },
+                error: function () {
+                    langAttributeValue === "en" ? Swal.fire({
+                        icon: 'error',
+                        title: 'Sorry',
+                        text: 'There was a problem sending data',
+                    })
+                        : Swal.fire({
+                            icon: 'error',
+                            title: 'عذراً',
+                            text: 'حدثت مشكلة في ارسال البيانات',
+                        });
                 }
             });
         }
+
+
+
+
+         <%--var parameter = { dvInfoProduct: document.getElementById('<%= dvInfoProduct.ClientID %>').innerHTML, dataPk: selectedProducts };
+             $.ajax({
+                 type: "POST",
+                 url: "Home.aspx/SaveCart",
+                 data: JSON.stringify(parameter),
+                 contentType: 'application/json; charset=utf-8',
+                 dataType: 'json',
+                 success: function () {
+                     langAttributeValue === "en" ? Swal.fire({
+                         icon: 'success',
+                         title: 'Oops...',
+                         text: 'You clicked the button!',
+                     })
+                         : Swal.fire({
+                             icon: 'success',
+                             title: 'Oops...',
+                             text: 'You clicked the button!',
+                         });
+
+                 },
+                 error: function () {
+                     langAttributeValue === "en" ? Swal.fire({
+                         icon: 'error',
+                         title: 'Oops...',
+                         text: 'Something went wrong!',
+                     })
+                         : Swal.fire({
+                             icon: 'error',
+                             title: 'Oops...',
+                             text: 'Something went wrong!',
+                         });
+                 }
+             });--%>
     </script>
 </body>
 </html>

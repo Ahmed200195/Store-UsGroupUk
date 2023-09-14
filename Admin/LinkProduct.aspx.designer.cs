@@ -15,6 +15,15 @@ namespace Store.Admin
     {
 
         /// <summary>
+        /// txtName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtName;
+
+        /// <summary>
         /// ddlDept control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace Store.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton btnAddToLink;
+
+        /// <summary>
+        /// sqlInfoLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlInfoLink;
 
         /// <summary>
         /// sqlLinkProduct control.

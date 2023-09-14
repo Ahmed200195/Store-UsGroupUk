@@ -62,7 +62,7 @@ namespace Store
         public void newOrder(string dvInfoProduct, List<string> list)
         {
             var conDb = OpenDataBase();
-            sqlDbCommand = new SqlCommand("INSERT INTO Client([Name], [Phone], [Address]) VALUES(@name, @phone, @address); SELECT SCOPE_IDENTITY();", conDb);
+            sqlDbCommand = new SqlCommand("INSERT INTO Client([Name], [Phone], [Address], [DateOr]) VALUES(@name, @phone, @address, GETDATE()); SELECT SCOPE_IDENTITY();", conDb);
             sqlDbCommand.Parameters.AddWithValue("@name", list[0]);
             sqlDbCommand.Parameters.AddWithValue("@phone", list[1]);
             sqlDbCommand.Parameters.AddWithValue("@address", list[2]);

@@ -7,7 +7,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <main>
         <article>
-            <section class="section product sectionProduct productDetails productElement" aria-label="product" data-id="<%=Request.QueryString["id"] %>" data-count="3" >
+            <section class="section product sectionProduct productDetails productElement" aria-label="product" data-id="<%=Request.QueryString["id"] %>" data-count="<%=Request.QueryString["cnt"] %>" >
                 <div class="container px-4 mx-auto">
                     <div class="product-slides relative overflow-hidden">
                         <div class="slider-banner flex" data-slider>

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
 using System.Net;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Store
 {
@@ -26,8 +23,10 @@ namespace Store
             if (dataTable.AsEnumerable().Any(a => a.Field<string>("Email").Equals(txtEmail.Value) && a.Field<string>("Password").Equals(txtPassword.Value)))
             {
                 Random random = new Random();
-                if(SendAlerts(random.Next(0, 1000000).ToString("D6"), "king86370@gmail.com", "drcrtksqkqatzkrr", "king86375hp@gmail.com"))
+                if (SendAlerts(random.Next(0, 1000000).ToString("D6"), "us.group.kw100@gmail.com", "pbuhsobbvsfydtxr", txtEmail.Value))
                 {
+                    Session["Email"] = txtEmail.Value;
+                    Session["Password"] = txtPassword.Value;
                     Response.Redirect("~/User Check/CodeEmail.aspx");
                 }
                 else

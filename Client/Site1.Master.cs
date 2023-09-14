@@ -15,8 +15,19 @@ namespace Store.Client
         protected void Page_Load(object sender, EventArgs e)
         {
             OrginalUrl = HttpContext.Current.Request.Url.AbsoluteUri;
+            try
+            {
+
+                dvInfoProduct.InnerHtml = HttpContext.Current.Session["dvInfoProduct"].ToString();
+
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "", "selectedProducts = ['1']", true);
+            }
+            catch
+            {
+            }
             if (!IsPostBack)
             {
+                
                 ddlDept.DataTextField = Application["lang"].ToString() == "en" ? "NameEn" : "NameAr";
                 ddlDept.DataBind();
                 ddlDept.Items.Insert(0, new ListItem() { Value = "0", Text = Application["lang"].ToString() == "en" ? "All Categories" : "جميع الاقسام" });
