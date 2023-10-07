@@ -211,6 +211,7 @@
                         <asp:Parameter Name="Discount" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="infoAr" Type="String"></asp:Parameter>
                         <asp:Parameter Name="infoEn" Type="String"></asp:Parameter>
+                        <asp:Parameter Name="Photo" Type="Object"></asp:Parameter>
                         <asp:Parameter Name="Cnt" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="DId" Type="Int32"></asp:Parameter>
                         <asp:Parameter Name="BId" Type="Int32"></asp:Parameter>

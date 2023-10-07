@@ -16,12 +16,14 @@ namespace Store.Client
     {
         ClsBasic clsBasic;
         DataTable dtDept, dtSize, dtProduct;
+        DataSet dataSet;
         string active = string.Empty, url, OrginalUrl;
         string whereDept, whereSize, whereColor, whereSortBy, whereSaerch;
         string All, Name, Size, Color, addToCart, Off, unitPrice, many , item;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = Application["lang"].ToString() == "en" ? "UsGroupUk | Show Prodcuts" : "UsGroupUk | عرض المنتجات";
                 OrginalUrl = HttpContext.Current.Request.Url.AbsoluteUri;
             if (!IsPostBack)
             {
@@ -53,7 +55,7 @@ namespace Store.Client
                         whereSortBy = " ORDER BY Id DESC";
                         break;
                     case 1:
-                        whereSortBy = " ORDER BY " +Name;
+                        whereSortBy = " ORDER BY " + Name;
                         break;
                     case 2:
                         whereSortBy = "  ORDER BY Price";
@@ -64,9 +66,6 @@ namespace Store.Client
                 }
 
                 clsBasic = new ClsBasic();
-                dtDept = clsBasic.SelectData("*", "Dept WHERE Id IN (SELECT DId FROM Product)");
-                dtSize = clsBasic.SelectData("*", "Size");
-
                 whereDept = Request.QueryString["dept"] == "0" ? "" : " AND DId = " + Request.QueryString["dept"];
 
                 whereSize = Request.QueryString["size"] == "0" ? "" : " AND SId = " + Request.QueryString["size"];
@@ -75,8 +74,16 @@ namespace Store.Client
 
                 whereSaerch = Request.QueryString["search"] == "0" ? "" : " AND (NameAr + NameEn + infoAr + infoEn) LIKE '%" + Request.QueryString["search"] + "%'";
 
+                string queries = $@"
+                    SELECT * FROM Dept WHERE Id IN (SELECT DId FROM Product);
+                    SELECT * FROM Size;
+                    SELECT Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt FROM Product INNER JOIN [Color] ON Color.Id = Product.CId INNER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 {whereDept} {whereSize}  {whereColor} {whereSaerch} {whereSortBy}
+                ";
 
-                dtProduct = clsBasic.SelectData("Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt", "Product INNER JOIN [Color] ON Color.Id = Product.CId INNER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 " + whereDept + whereSize + whereColor + whereSaerch + whereSortBy);
+                dataSet = clsBasic.SelectMultiple(queries);
+                dtDept = dataSet.Tables[0];
+                dtSize = dataSet.Tables[1];
+                dtProduct = dataSet.Tables[2];
 
                 active = Request.QueryString["dept"] == "0" ? "text-[#b22234]" : "";
                 url = OrginalUrl.Replace("dept=" + Request.QueryString["dept"], "dept=0");
@@ -89,8 +96,8 @@ namespace Store.Client
                     active = Request.QueryString["dept"] == row["Id"].ToString() ? "text-[#b22234]" : "";
                     url = OrginalUrl.Replace("dept=" + Request.QueryString["dept"], "dept=" + row["Id"]);
                     ltCategories.Text += $@"
-                    <li class=""px-1 py-2 cursor-pointer font-medium hover:text-[#b22234] capitalize {active}""><a href=""{url}"">{row[Name]}</a></li>
-                ";
+                        <li class=""px-1 py-2 cursor-pointer font-medium hover:text-[#b22234] capitalize {active}""><a href=""{url}"">{row[Name]}</a></li>
+                    ";
                 }
 
                 active = Request.QueryString["size"] == "0" ? "activeSize" : "";

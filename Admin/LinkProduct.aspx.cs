@@ -13,6 +13,7 @@ namespace Store.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | LinkProduct";
             if (!IsPostBack)
             {
                 ViewState["Ids"] = "0";

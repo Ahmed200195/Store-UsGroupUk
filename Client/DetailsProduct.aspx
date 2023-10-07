@@ -3,9 +3,20 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!-- start in carsoule -->
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css" />
+
+    <!-- Include Flickity JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/flickity/dist/flickity.pkgd.min.js"></script>
+
+    <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Flickity CSS via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flickity/dist/flickity.min.css" />
+
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <main>
+    <main style="margin-top:50px">
         <article>
             <section class="section product sectionProduct productDetails productElement" aria-label="product" data-id="<%=Request.QueryString["id"] %>" data-count="<%=Request.QueryString["cnt"] %>" >
                 <div class="container px-4 mx-auto">
@@ -72,7 +83,7 @@
     <!-- end in details -->
 
     <!-- start in  -->
-    <section class="container mx-auto px-8 mt-10">
+    <section id="dvLinkBuy" class="container mx-auto px-8 mt-10" runat="server">
         <div class="grid lg:grid-cols-2 grid-cols-1">
             <!-- element 1 -->
             <figure class="lg:flex justify-center items-center h-3/4 hidden ">
@@ -80,7 +91,7 @@
             </figure>
             <!-- element 2 -->
             <div>
-                <h1 class="titleMain text-center mb-5"><%=  Application["lang"].ToString() == "en" ? "frequently bought together" : "اشترى في كثير من الأحيان جنبا إلى جنب" %></h1>
+                <h1 class="titleMain text-center mb-5"><%=  Application["lang"].ToString() == "en" ? "frequently bought together" : "يشترون سوياً" %></h1>
                 <div class="main-carousel carouselShared mb-6">
 
                     <asp:Literal ID="ltFrequentlyProduct" runat="server"></asp:Literal>
@@ -91,4 +102,16 @@
     </section>
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <!-- end in  -->
+
+    <script>
+        var categoryDtl = document.querySelector(".carouselShared");
+        if (categoryDtl) {
+            var flktyCategory = new Flickity(categoryDtl, {
+                cellAlign: "left",
+                contain: true,
+                wrapAround: true,
+                groupCells: 2,
+            });
+        }
+    </script>
 </asp:Content>

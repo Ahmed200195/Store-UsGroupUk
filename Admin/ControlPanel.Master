@@ -14,6 +14,7 @@
     <!-- start in style css -->
     <link rel="stylesheet" href="../css/admin.css" />
     <!-- start in fontawsome -->
+    <link rel="icon" href="../images/logoTwo.png" />
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
@@ -26,8 +27,8 @@
         <div
             class="flex flex-row-reverse min-h-screen 2xl:border-x-2 2xl:border-indigo-50">
             <!-- button close open sidebar -->
-            <div class="openClose fixed z-10 rounded left-8 top-8 px-3">
-                <button id="btn"><span></span><span></span><span></span></button>
+            <div class="openClose fixed z-10 rounded left-8 top-8 px-3" style="z-index: 999;">
+                <button type="button" id="btn"><span></span><span></span><span></span></button>
             </div>
             <!-- button close open sidebar -->
 
@@ -39,7 +40,7 @@
             <!-- Sidebar -->
             <aside class="lg:w-1/5 py-10 min-w-min border-r border-indigo-900/20">
                 <div class="titleSide font-bold text-2xl text-center capitalize">
-                    group
+                    Us Group Uk
                 </div>
 
                 <!-- Menu -->
@@ -55,13 +56,13 @@
                         <div
                             class="flex flex-row-reverse items-center justify-between hover:translate-x-[-4px] transition-all transition-delay-300">
                             <div class="flex flex-row-reverse gap-2 items-center">
-                                <i class="fas fa-calendar-alt"></i>
+                                <i class="fa-solid fa-boxes-stacked"></i>
                                 <span>المنتجات</span>
                             </div>
                             <i class="fas fa-chevron-down text-xs"></i>
                         </div>
                         <ul
-                            class="desplegable grid justify-items-start overflow-hidden hightAanimaton">
+                            class="desplegable grid justify-items-end overflow-hidden hightAanimaton">
                             <li class="mt-3">
                                 <a href="MgProduct.aspx?id=0" class="items-center">اضافة منتج
                                      <i class="fa-regular fa-square-plus"></i>
@@ -73,13 +74,13 @@
                                 </a>
                             </li>
                             <li class="mt-3">
-                                <a href="LinkProduct.aspx" class="items-center">ربط المنتجات
+                                <a href="LinkProduct.aspx" class="items-center">تفعيل الربط
                                     <i class="fa-solid fa-link"></i>
                                 </a>
                             </li>
                             <li class="mt-3">
-                                <a href="MgLinkProduct.aspx" class="items-center">إدارة الربط المنتجات
-                                    <i class="fa-solid fa-link"></i>
+                                <a href="MgLinkProduct.aspx" class="items-center">إلغاء الربط
+                                    <i class="fa-solid fa-link-slash"></i>
                                 </a>
                             </li>
                         </ul>
@@ -90,20 +91,32 @@
                     <a
                         class="flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300"
                         href="MgItem.aspx?id=0">
-                        <i class="fa-regular fa-image"></i>
+                        <i class="fa-solid fa-sitemap"></i>
                         <span>الاصناف</span>
                     </a>
                     <a
                         class="flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300"
                         href="SliderImg.aspx">
-                        <i class="fa-regular fa-image"></i>
+                        <i class="fa-solid fa-images"></i>
                         <span>صور الشريط</span>
                     </a>
                     <a
                         class="flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300"
                         href="Orders.aspx">
-                        <i class="fa-regular fa-image"></i>
+                        <i class="fa-solid fa-cart-flatbed-suitcase"></i>
                         <span>الطلبات</span>
+                    </a>
+
+                    <button type="button" class="show-modal flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300">
+                        <i class="fa-solid fa-edit"></i>
+                        نافذة للتعديل
+                    </button>
+
+                    <a id="btnToStore"
+                        class="flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300"
+                        href="<%=ResolveUrl("~/Client/Home.aspx")%>" target="_blank">
+                        <i class="fa-solid fa-store"></i>
+                        <span>الانتقال إلى المتجر</span>
                     </a>
 
                     <hr />
@@ -113,9 +126,9 @@
                         <i class="fa-solid fa-gear"></i>
                         <span>الاعدادات</span>
                     </a>
-                    <a
+                    <a id="btnLogOut"
                         class="flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300"
-                        href="#">
+                        runat="server" onserverclick="btnLogOut_ServerClick">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         <span>تسجيل الخروج</span>
                     </a>
@@ -129,6 +142,61 @@
                 </asp:ContentPlaceHolder>
             </main>
         </div>
+
+
+        <!-- Main modal -->
+        <div class="modal hiddenModal">
+            <button type="button" class="close-modal">
+                <div class="leftright"></div>
+                <div class="rightleft"></div>
+            </button>
+            <br />
+            <div class="w-full">
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                    <ContentTemplate>
+                        <label for="ddlType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                        <asp:DropDownList ID="ddlType" CssClass="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" AutoPostBack="true" OnSelectedIndexChanged="ddlType_SelectedIndexChanged" runat="server">
+                            <asp:ListItem Selected="True">Brand</asp:ListItem>
+                            <asp:ListItem>Size</asp:ListItem>
+                            <asp:ListItem>Color</asp:ListItem>
+                        </asp:DropDownList>
+                        <br />
+                        <label for="ddlDataByType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data</label>
+                        <asp:DropDownList ID="ddlDataByType" CssClass="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" runat="server">
+                        </asp:DropDownList>
+                        <br />
+                        <label for="txtDataByType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New</label>
+                        <input type="text" id="txtDataByType" runat="server" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <div class="buttons">
+                            <button id="btnAdd" type="button" class="capitalize text-xl px-3 py-2 text-white outline-none bg-[#007a3d]" runat="server" onserverclick="btnAdd_ServerClick">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button id="btnRemove" type="button" class="capitalize text-xl px-3 py-2 text-white outline-none bg-[#C70000]" runat="server" onserverclick="btnRemove_ServerClick">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <asp:SqlDataSource ID="SqlDataByType"
+                            ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' 
+                            ProviderName="System.Data.SqlClient" 
+                            runat="server" ></asp:SqlDataSource>
+                        <!-- alert -->
+                        <!-- alert green -->
+                        <br />
+                        <div id="alertMsgSuccess" class="relative px-4 py-3 leading-normal text-green-700 bg-green-100 rounded-lg hidden" role="alert" visible="false">
+                            <p class="ml-6 text-base">تمت عملية بنجاح</p>
+                        </div>
+                        <div id="alertMsgEmty" class="relative px-4 py-3 leading-normal text-red-700 bg-red-100 rounded-lg hidden" role="alert" visible="false">
+                            <p class="ml-6 text-base">الحقل فارغ</p>
+                        </div>
+                        <div id="alertMsgError" class="relative px-4 py-3 leading-normal text-red-700 bg-red-100 rounded-lg hidden" role="alert" visible="false">
+                            <p class="ml-6 text-base">لا يمكن حذفه, يوجد هذا الاختيار مع منتجات أخرى</p>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+
+        </div>
+        <div class="overlay hiddenOverlay"></div>
     </form>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/admin.js"></script>

@@ -16,10 +16,11 @@
                   <div
                     class="relative flex w-full flex-wrap items-stretch my-3"
                   >
+                      
                     <span
-                      class="icon z-10 h-full leading-snug font-normal text-center text-[#fff] absolute rounded-r text-base items-center justify-center w-8 py-3"
+                      class="icon z-10 h-full leading-snug font-normal text-center text-[#888] absolute rounded-r text-base items-center justify-center w-8 py-3"
                     >
-                      <i class="fa-regular fa-user"></i>
+                        <i class="fa-solid fa-user"></i>
                     </span>
                     <input id="txtName" runat="server"
                       type="text"
@@ -33,9 +34,9 @@
                     class="relative flex w-full flex-wrap items-stretch my-3"
                   >
                     <span
-                      class="icon z-10 h-full leading-snug font-normal text-center text-[#fff] absolute rounded-r text-base items-center justify-center w-8 py-3"
+                      class="icon z-10 h-full leading-snug font-normal text-center text-[#888] absolute rounded-r text-base items-center justify-center w-8 py-3"
                     >
-                      <i class="fa-regular fa-user"></i>
+                      <i class="fa-solid fa-envelope"></i>
                     </span>
                     <input id="txtEmail" runat="server"
                       type="email"
@@ -50,12 +51,12 @@
                     class="relative flex w-full flex-wrap items-stretch my-3"
                   >
                     <span
-                      class="icon z-10 h-full leading-snug font-normal text-center text-[#fff] absolute rounded-r text-base items-center justify-center w-8 py-3"
+                      class="icon z-10 h-full leading-snug font-normal text-center text-[#888] absolute rounded-r text-base items-center justify-center w-8 py-3"
                     >
                       <i class="fa-solid fa-lock"></i>
                     </span>
                     <input id="txtPswd" runat="server"
-                      type="password"
+                      type="text"
                       class="px-10 py-3 relative bg-white rounded text-sm border-0 outline-none focus:outline-none focus:border-2 w-full pl-10"
                     />
                   </div>

@@ -12,6 +12,7 @@ namespace Store.Admin
         ClsBasic clsBasic;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | Show Prodcuts";
             if (!IsPostBack)
             {
                 ddlDept.DataBind();

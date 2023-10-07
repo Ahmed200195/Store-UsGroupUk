@@ -14,6 +14,7 @@ namespace Store.Admin
         DataTable dataTable;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | Home";
             clsBasic = new ClsBasic();
             dataTable = clsBasic.SelectData("COUNT(DISTINCT(Phone)) , 1 as filter", @"
                 Client

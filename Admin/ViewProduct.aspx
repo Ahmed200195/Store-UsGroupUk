@@ -33,7 +33,7 @@
                                 class="inline-block min-w-full shadow rounded-lg overflow-hidden">
                                 <asp:SqlDataSource ID="sqlProduct" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>'
                                     DeleteCommand="DELETE FROM [Product] WHERE [Id] = @Id"
-                                    SelectCommand="SELECT [Product].[Id], [NameAr], [Price], [Discount], [Brand].[Name] as BrandName, [DId], ISNULL([Photo],'x') as [Photo], [Color].[Name] as ColroName FROM [Product] INNER JOIN Brand ON Brand.Id = BId INNER JOIN Color ON Color.Id = CId WHERE ([DId] = @DId) ORDER BY [Id] DESC">
+                                    SelectCommand="SELECT [Product].[Id], [NameAr], [Price], [Discount], [Brand].[Name] as BrandName, [DId], ISNULL([Photo],'x') as [Photo] FROM [Product] INNER JOIN Brand ON Brand.Id = BId WHERE ([DId] = @DId) ORDER BY [Id] DESC">
                                     <DeleteParameters>
                                         <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                                     </DeleteParameters>
@@ -72,10 +72,6 @@
                                         </asp:BoundField>
 
                                         <asp:BoundField DataField="Discount" HeaderText="سعر بعد الخصم" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
-                                        </asp:BoundField>
-
-                                        <asp:BoundField DataField="ColroName" HeaderText="اللون" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
                                             <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:BoundField>
 

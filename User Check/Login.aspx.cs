@@ -13,25 +13,39 @@ namespace Store
         DataTable dataTable;
         protected void Page_Load(object sender, EventArgs e)
         {
-            clsBasic= new ClsBasic();
+            Page.Title = "UsGroupUk | Login";
+            clsBasic = new ClsBasic();
         }
 
         protected void btnSend_ServerClick(object sender, EventArgs e)
         {
-            dvAlert.Visible = true;
-            dataTable = clsBasic.SelectData("*", "Login");
-            if (dataTable.AsEnumerable().Any(a => a.Field<string>("Email").Equals(txtEmail.Value) && a.Field<string>("Password").Equals(txtPassword.Value)))
+            dvAlert.Visible = false;
+            dataTable = clsBasic.SelectData("*", $"Login WHERE Email = '{txtEmail.Value}' AND Password = '{txtPassword.Value}'");
+            if (dataTable.Rows.Count > 0)
             {
-                Random random = new Random();
-                if (SendAlerts(random.Next(0, 1000000).ToString("D6"), "us.group.kw100@gmail.com", "pbuhsobbvsfydtxr", txtEmail.Value))
+                if (int.Parse(dataTable.Rows[0]["CntSession"].ToString()) >= 5)
                 {
-                    Session["Email"] = txtEmail.Value;
-                    Session["Password"] = txtPassword.Value;
-                    Response.Redirect("~/User Check/CodeEmail.aspx");
+                    Random random = new Random();
+                    if (SendAlerts(random.Next(0, 1000000).ToString("D6"), "us.group.kw100@gmail.com", "pbuhsobbvsfydtxr", txtEmail.Value))
+                    {
+                        Session["Id"] = dataTable.Rows[0]["Id"].ToString();
+                        Session["Email"] = txtEmail.Value;
+                        Session["Password"] = txtPassword.Value;
+                        Response.Redirect("~/User Check/CodeEmail.aspx");
+                    }
+                    else
+                    {
+                        dvAlert.Visible = true;
+                    }
                 }
                 else
                 {
-                    dvAlert.Visible = true;
+                    Session["Id"] = dataTable.Rows[0]["Id"].ToString();
+                    Session["Email"] = txtEmail.Value;
+                    Session["Password"] = txtPassword.Value;
+                    sqlLogin.UpdateCommand = $"UPDATE Login SET CntSession = CntSession + 1 WHERE Email = '{txtEmail.Value}' AND Password = '{txtPassword.Value}'";
+                    sqlLogin.Update();
+                    Response.Redirect("~/Admin/Home.aspx");
                 }
             }
             else

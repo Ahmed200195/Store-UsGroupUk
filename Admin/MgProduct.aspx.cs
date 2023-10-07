@@ -13,6 +13,14 @@ namespace Store.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | MgProduct";
+
+            ddlSize.DataBind();
+            ddlSize.Items.Insert(0, new ListItem() { Text = "No Thing", Value = "", Selected = true });
+
+            ddlColor.DataBind();
+            ddlColor.Items.Insert(0, new ListItem() { Text = "No Thing", Value = "", Selected = true });
+
             if (Request.QueryString["id"] != "0")
             {
                 if (!IsPostBack)

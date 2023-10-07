@@ -14,11 +14,15 @@ namespace Store.Admin
         ClsBasic clsBasic;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | PeOrder";
             clsBasic = new ClsBasic();
-            dataRow = clsBasic.SelectData("Name, Phone, Address, SUM(total) as Total, Received", $"Client INNER JOIN Orders ON Client.Id = Orders.CId WHERE Client.Id = {Request.QueryString["id"]} GROUP BY Name, Phone, Address, Received").Rows[0];
+            dataRow = clsBasic.SelectData("Name, Phone, Address, SUM(total) as Total, Received, Piece, Home, Street", $"Client INNER JOIN Orders ON Client.Id = Orders.CId WHERE Client.Id = {Request.QueryString["id"]} GROUP BY Name, Phone, Address, Received, Piece, Home, Street").Rows[0];
             txtName.Value = dataRow["Name"].ToString();
             txtPhone.Value = dataRow["Phone"].ToString();
             txtAddress.Value = dataRow["Address"].ToString();
+            txtPiece.Value = dataRow["Piece"].ToString();
+            txtHome.Value = dataRow["Home"].ToString();
+            txtStreet.Value = dataRow["Street"].ToString();
             totalOrder.InnerText = dataRow["Total"].ToString();
             if (dataRow["Received"].ToString() == "True")
             {

@@ -22,7 +22,8 @@ namespace Store
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-
+            if (Request.AppRelativeCurrentExecutionFilePath == "~/")
+                Response.Redirect("~/Client/Home.aspx");
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

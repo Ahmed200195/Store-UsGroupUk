@@ -14,10 +14,12 @@ namespace Store.User_Check
         DataTable dataTable;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | Login";
             clsBasic = new ClsBasic();
-            dataTable = clsBasic.SelectData("*", "Login");
-            if (!dataTable.AsEnumerable().Any(a => a.Field<string>("Email").Equals(Session["Email"]) && a.Field<string>("Password").Equals(Session["Password"])))
+            dataTable = clsBasic.SelectData("*", $"Login WHERE Email = '{Session["Email"]}' AND Password = '{Session["Password"]}'");
+            if (dataTable.Rows.Count == 0)
             {
+                Session["Id"] = null;
                 Session["Email"] = null;
                 Session["Password"] = null;
                 Response.Redirect("~/User Check/Login.aspx");
@@ -28,6 +30,8 @@ namespace Store.User_Check
         {
             if (txtCode.Value == Session["Code"].ToString())
             {
+                sqlLogin.UpdateCommand = $"UPDATE Login SET CntSession = 0 WHERE Email = '{Session["Email"]}' AND Password = '{Session["Password"]}'";
+                sqlLogin.Update();
                 Response.Redirect("~/Admin/Home.aspx");
             }
             else

@@ -6,10 +6,12 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../images/logoTwo.png" />
     <title>login</title>
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:SqlDataSource ID="sqlLogin"  ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>' ProviderName="System.Data.SqlClient" runat="server"></asp:SqlDataSource>
         <div
             class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
             <div class="relative py-3 sm:max-w-xl sm:mx-auto">

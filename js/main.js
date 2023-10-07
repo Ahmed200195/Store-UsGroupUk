@@ -125,9 +125,13 @@ function addToCart(button) {
         ".product-price span"
     ).textContent;
     const productImg = productContainer.querySelector(".imgProduct").src;
-    const productColor =
-        productContainer.querySelector(".color span").textContent;
-    const productSize = productContainer.querySelector(".size span").textContent;
+    let productColor, productSize;
+    productColor = productContainer.querySelector(".color span");
+    productSize = productContainer.querySelector(".size span");
+
+    !productColor ? productColor = "" : productColor = productColor.textContent;
+    
+    !productSize ? productSize = "" : productSize = productSize.textContent;
 
     // details product page count
     const productCount = document.querySelector(".coountProduct");
@@ -306,11 +310,25 @@ function filterProdcut(
                 </p>
 
                 <div class="flex justify-between my-2">
-                <p class="capitalizetext-[#3c3b6e]">${langAttributeValue === "en" ? "color" : "اللون"
-                                } :<span class="text-gray-400"> ${productColor}</span></p>
-                <p class="capitalize text-[#3c3b6e]">${langAttributeValue === "en" ? "size" : "القياس"
-                                } :<span class="text-gray-400"> ${productSize}</span></p>
-                </div>
+                ${
+                  productColor === ""
+                    ? ""
+                    : `<p class="capitalizetext-[#3c3b6e]">
+                      ${langAttributeValue === "en" ? "color" : "اللون"} :
+                      <span class="text-gray-400"> ${productColor}</span>
+                    </p>`
+                }
+                ${
+                  productSize === "" ? (
+                    ""
+                  ) : (
+      `              <p class="capitalize text-[#3c3b6e]">
+                      ${langAttributeValue === "en" ? "size" : "القياس"} :
+                      <span class="text-gray-400"> ${productSize}</span>
+                    </p>`
+                  )
+                }
+                </div>
 
                 <div class="flex justify-between items-center mt-4">
                 <div class="flex ${langAttributeValue === "en" ? "flex-row" : "flex-row-reverse"
@@ -330,10 +348,22 @@ function filterProdcut(
                 </div>
                 </div>
                 `;
-
+                langAttributeValue === "en"
+                    ? Swal.fire({
+                        icon: 'success',
+                        title: 'Added',
+                        text: 'The product has been sent to the cart',
+                    })
+                    : Swal.fire({
+                        icon: 'success',
+                        title: 'تم الاضافة',
+                        text: 'تم ارسال المنتج الى السلة',
+                    });
+                setTimeout(function () {
+                    document.getElementsByClassName('swal2-container')[0].classList.add('hidden');
+                }, 1500)
             minsPlusNumberCount(dataCount);
             SuptotalPrice();
-
         });
     }
     
@@ -447,21 +477,25 @@ const startSlideTimer = () => {
 
 startSlideTimer();
 
-prevButton.addEventListener("click", () => {
-    currSlide--;
-    if (currSlide < 0) {
-        currSlide = maxSlide;
-    }
-    updateCarousel();
-});
+if (prevButton || nextButton) {
+    prevButton.addEventListener("click", () => {
+        currSlide--;
+        if (currSlide < 0) {
+            currSlide = maxSlide;
+        }
+        updateCarousel();
+    });
+    nextButton.addEventListener("click", () => {
+        currSlide++;
+        if (currSlide > maxSlide) {
+            currSlide = 0;
+        }
+        updateCarousel();
+    });
+}
 
-nextButton.addEventListener("click", () => {
-    currSlide++;
-    if (currSlide > maxSlide) {
-        currSlide = 0;
-    }
-    updateCarousel();
-});
+
+
 
 slides.forEach((slide) => {
     slide.addEventListener("touchstart", touchStart);

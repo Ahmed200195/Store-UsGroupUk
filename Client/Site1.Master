@@ -20,6 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
     <link href="https://fonts.googleapis.com/css2?family=Lemonada:wght@300;400&family=Montserrat&display=swap"
         rel="stylesheet" />
+    <link rel="icon" href="../images/logoTwo.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
@@ -39,6 +40,17 @@
         <a
             class="backToTop fixed bottom-4 right-6 bg-[#3c3b6e] w-12 h-12 rounded-md text-white text-center transition duration-300 opacity-0 invisible z-50 hover:bg-[#222143] focus:outline-none"></a>
 
+
+        <div class="fixed top-2/4 left-0" style="background: #3c3b6e;
+                                                padding: 15px;
+                                                z-index: 999;
+                                                border-top-right-radius: 10px;
+                                                border-bottom-right-radius: 10px;">
+            <a href="whatsapp://send?phone=+96597983633" style="font-size: 40px;"
+                class="text-[#25D366] text-xl hover:text-gray-500">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
         <!-- start in navbar -->
 
         <!-- component -->
@@ -116,11 +128,11 @@
                             </ul>
                         </nav>
 
-                        <!-- cart count -->
+                        <%--<!-- cart count -->
                         <div class="ml-4 hidden sm:flex flex-col font-normal text-[#3c3b6e]">
                             <span class="text-xs"><%= Application["lang"].ToString() == "en" ? "Your Cart" : "عربتك" %></span>
                             <span>kd2,650,59</span>
-                        </div>
+                        </div>--%>
                     </div>
                     <hr />
                 
@@ -161,7 +173,7 @@
                     <!-- check out cart -->
                     <div
                         class="checkout relative bottom-0 mb-5 w-full px-5 py-3 md:py-4 flex items-center justify-between gap-x-5 rounded-md text-sm sm:text-base text-white focus:outline-none transition duration-300 bg-heading hover:bg-gray-600">
-                        <button type="button" class="btnCheckout"><%= Application["lang"].ToString() == "en" ? "Proceed To Checkout" : "الشروع في الخروج" %></button>
+                        <button type="button" class="btnCheckout"><%= Application["lang"].ToString() == "en" ? "Proceed To Checkout" : "إتمام عملية الشراء" %></button>
                         <div class="bg-white w-[2px] h-full"></div>
                         <div>
                             <span class="subtotal"></span><span><%= Application["lang"].ToString() == "en" ? "KD" : "د.ك" %></span>
@@ -181,7 +193,14 @@
                     <input id="txtName" type="text" placeholder="<%= Application["lang"].ToString() == "en" ? "Name" : "الاسم" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
                     <input id="txtPhone" type="tel" placeholder="<%= Application["lang"].ToString() == "en" ? "Phone" : "الهاتف" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
                 </div>
-                <textarea id="txtAddress" placeholder="<%= Application["lang"].ToString() == "en" ? "Address" : "العنوان" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3"></textarea>
+                <div class="flex gap-2">
+                    <input id="txtAddress" type="text" placeholder="<%= Application["lang"].ToString() == "en" ? "Address" : "اسم المنطقة" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
+                    <input id="txtPiece" type="number" placeholder="<%= Application["lang"].ToString() == "en" ? "Piece Number" : "رقم القطعة" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
+                </div>
+                <div class="flex gap-2">
+                    <input id="txtHome" type="number" placeholder="<%= Application["lang"].ToString() == "en" ? "Home Number" : "رقم المنزل" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
+                    <input id="txtStreet" type="number" placeholder="<%= Application["lang"].ToString() == "en" ? "Street Number" : "رقم الشارع" %>" class="w-full rounded-md px-2 py-2 outline-none mb-3" />
+                </div>
                 <input id="sendData" type="button" value="<%= Application["lang"].ToString() == "en" ? "Send" : "إرسال" %>" onclick="checkOut()" class="capitalize tracking-widest rounded-md bg-[#007a3d] cursor-pointer px-5 py-2.5 text-center text-sm font-medium text-white transition-all hover:bg-[#117a3d] focus:outline-none" />
             </div>
         </section>
@@ -243,13 +262,21 @@
 
         function checkOut() {
 
-            let name, phone, address, total;
+            let name, phone, address, piece, home, street;
 
             name = document.getElementById("txtName");
             phone = document.getElementById("txtPhone");
             address = document.getElementById("txtAddress");
+            piece = document.getElementById("txtPiece");
+            home = document.getElementById("txtHome");
+            street = document.getElementById("txtStreet");
 
-            if (name.value === "" || phone.value === "" || address.value === "") {
+            if (name.value === "" ||
+                phone.value === "" ||
+                address.value === "" ||
+                piece.value === "" ||
+                home.value === "" ||
+                street.value === "") {
                 langAttributeValue === "en" ? Swal.fire({
                     icon: 'error',
                     title: 'Sorry',
@@ -267,7 +294,9 @@
             dataCleint.push(name.value.toString());
             dataCleint.push(phone.value.toString());
             dataCleint.push(address.value.toString());
-            //dataCleint.push(total.innerHTML.toString());
+            dataCleint.push(piece.value.toString());
+            dataCleint.push(home.value.toString());
+            dataCleint.push(street.value.toString());
             var obj = { dvInfoProduct: document.getElementById('<%= dvInfoProduct.ClientID %>').innerHTML, list: dataCleint };
             $.ajax({
                 type: "POST",
@@ -280,6 +309,9 @@
                     name.value = "";
                     phone.value = "";
                     address.value = "";
+                    piece.value = "";
+                    home.value = "";
+                    street.value = "";
                     
                     document.querySelectorAll(".elementCart").forEach((element) => {
                         element.remove();

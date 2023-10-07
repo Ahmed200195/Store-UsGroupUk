@@ -14,6 +14,7 @@ namespace Store
         SqlCommand sqlDbCommand;
         SqlDataAdapter sqlDbDataAdapter;
         DataTable dataTable;
+        DataSet dataSet;
         SqlConnection OpenDataBase()
         {
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbUsGroupKw"].ConnectionString);
@@ -30,6 +31,18 @@ namespace Store
                 oleDb.Close();
             }
         }
+
+        public DataSet SelectMultiple(string queries)
+        {
+            dataSet = new DataSet();
+            var conDb = OpenDataBase();
+            sqlDbCommand = new SqlCommand(queries, conDb);
+            sqlDbDataAdapter = new SqlDataAdapter(sqlDbCommand);
+            sqlDbDataAdapter.Fill(dataSet);
+            CloseDataBase(conDb);
+            return dataSet;
+        }
+
         public DataTable SelectData(string column, string table)
         {
             dataTable = new DataTable();
@@ -51,10 +64,10 @@ namespace Store
             CloseDataBase(conDb);
         }
 
-        public void EditUser(string name, string email, string pswd)
+        public void EditUser(int id, string name, string email, string pswd)
         {
             var conDb = OpenDataBase();
-            sqlDbCommand = new SqlCommand($"UPDATE [Login] SET Name = '{name}', Email = '{email}', Password = '{pswd}' WHERE Id = 1", conDb);
+            sqlDbCommand = new SqlCommand($"UPDATE [Login] SET Name = '{name}', Email = '{email}', Password = '{pswd}' WHERE Id = " + id, conDb);
             sqlDbCommand.ExecuteNonQuery();
             conDb.Close();
         }
@@ -62,10 +75,13 @@ namespace Store
         public void newOrder(string dvInfoProduct, List<string> list)
         {
             var conDb = OpenDataBase();
-            sqlDbCommand = new SqlCommand("INSERT INTO Client([Name], [Phone], [Address], [DateOr]) VALUES(@name, @phone, @address, GETDATE()); SELECT SCOPE_IDENTITY();", conDb);
+            sqlDbCommand = new SqlCommand("INSERT INTO Client([Name], [Phone], [Address], [DateOr], Piece, Home, Street) VALUES(@name, @phone, @address, GETDATE(), @piece, @home, @street); SELECT SCOPE_IDENTITY();", conDb);
             sqlDbCommand.Parameters.AddWithValue("@name", list[0]);
             sqlDbCommand.Parameters.AddWithValue("@phone", list[1]);
             sqlDbCommand.Parameters.AddWithValue("@address", list[2]);
+            sqlDbCommand.Parameters.AddWithValue("@piece", list[3]);
+            sqlDbCommand.Parameters.AddWithValue("@home", list[4]);
+            sqlDbCommand.Parameters.AddWithValue("@street", list[5]);
             string pkClient = sqlDbCommand.ExecuteScalar().ToString();
             sqlDbCommand = new SqlCommand("INSERT INTO Orders([Cnt], [Total], [PId], [CId]) VALUES(@cnt, @total, @pid, @cid);", conDb);
             SqlCommand sqlCommand = new SqlCommand("UPDATE Product SET Cnt = Cnt - @cnt WHERE Id = @pid", conDb);
@@ -78,7 +94,14 @@ namespace Store
                 foreach (HtmlNode header in headers)
                 {
                     dataId = header.Attributes["data-id"].Value;
-                    count = header.SelectSingleNode(".//div//div//div[@class='flex qty h-9']//span[@class='flex justify-center items-center w-11 text-center numberQty']").InnerText;
+                    try
+                    {
+                        count = header.SelectSingleNode($".//div//div//div[@class='flex flex-row qty h-9']//span[@class='flex justify-center items-center w-11 text-center numberQty']").InnerText;
+                    }
+                    catch
+                    {
+                        count = header.SelectSingleNode($".//div//div//div[@class='flex flex-row-reverse qty h-9']//span[@class='flex justify-center items-center w-11 text-center numberQty']").InnerText;
+                    }
                     total = header.SelectSingleNode(".//div//div//div[@class='suptotalTotalPrice']//span").InnerText;
                     sqlDbCommand.Parameters.AddWithValue("@cnt", count);
                     sqlDbCommand.Parameters.AddWithValue("@total", total);

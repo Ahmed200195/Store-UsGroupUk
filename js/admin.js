@@ -90,3 +90,47 @@ productFilterInput.forEach((select) => {
         });
     });
 });
+
+
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const btnCloseModal = document.querySelector(".close-modal");
+const btnOpenModal = document.querySelector(".show-modal");
+
+function openModal() {
+  overlay.style.display = "block";
+
+  modal.classList.remove("hiddenModal");
+  overlay.classList.remove("hiddenOverlay");
+}
+
+function closeModal() {
+  modal.classList.add("hiddenModal");
+  overlay.classList.add("hiddenOverlay");
+  setTimeout(() => {
+    overlay.style.display = "none";
+  }, 400);
+}
+
+// Clicking the 'Show modal' to open the modal
+btnOpenModal.addEventListener("click", openModal);
+// Clicking the 'X' button to close the modal
+btnCloseModal.addEventListener("click", closeModal);
+// Clicking the overlay to close the modal as well
+overlay.addEventListener("click", closeModal);
+
+// Pressing 'Esc' key to close the modal
+document.addEventListener("keydown", function (e) {
+  console.log(e.key);
+
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
+  }
+});
+
+function hideAlertDiv(id) {
+    document.getElementById(id).classList.remove('hidden');
+    setTimeout(function () {
+        document.getElementById(id).classList.add('hidden');
+    }, 3500)
+}

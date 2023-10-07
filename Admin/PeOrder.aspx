@@ -26,9 +26,25 @@
                         <input type="text" id="txtPhone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly="readonly" runat="server">
                     </div>
                 </div>
-                <div class="mb-6">
-                    <label for="txtAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">العنوان</label>
-                    <textarea id="txtAddress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly="readonly" runat="server"></textarea>
+                <div class="grid gap-6 mb-6 md:grid-cols-2">
+                    <div>
+                        <label for="txtAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">اسم المنطقة</label>
+                        <input type="text" id="txtAddress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly="readonly" runat="server">
+                    </div>
+                    <div>
+                        <label for="txtPiece" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">رقم القطعة</label>
+                        <input type="number" id="txtPiece" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly="readonly" runat="server">
+                    </div>
+                </div>
+                <div class="grid gap-6 mb-6 md:grid-cols-2">
+                    <div>
+                        <label for="txtHome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">رقم المنزل</label>
+                        <input type="number" id="txtHome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly="readonly" runat="server">
+                    </div>
+                    <div>
+                        <label for="txtStreet" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">رقم الشارع</label>
+                        <input type="number" id="txtStreet" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly="readonly" runat="server">
+                    </div>
                 </div>
 
 
@@ -109,7 +125,7 @@
                                             <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:BoundField>
 
-                                        <asp:BoundField DataField="Cnt" HeaderText="الإجمالي" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
+                                        <asp:BoundField DataField="Total" HeaderText="الإجمالي" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
                                             <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:BoundField>
                                     </Columns>

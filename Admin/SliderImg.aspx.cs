@@ -15,6 +15,7 @@ namespace Store.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | Slider Images";
             gvImages.DataBind();
             dvNoData.Visible = gvImages.Rows.Count == 0;
             gvImages.Visible = gvImages.Rows.Count != 0;

@@ -11,6 +11,7 @@ namespace Store.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | Orders";
             if (!IsPostBack)
             {
                 gvClient.DataBind();

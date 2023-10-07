@@ -11,7 +11,7 @@ namespace Store.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Page.Title = "UsGroupUk | MgLinkProduct";
         }
 
         protected void gvLinkProduct_RowCommand(object sender, GridViewCommandEventArgs e)

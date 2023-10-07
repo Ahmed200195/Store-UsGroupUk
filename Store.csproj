@@ -247,6 +247,8 @@
     <Content Include="Admin\ControlPanel.Master" />
     <Content Include="Client\Site1.Master" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\usgroupuk-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\usgroupuk-001-site1 - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

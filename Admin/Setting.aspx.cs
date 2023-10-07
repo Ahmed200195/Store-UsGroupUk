@@ -14,10 +14,22 @@ namespace Store.Admin
         DataRow dataRow;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | Setting";
             clsBasic = new ClsBasic();
             if (!IsPostBack)
             {
-                dataRow = clsBasic.SelectData("*", "Login WHERE Id = 1").Rows[0];
+                try
+                {
+                    dataRow = clsBasic.SelectData("*", "Login WHERE Id = " + Session["Id"]).Rows[0];
+                }
+                catch
+                {
+                    Session["Id"] = null;
+                    Session["Email"] = null;
+                    Session["Password"] = null;
+                    Response.Redirect("~/User Check/Login.aspx");
+                }
+                
                 txtName.Value = dataRow["Name"].ToString();
                 txtEmail.Value = dataRow["Email"].ToString();
                 txtPswd.Value = dataRow["Password"].ToString();
@@ -32,7 +44,7 @@ namespace Store.Admin
             }
             else
             {
-                clsBasic.EditUser(txtName.Value, txtEmail.Value, txtPswd.Value);
+                clsBasic.EditUser(int.Parse(Session["Id"].ToString()), txtName.Value, txtEmail.Value, txtPswd.Value);
                 Response.Redirect("Setting.aspx");
             }
         }

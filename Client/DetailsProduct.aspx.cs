@@ -12,11 +12,13 @@ namespace Store.Client
 {
     public partial class DetailsProduct : Page
     {
-        string viewAll, Name, Size, Color, addToCart, Off, Info, unitPrice, many;
+        string Name, Size, Color, addToCart, Off, Info, unitPrice, many;
         DataRow dataRow;
         ClsBasic clsBasic;
+        DataSet dataSet;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = Application["lang"].ToString() == "en" ? "UsGroupUk | Product Details" : "UsGroupUk | تفاصيل المنتج";
             Name = Application["lang"].ToString() == "en" ? "NameEn" : "NameAr";
             Info = Application["lang"].ToString() == "en" ? "InfoEn" : "InfoAr";
             Size = Application["lang"].ToString() == "en" ? "Size" : "القياس";
@@ -26,10 +28,17 @@ namespace Store.Client
             unitPrice = Application["lang"].ToString() == "en" ? "Unit Price" : "سعر الوحدة";
             many = Application["lang"].ToString() == "en" ? "KD" : "د.ك";
 
+            string queries = $@"
+                SELECT Product.Id, NameEn, NameAr, InfoEn, InfoAr, Size.Name as SizeName, Color.Name as ColorName, Photo, Price, Discount, DId FROM Product INNER JOIN Size ON Size.Id = SId INNER JOIN Color ON Color.Id = CId WHERE Product.Id = {Request.QueryString["id"]};
+                SELECT * FROM ProductPhotos WHERE PId = {Request.QueryString["id"]};
+                SELECT TOP 4 Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt, DId FROM Product INNER JOIN [Color] ON Color.Id = Product.CId INNER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 AND Product.Id IN (SELECT PId FROM LinkProduct WHERE Id IN (SELECT TOP 1 Id FROM InfoLinkProduct)) ORDER BY NEWID();
+            ";
             clsBasic = new ClsBasic();
-            dataRow = clsBasic.SelectData(@"
-                Product.Id, NameEn, NameAr, InfoEn, InfoAr, Size.Name as SizeName, Color.Name as ColorName, Photo, Price, Discount
-            ", "Product INNER JOIN Size ON Size.Id = SId INNER JOIN Color ON Color.Id = CId WHERE Product.Id = " + Request.QueryString["id"]).Rows[0];
+            dataSet = clsBasic.SelectMultiple(queries);
+
+
+            dataRow = dataSet.Tables[0].Rows[0];
+
             ltImgSilder.Text = string.Empty;
             ltImgSilder.Text += $@"
                             <figure class=""product-banner min-w-full rounded-2xl"">
@@ -37,7 +46,7 @@ namespace Store.Client
                                     class=""imgProduct img-cover w-full h-full rounded-2xl"" loading=""lazy"" />
                             </figure>
                 ";
-            foreach (DataRow row in clsBasic.SelectData("*", "ProductPhotos WHERE PId = " + Request.QueryString["id"]).Rows)
+            foreach (DataRow row in dataSet.Tables[1].Rows)
             {
                 ltImgSilder.Text += $@"
                             <figure class=""product-banner min-w-full rounded-2xl"">
@@ -77,18 +86,23 @@ namespace Store.Client
 
             ltFrequentlyProduct.Text = string.Empty;
             disc = string.Empty; finalPrice = string.Empty; discPrice = string.Empty;
-            foreach (DataRow row in clsBasic.SelectData("TOP 4 Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt", "Product INNER JOIN [Color] ON Color.Id = Product.CId INNER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 ORDER BY NEWID()").Rows)
+            DataRow[] rowLinkProduct = dataSet.Tables[2].Select("DId = " + dataRow["DId"]);
+
+            if (rowLinkProduct.Count() > 0)
             {
-                finalPrice = row["Price"].ToString();
-                if (int.Parse(row["Discount"].ToString()) > 0)
+                dvLinkBuy.Visible = true;
+                foreach (DataRow row in rowLinkProduct)
                 {
-                    disc = $@"<span
+                    finalPrice = row["Price"].ToString();
+                    if (int.Parse(row["Discount"].ToString()) > 0)
+                    {
+                        disc = $@"<span
                             class=""absolute top-0 left-0 m-2 rounded-full bg-[#b22234] px-2 text-center text-sm font-medium text-white"">{100 - ((int.Parse(row["Discount"].ToString()) * 100) / int.Parse(row["Price"].ToString()))}% {Off}</span>";
 
-                    discPrice = $@"<span class=""salePrice text-sm text-[#504f85] line-through uppercase"">{many}{row["Price"]}</span>";
-                    finalPrice = row["Discount"].ToString();
-                }
-                ltFrequentlyProduct.Text += $@"
+                        discPrice = $@"<span class=""salePrice text-sm text-[#504f85] line-through uppercase"">{many}{row["Price"]}</span>";
+                        finalPrice = row["Discount"].ToString();
+                    }
+                    ltFrequentlyProduct.Text += $@"
                     <div class=""carousel-cell w-2/4"">
                         <div
                             class=""productElement  relative  flex flex-col w-[95%] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{row["Id"]}"" data-count=""{row["Cnt"]}"">
@@ -125,6 +139,11 @@ namespace Store.Client
                         </div>
                     </div>
                 ";
+                }
+            }
+            else
+            {
+                dvLinkBuy.Visible = false;
             }
         }
     }

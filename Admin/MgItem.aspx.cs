@@ -12,6 +12,7 @@ namespace Store.Admin
         DataRow dataRow;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "UsGroupUk | MgItem";
             clsBasic = new ClsBasic();
             dvNoData.Visible = gvDept.Rows.Count == 0;
             gvDept.Visible = gvDept.Rows.Count != 0;
