@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
 
 namespace Store.Admin
 {
@@ -21,20 +22,17 @@ namespace Store.Admin
             gvImages.Visible = gvImages.Rows.Count != 0;
         }
 
-        protected void sqlImgProduct_Inserting(object sender, SqlDataSourceCommandEventArgs e)
-        {
-            int len = postedFile.ContentLength;
-            byte[] pic = new byte[len + 1];
-            postedFile.InputStream.Read(pic, 0, len);
-            ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.Image;
-            e.Command.Parameters["@Photo"].Value = pic;
-        }
 
         protected void gvImages_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "DelPhoto")
             {
-                sqlImgProduct.DeleteParameters["Id"].DefaultValue = e.CommandArgument.ToString();
+                string key, id, name;
+                key = e.CommandArgument.ToString();
+                id = key.Substring(0, key.IndexOf('|'));
+                name = key.Substring(key.IndexOf('|') + 1);
+                File.Delete(Path.Combine(Server.MapPath("~/Uploads/Product"), name));
+                sqlImgProduct.DeleteParameters["Id"].DefaultValue = id;
                 sqlImgProduct.Delete();
                 gvImages.DataBind();
             }
@@ -44,11 +42,13 @@ namespace Store.Admin
         {
             if (FileUpload1.HasFiles)
             {
+                string path;
                 foreach (HttpPostedFile file in FileUpload1.PostedFiles)
                 {
+                    path = Path.Combine(Server.MapPath("~/Uploads/Product"), file.FileName);
+                    file.SaveAs(path);
                     postedFile = file;
                     sqlImgProduct.InsertParameters["Name"].DefaultValue = postedFile.FileName;
-                    sqlImgProduct.InsertParameters["ContentType"].DefaultValue = postedFile.ContentType;
                     sqlImgProduct.Insert();
                 }
             }

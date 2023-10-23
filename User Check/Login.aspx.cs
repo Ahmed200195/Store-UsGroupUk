@@ -26,7 +26,8 @@ namespace Store
                 if (int.Parse(dataTable.Rows[0]["CntSession"].ToString()) >= 5)
                 {
                     Random random = new Random();
-                    if (SendAlerts(random.Next(0, 1000000).ToString("D6"), "us.group.kw100@gmail.com", "pbuhsobbvsfydtxr", txtEmail.Value))
+                    //if (SendAlerts(random.Next(0, 1000000).ToString("D6"), "us.group.kw100@gmail.com", "pbuhsobbvsfydtxr", txtEmail.Value))
+                    if (SendAlerts(random.Next(0, 1000000).ToString("D6"), "king86375hp@gmail.com", "dpdmdgxfcimowhja", txtEmail.Value))
                     {
                         Session["Id"] = dataTable.Rows[0]["Id"].ToString();
                         Session["Email"] = txtEmail.Value;

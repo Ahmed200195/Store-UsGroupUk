@@ -38,17 +38,14 @@
                                 <ContentTemplate>
 
                                     <asp:SqlDataSource ID="sqlImgProduct" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>'
-                                        SelectCommand="SELECT Id, Name, ContentType, Photo FROM ProductPhotos WHERE (PId IS NULL) ORDER BY Id"
+                                        SelectCommand="SELECT Id, Name FROM ProductPhotos WHERE (PId IS NULL) ORDER BY Id"
                                         DeleteCommand="DELETE FROM [ProductPhotos] WHERE [Id] = @Id"
-                                        InsertCommand="INSERT INTO [ProductPhotos] ([Name], [ContentType], [Photo]) VALUES (@Name, @ContentType, @Photo);"
-                                        OnInserting="sqlImgProduct_Inserting">
+                                        InsertCommand="INSERT INTO [ProductPhotos] ([Name]) VALUES (@Name);">
                                         <DeleteParameters>
                                             <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                                         </DeleteParameters>
                                         <InsertParameters>
                                             <asp:Parameter Name="Name" Type="String"></asp:Parameter>
-                                            <asp:Parameter Name="ContentType" Type="String"></asp:Parameter>
-                                            <asp:Parameter Name="Photo" Type="Object"></asp:Parameter>
                                         </InsertParameters>
                                     </asp:SqlDataSource>
                                     <asp:GridView ID="gvImages" CssClass="min-w-full leading-normal" runat="server" AutoGenerateColumns="False" DataKeyNames="Id" DataSourceID="sqlImgProduct" OnRowCommand="gvImages_RowCommand">
@@ -58,7 +55,7 @@
                                                 <ItemTemplate>
                                                     <div class="flex items-center">
                                                         <div class="flex-shrink-0 w-24 h-20">
-                                                            <img class="w-full h-full rounded" src='data:image;base64,<%# Convert.ToBase64String((byte[])Eval("Photo")) %>' />
+                                                            <img class="w-full h-full rounded" src='<%# "../Uploads/Product/" +  Eval("Name") %>' />
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
@@ -69,15 +66,11 @@
                                                 <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                             </asp:BoundField>
 
-                                            <asp:BoundField DataField="ContentType" HeaderText="النوع" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm" SortExpression="Name">
-                                                <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
-                                            </asp:BoundField>
-
                                             <asp:TemplateField HeaderText="حذف" ItemStyle-CssClass="py-5 border-b border-r border-gray-200 bg-white text-sm">
                                                 <ItemTemplate>
                                                     <asp:LinkButton runat="server"
                                                         CommandName="DelPhoto"
-                                                        CommandArgument='<%# Eval("Id") %>'>
+                                                        CommandArgument='<%# Eval("Id") + "|" + Eval("Name") %>'>
                                                     <div class="text-center text-[18px]">
                                                     <i class="deleteBtn fa-solid fa-trash-can text-[#FF0000]" runat="server"></i>
                                                 </div>
@@ -97,7 +90,7 @@
         </div>
         <!-- start no data -->
         <div id="dvNoData" class="noData flex flex-col justify-center items-center" runat="server">
-            <img src="../images/admin/noData.svg" class="w-2/4 h-96" />
+            <img data-src="../images/admin/noData.svg" class="w-2/4 h-96 lazy-load" />
             <div class="flex flex-col justify-center items-center mt-5">
                 <h1 class="capitalize text-2xl text-center font-black">لا توجد صور لعرضها
                 </h1>

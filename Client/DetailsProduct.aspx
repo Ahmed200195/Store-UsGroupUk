@@ -16,9 +16,9 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <main style="margin-top:50px">
+    <main>
         <article>
-            <section class="section product sectionProduct productDetails productElement" aria-label="product" data-id="<%=Request.QueryString["id"] %>" data-count="<%=Request.QueryString["cnt"] %>" >
+            <section class="section product sectionProduct productDetails productElement mt-32" aria-label="product" data-id="<%=Request.QueryString["id"] %>" data-count="<%=Request.QueryString["cnt"] %>" >
                 <div class="container px-4 mx-auto">
                     <div class="product-slides relative overflow-hidden">
                         <div class="slider-banner flex" data-slider>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="product-content">
-                        <p class="text-xs product-subtitle"><%= Application["lang"].ToString() == "en" ? "Product name" : "اسم المنتج" %></p>
+                        <p class="text-xs product-subtitle"><%= Session["lang"].ToString() == "en" ? "Product name" : "اسم المنتج" %></p>
 
                         <h1 id="titleProduct" class="text-3xl product-title product-name" runat="server">Fall Limited Edition Sneakers</h1>
 
@@ -48,9 +48,9 @@
                         </p>
 
                         <div class="flex justify-between items-center my-3">
-                            <h1 class="color text-[#504f85] font-bold capitalize"><%=  Application["lang"].ToString() == "en" ? "Color" : "اللون" %> :<span id="snColor" class="text-gray-400 font-medium" runat="server">red</span>
+                            <h1 id="titleColor" class="color text-[#504f85] font-bold capitalize" runat="server"><%=  Session["lang"].ToString() == "en" ? "Color" : "اللون" %> :<span id="snColor" class="text-gray-400 font-medium" runat="server">red</span>
                             </h1>
-                            <h1 class="size text-[#504f85] font-bold capitalize"><%=  Application["lang"].ToString() == "en" ? "Size" : "القياس" %> :<span id="snSize" class="text-gray-400 font-" runat="server">70</span></h1>
+                            <h1 id="titleSize" class="size text-[#504f85] font-bold capitalize" runat="server"><%=  Session["lang"].ToString() == "en" ? "Size" : "القياس" %> :<span id="snSize" class="text-gray-400 font-" runat="server">70</span></h1>
                         </div>
 
                         <div class="wrapper">
@@ -72,7 +72,7 @@
 
                             <button type="button" class="cart-btn add-to-cart">
                                 <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
-                                <span class="span"><%=  Application["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة" %></span>
+                                <span class="span"><%=  Session["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة" %></span>
                             </button>
                         </div>
                     </div>
@@ -87,11 +87,11 @@
         <div class="grid lg:grid-cols-2 grid-cols-1">
             <!-- element 1 -->
             <figure class="lg:flex justify-center items-center h-3/4 hidden ">
-                <img src="../images/detailsProduct/undraw_empty_cart_co35.svg" class="h-full" alt=""/>
+                <img data-src="../images/detailsProduct/undraw_empty_cart_co35.svg" class="h-full lazy-load" alt=""/>
             </figure>
             <!-- element 2 -->
             <div>
-                <h1 class="titleMain text-center mb-5"><%=  Application["lang"].ToString() == "en" ? "frequently bought together" : "يشترون سوياً" %></h1>
+                <h1 class="titleMain text-center mb-5"><%=  Session["lang"].ToString() == "en" ? "frequently bought together" : "يشترون سوياً" %></h1>
                 <div class="main-carousel carouselShared mb-6">
 
                     <asp:Literal ID="ltFrequentlyProduct" runat="server"></asp:Literal>
@@ -113,5 +113,7 @@
                 groupCells: 2,
             });
         }
+
+        qtyElem.textContent = "4";
     </script>
 </asp:Content>

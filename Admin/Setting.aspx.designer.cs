@@ -42,6 +42,42 @@ namespace Store.Admin
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtPswd;
 
         /// <summary>
+        /// tdSender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tdSender;
+
+        /// <summary>
+        /// tdSubscription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tdSubscription;
+
+        /// <summary>
+        /// tdDbStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tdDbStatus;
+
+        /// <summary>
+        /// txtReciever control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtReciever;
+
+        /// <summary>
         /// btnEdit control.
         /// </summary>
         /// <remarks>

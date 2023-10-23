@@ -32,8 +32,8 @@
                             <div
                                 class="inline-block min-w-full shadow rounded-lg overflow-hidden">
                                 <asp:SqlDataSource ID="sqlProduct" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>'
-                                    DeleteCommand="DELETE FROM [Product] WHERE [Id] = @Id"
-                                    SelectCommand="SELECT [Product].[Id], [NameAr], [Price], [Discount], [Brand].[Name] as BrandName, [DId], ISNULL([Photo],'x') as [Photo] FROM [Product] INNER JOIN Brand ON Brand.Id = BId WHERE ([DId] = @DId) ORDER BY [Id] DESC">
+                                    DeleteCommand="DELETE FROM [Orders] WHERE [PId] = @Id;DELETE FROM [ProductPhotos] WHERE [PId] = @Id;DELETE FROM [LinkProduct] WHERE [PId] = @Id;DELETE FROM [Product] WHERE [Id] = @Id"
+                                    SelectCommand="SELECT [Product].[Id], [NameAr], [Price], [Discount], [Brand].[Name] as BrandName, [DId], [Photo] FROM [Product] INNER JOIN Brand ON Brand.Id = BId WHERE ([DId] = @DId) ORDER BY [Id] DESC">
                                     <DeleteParameters>
                                         <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                                     </DeleteParameters>
@@ -56,7 +56,7 @@
                                             <ItemTemplate>
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 w-24 h-20">
-                                                        <img class="w-full h-full rounded" src='data:image;base64,<%# Convert.ToBase64String((byte[])Eval("Photo")) %>' />
+                                                        <img class="w-full h-full rounded" src='<%# "../Uploads/Product/" + Eval("Photo") %>' />
                                                     </div>
                                                 </div>
                                             </ItemTemplate>
@@ -81,11 +81,23 @@
 
                                         <asp:TemplateField HeaderText="تعديل" ItemStyle-CssClass="py-5 border-b border-r border-gray-200 bg-white text-sm">
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="JobIdLink" runat="server"
-                                                    CommandName="EditDept"
+                                                <asp:LinkButton runat="server"
+                                                    CommandName="EditProduct"
                                                     CommandArgument='<%# Eval("Id") %>' >
                                                     <div class="text-center text-[18px]">
                                                     <i class="fa-solid fa-pen-to-square text-[#FFA500]" runat="server"></i>
+                                                </div>
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="حذف" ItemStyle-CssClass="py-5 border-b border-r border-gray-200 bg-white text-sm">
+                                            <ItemTemplate>
+                                                <asp:LinkButton runat="server"
+                                                    CommandName="DelProduct"
+                                                    CommandArgument='<%# Eval("Id") + "|" + Eval("Photo") %>' >
+                                                    <div class="text-center text-[18px]">
+                                                    <i class="deleteBtn fa-solid fa-trash-can text-[#FF0000]" runat="server"></i>
                                                 </div>
                                                 </asp:LinkButton>
                                             </ItemTemplate>
@@ -102,13 +114,13 @@
     <!-- end in table  -->
     <!-- start no data -->
     <div id="dvNotData" class="noData flex flex-col justify-center items-center" runat="server" visible="false">
-        <img src="/images/admin/noData.svg" class="w-2/4 h-96" />
+        <img data-src="../images/admin/noData.svg" class="w-2/4 h-96 lazy-load" />
         <div class="flex flex-col justify-center items-center mt-5">
             <h1 class="capitalize text-2xl text-center font-black">لا توجد منتجات لعرضها
             </h1>
             <p class="capitalize mt-3">لاضافة المنتجات يرجى الضغط</p>
             <a
-                href="MgProduct.aspx"
+                href="MgProduct.aspx?id=0"
                 class="bg-[#0074D9] mt-3 text-white rounded-md px-5 py-3 capitalize space-x-2 cursor-pointer">اضافة بيانات</a>
         </div>
     </div>

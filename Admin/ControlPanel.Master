@@ -105,6 +105,8 @@
                         href="Orders.aspx">
                         <i class="fa-solid fa-cart-flatbed-suitcase"></i>
                         <span>الطلبات</span>
+                        <span id="cntOrders" class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full" runat="server">2
+                        </span>
                     </a>
 
                     <button type="button" class="show-modal flex flex-row-reverse items-center justify-start gap-2 py-1 group hover:translate-x-[-4px] transition-all transition-delay-300">
@@ -145,7 +147,7 @@
 
 
         <!-- Main modal -->
-        <div class="modal hiddenModal">
+        <div class="modal hiddenModal fixed">
             <button type="button" class="close-modal">
                 <div class="leftright"></div>
                 <div class="rightleft"></div>
@@ -156,8 +158,8 @@
                     <ContentTemplate>
                         <label for="ddlType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
                         <asp:DropDownList ID="ddlType" CssClass="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" AutoPostBack="true" OnSelectedIndexChanged="ddlType_SelectedIndexChanged" runat="server">
-                            <asp:ListItem Selected="True">Brand</asp:ListItem>
-                            <asp:ListItem>Size</asp:ListItem>
+                            <%--<asp:ListItem Selected="True">Brand</asp:ListItem>--%>
+                            <asp:ListItem Selected="True">Size</asp:ListItem>
                             <asp:ListItem>Color</asp:ListItem>
                         </asp:DropDownList>
                         <br />

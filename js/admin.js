@@ -24,6 +24,37 @@ btnCloseOpen.addEventListener("click", function () {
     }
 });
 
+//lazyload
+document.addEventListener('DOMContentLoaded', function () {
+  const lazyImages = document.querySelectorAll('.lazy-load');
+
+  const options = {
+    root: null, // Use the viewport as the root
+    rootMargin: '0px',
+    threshold: 0.1 // 10% of the image must be visible
+  };
+
+  const observer = new IntersectionObserver(function (entries, observer) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const image = entry.target;
+        const src = image.getAttribute('data-src');
+
+        image.onload = function () {
+          image.classList.add('loaded');
+          observer.unobserve(image);
+        };
+
+        image.src = src;
+      }
+    });
+  }, options);
+
+  lazyImages.forEach(function (image) {
+    observer.observe(image);
+  });
+});
+
 // startin remove row from table slider
 const deleteButtons = document.querySelectorAll(".deleteBtn");
 

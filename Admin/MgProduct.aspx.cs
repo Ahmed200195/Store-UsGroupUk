@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Web.DynamicData;
 
 namespace Store.Admin
 {
@@ -15,11 +17,14 @@ namespace Store.Admin
         {
             Page.Title = "UsGroupUk | MgProduct";
 
-            ddlSize.DataBind();
-            ddlSize.Items.Insert(0, new ListItem() { Text = "No Thing", Value = "", Selected = true });
+            if (!IsPostBack)
+            {
+                ddlSize.DataBind();
+                ddlSize.Items.Insert(0, new ListItem() { Text = "No Thing", Value = "", Selected = true });
 
-            ddlColor.DataBind();
-            ddlColor.Items.Insert(0, new ListItem() { Text = "No Thing", Value = "", Selected = true });
+                ddlColor.DataBind();
+                ddlColor.Items.Insert(0, new ListItem() { Text = "No Thing", Value = "", Selected = true });
+            }
 
             if (Request.QueryString["id"] != "0")
             {
@@ -37,9 +42,11 @@ namespace Store.Admin
                         txtInfoEn.Value = row["infoEn"].ToString();
                         txtCnt.Value = row["Cnt"].ToString();
                         ddlSize.SelectedValue = row["SId"].ToString();
+                        ViewState["oldUpload"] = "";
                         if (!Convert.IsDBNull(row["Photo"]))
                         {
-                            preview2.InnerHtml = @"<img height=""100"" width=""100"" src=""data:image;base64," + Convert.ToBase64String((byte[])row["Photo"]) + @""">";
+                            ViewState["oldUpload"] = row["Photo"];
+                            preview2.InnerHtml = $@"<img height=""100"" width=""100"" class=""lazy-load"" data-src=""{"../Uploads/Product/" + row["Photo"]}"">";
                         }
                         ddlDept.SelectedValue = row["DId"].ToString();
                         ddlBrand.SelectedValue = row["BId"].ToString();
@@ -58,12 +65,20 @@ namespace Store.Admin
             if (txtNameAr.Value != "" && txtNameEn.Value != "" && txtPrice.Value != "" && txtDisc.Value != "" &&
                 ddlDept.SelectedItem.Text != "" && ddlBrand.SelectedItem.Text != "" && txtInfoAr.Value != "" && txtInfoEn.Value != "")
             {
-                
+                ClsBasic clsBasic = new ClsBasic();
+                string id = clsBasic.GetIndexId("Product"), fileName2 = "BackProduct" + id;
                 if (Request.QueryString["id"] == "0")
                 {
                     if (!FileUpload1.HasFiles || !FileUpload2.HasFile)
                     {
                         return;
+                    }
+                    if (FileUpload2.HasFile)
+                    {
+                        string type = FileUpload2.PostedFile.ContentType;
+                        fileName2 = fileName2 + "." + type.Substring(type.IndexOf('/') + 1);
+                        string path = Path.Combine(Server.MapPath("~/Uploads/Product"), fileName2);
+                        FileUpload2.SaveAs(path);
                     }
                     sqlProduct.InsertParameters["NameAr"].DefaultValue = txtNameAr.Value;
                     sqlProduct.InsertParameters["NameEn"].DefaultValue = txtNameEn.Value;
@@ -71,6 +86,7 @@ namespace Store.Admin
                     sqlProduct.InsertParameters["Discount"].DefaultValue = txtDisc.Value;
                     sqlProduct.InsertParameters["infoAr"].DefaultValue = txtInfoAr.Value;
                     sqlProduct.InsertParameters["infoEn"].DefaultValue = txtInfoEn.Value;
+                    sqlProduct.InsertParameters["Photo"].DefaultValue = fileName2;
                     sqlProduct.InsertParameters["Cnt"].DefaultValue = txtCnt.Value;
                     sqlProduct.InsertParameters["DId"].DefaultValue = ddlDept.SelectedValue;
                     sqlProduct.InsertParameters["BId"].DefaultValue = ddlBrand.SelectedValue;
@@ -80,16 +96,25 @@ namespace Store.Admin
                 }
                 else
                 {
+                    string fileName = string.Empty;
                     if (FileUpload2.HasFile)
                     {
-                        sqlBgProduct.Update();
+                        fileName = "BackProduct" + FileUpload2.FileName;
+                        string path = Path.Combine(Server.MapPath("~/Uploads/Product"), fileName);
+                        if (ViewState["oldUpload"].ToString() != string.Empty)
+                        {
+                            File.Delete(Path.Combine(Server.MapPath("~/Uploads/Product"), ViewState["oldUpload"].ToString()));
+                        }
+                        FileUpload2.SaveAs(path);
                     }
+                    
                     sqlProduct.UpdateParameters["NameAr"].DefaultValue = txtNameAr.Value;
                     sqlProduct.UpdateParameters["NameEn"].DefaultValue = txtNameEn.Value;
                     sqlProduct.UpdateParameters["Price"].DefaultValue = txtPrice.Value;
                     sqlProduct.UpdateParameters["Discount"].DefaultValue = txtDisc.Value;
                     sqlProduct.UpdateParameters["infoAr"].DefaultValue = txtInfoAr.Value;
                     sqlProduct.UpdateParameters["infoEn"].DefaultValue = txtInfoEn.Value;
+                    sqlProduct.UpdateParameters["Photo"].DefaultValue = fileName;
                     sqlProduct.UpdateParameters["Cnt"].DefaultValue = txtCnt.Value;
                     sqlProduct.UpdateParameters["DId"].DefaultValue = ddlDept.SelectedValue;
                     sqlProduct.UpdateParameters["BId"].DefaultValue = ddlBrand.SelectedValue;
@@ -100,71 +125,61 @@ namespace Store.Admin
                 }
             }
         }
-        protected void sqlProduct_Inserting(object sender, SqlDataSourceCommandEventArgs e)
-        {
-            int len = FileUpload2.PostedFile.ContentLength;
-            byte[] pic = new byte[len + 1];
-            FileUpload2.PostedFile.InputStream.Read(pic, 0, len);
-            ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.Image;
-            e.Command.Parameters["@Photo"].Value = pic;
-        }
         protected void sqlProduct_Inserted(object sender, SqlDataSourceStatusEventArgs e)
         {
+            ClsBasic clsBasic = new ClsBasic();
+            string path, fileName, type;
+            int count = int.Parse(clsBasic.GetIndexId("ProductPhotos"));
             foreach (HttpPostedFile file in FileUpload1.PostedFiles)
             {
-                postedFile = file;
-                sqlImgProduct.InsertParameters["Name"].DefaultValue = postedFile.FileName;
-                sqlImgProduct.InsertParameters["ContentType"].DefaultValue = postedFile.ContentType;
+                type = file.ContentType;
+                fileName = count + "ItemProduct" + e.Command.Parameters["@Identity"].Value + "." + type.Substring(type.IndexOf('/') + 1);
+                path = Path.Combine(Server.MapPath("~/Uploads/Product"), fileName);
+                file.SaveAs(path);
+                sqlImgProduct.InsertParameters["Name"].DefaultValue = fileName;
                 sqlImgProduct.InsertParameters["PId"].DefaultValue = e.Command.Parameters["@Identity"].Value.ToString();
                 sqlImgProduct.Insert();
+                count++;
             }
             Response.Redirect("ViewProduct.aspx");
         }
         protected void sqlProduct_Updated(object sender, SqlDataSourceStatusEventArgs e)
         {
+            ClsBasic clsBasic = new ClsBasic();
+            string path, fileName, type;
+            int count = int.Parse(clsBasic.GetIndexId("ProductPhotos"));
             if (FileUpload1.HasFiles)
             {
                 foreach (HttpPostedFile file in FileUpload1.PostedFiles)
                 {
-                    postedFile = file;
-                    sqlImgProduct.InsertParameters["Name"].DefaultValue = postedFile.FileName;
-                    sqlImgProduct.InsertParameters["ContentType"].DefaultValue = postedFile.ContentType;
+                    type = file.ContentType;
+                    fileName = count + "ItemProduct" + Request.QueryString["id"] + "." + type.Substring(type.IndexOf('/') + 1);
+                    path = Path.Combine(Server.MapPath("~/Uploads/Product"), fileName);
+                    file.SaveAs(path);
+
+                    sqlImgProduct.InsertParameters["Name"].DefaultValue = fileName;
                     sqlImgProduct.InsertParameters["PId"].DefaultValue = Request.QueryString["id"];
                     sqlImgProduct.Insert();
+                    count++;
                 }
             }
             Response.Redirect("ViewProduct.aspx");
         }
-
-        protected void sqlImgProduct_Inserting(object sender, SqlDataSourceCommandEventArgs e)
-        {
-            int len = postedFile.ContentLength;
-            byte[] pic = new byte[len + 1];
-            postedFile.InputStream.Read(pic, 0, len);
-            ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.Image;
-            e.Command.Parameters["@Photo"].Value = pic;
-        }
-        HttpPostedFile postedFile;
 
 
         protected void gvImages_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "DelPhoto")
             {
-                sqlImgProduct.DeleteParameters["Id"].DefaultValue = e.CommandArgument.ToString();
+                string key, id, name;
+                key = e.CommandArgument.ToString();
+                id = key.Substring(0, key.IndexOf('|'));
+                name = key.Substring(key.IndexOf('|') + 1);
+                File.Delete(Path.Combine(Server.MapPath("~/Uploads/Product"), name));
+                sqlImgProduct.DeleteParameters["Id"].DefaultValue = id;
                 sqlImgProduct.Delete();
                 gvImages.DataBind();
             }
-        }
-
-        protected void sqlBgProduct_Updating(object sender, SqlDataSourceCommandEventArgs e)
-        {
-            e.Command.Parameters["@Id"].Value = Request.QueryString["id"];
-            int len = FileUpload2.PostedFile.ContentLength;
-            byte[] pic = new byte[len + 1];
-            FileUpload2.PostedFile.InputStream.Read(pic, 0, len);
-            ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.Image;
-            e.Command.Parameters["@Photo"].Value = pic;
         }
     }
 }

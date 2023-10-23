@@ -27,7 +27,7 @@
 <!-- start in category -->
 
         <div class="container mx-auto px-8 mt-10">
-            <h1 class="titleMain text-center mb-5"><%= Application["lang"].ToString() == "en" ? "Shop By Category" : "تسوق حسب الاقسام" %></h1>
+            <h1 class="titleMain text-center mb-5"><%= Session["lang"].ToString() == "en" ? "Shop By Category" : "تسوق حسب الاقسام" %></h1>
             <div class="main-carousel carouselCategory">
                 <!-- carsoule slides -->
                 <asp:Literal ID="ltCategory" runat="server"></asp:Literal>
@@ -37,7 +37,7 @@
 
     <!-- start in featured product -->
     <section id="dvFeatured" class="bg-gray-200 py-10 mt-5" runat="server">
-        <h1 class="titleMain text-center "><%= Application["lang"].ToString() == "en" ? "Featured Products" : "الأكثر مبيعاً" %></h1>
+        <h1 class="titleMain text-center "><%= Session["lang"].ToString() == "en" ? "Featured Products" : "الأكثر مبيعاً" %></h1>
         <div class="container px-4 mx-auto">
             <div
                 class="product-card-container pt-4 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-start items-center gap-4 transition-all delay-150 ease-in">

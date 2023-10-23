@@ -58,23 +58,24 @@
                             <asp:SqlDataSource ID="sqlProduct" runat="server" ConnectionString='<%$ ConnectionStrings:dbUsGroupKw %>'
                                     UpdateCommand="UPDATE Client SET DateRe = GETDATE(), Received = 1 WHERE Id = @CId"
                                     SelectCommand="
-                                    SELECT Product.Id, ISNULL(Product.[Photo],'x') as [Photo], Product.NameAr as ProductName, [Dept].[NameAr] as DeptName, 
-                                    [Color].[Name] as ColorName, [Size].[Name] as SizeName,[Brand].[Name] as BrandName,
+                                    SELECT Product.Id, Product.[Photo], Product.NameAr as ProductName, [Dept].[NameAr] as DeptName, [Brand].[Name] as BrandName,
                                     (Total / Orders.Cnt) AS Price, Orders.Cnt, Total
                                     FROM Product
                                     INNER JOIN Orders ON Product.Id = Orders.PId
-                                    INNER JOIN Color ON Color.Id = Product.CId
-                                    INNER JOIN Size ON Size.Id = Product.SId
                                     INNER JOIN Brand ON Brand.Id = Product.BId
                                     INNER JOIN Dept ON Dept.Id = Product.DId
                                     WHERE Orders.CId = @CId
-                                ">
+                                "
+                                DeleteCommand="DELETE FROM Orders WHERE CId = @CId; DELETE FROM Client WHERE Id = @CId;">
                                 <SelectParameters>
                                     <asp:QueryStringParameter Name="CId" QueryStringField="id" DefaultValue="0" />
                                 </SelectParameters>
                                 <UpdateParameters>
                                     <asp:QueryStringParameter Name="CId" QueryStringField="id" DefaultValue="0" />
                                 </UpdateParameters>
+                                <DeleteParameters>
+                                    <asp:QueryStringParameter Name="CId" QueryStringField="id" DefaultValue="0" />
+                                </DeleteParameters>
                                 </asp:SqlDataSource>
                                 <asp:GridView
                                     ID="gvProduct"
@@ -90,7 +91,7 @@
                                             <ItemTemplate>
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 w-24 h-20">
-                                                        <img class="w-full h-full rounded" src='data:image;base64,<%# Convert.ToBase64String((byte[])Eval("Photo")) %>' />
+                                                        <img class="w-full h-full rounded lazy-load" data-src='../Uploads/Product/<%# Eval("Photo") %>' />
                                                     </div>
                                                 </div>
                                             </ItemTemplate>
@@ -102,14 +103,6 @@
                                         </asp:BoundField>
 
                                         <asp:BoundField DataField="DeptName" HeaderText="اسم الصنف" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
-                                        </asp:BoundField>
-
-                                        <asp:BoundField DataField="ColorName" HeaderText="اللون" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
-                                            <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
-                                        </asp:BoundField>
-
-                                        <asp:BoundField DataField="SizeName" HeaderText="القياس" ItemStyle-CssClass="px-5 py-5 border-b border-r border-gray-200 bg-white text-sm">
                                             <HeaderStyle CssClass="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold uppercase tracking-wider bg-gray-700 text-white" />
                                         </asp:BoundField>
 
@@ -137,6 +130,7 @@
                                 class="font-normal text-[#3a4750]">2000</span></h1>
 
                             <div class="checkSend  flex items-center gap-2">
+                                <button id="btnDeleteOrder" type="button" class="text-white bg-red-400 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" runat="server" onserverclick="btnDeleteOrder_ServerClick">حذف الطلب</button>
                                 <button id="btnReceived" type="button" class="text-white bg-green-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" runat="server" onserverclick="btnReceived_ServerClick">استلام</button>
                             </div>
                         </div>

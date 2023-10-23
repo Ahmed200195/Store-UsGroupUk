@@ -195,15 +195,6 @@ namespace Store.Admin
         protected global::System.Web.UI.WebControls.GridView gvImages;
 
         /// <summary>
-        /// sqlBgProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlBgProduct;
-
-        /// <summary>
         /// sqlProduct control.
         /// </summary>
         /// <remarks>

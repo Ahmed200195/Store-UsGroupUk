@@ -5,6 +5,7 @@ using System.EnterpriseServices;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using HtmlAgilityPack;
+using System.Data.Common;
 
 namespace Store
 {
@@ -64,15 +65,15 @@ namespace Store
             CloseDataBase(conDb);
         }
 
-        public void EditUser(int id, string name, string email, string pswd)
+        public void EditUser(int id, string name, string email, string pswd, string receiver)
         {
             var conDb = OpenDataBase();
-            sqlDbCommand = new SqlCommand($"UPDATE [Login] SET Name = '{name}', Email = '{email}', Password = '{pswd}' WHERE Id = " + id, conDb);
+            sqlDbCommand = new SqlCommand($"UPDATE [Login] SET Name = '{name}', Email = '{email}', Password = '{pswd}', Receiver = '{receiver}' WHERE Id = " + id, conDb);
             sqlDbCommand.ExecuteNonQuery();
             conDb.Close();
         }
 
-        public void newOrder(string dvInfoProduct, List<string> list)
+        public string newOrder(string dvInfoProduct, List<string> list)
         {
             var conDb = OpenDataBase();
             sqlDbCommand = new SqlCommand("INSERT INTO Client([Name], [Phone], [Address], [DateOr], Piece, Home, Street) VALUES(@name, @phone, @address, GETDATE(), @piece, @home, @street); SELECT SCOPE_IDENTITY();", conDb);
@@ -117,6 +118,18 @@ namespace Store
                 }
             }
             conDb.Close();
+            return pkClient;
+        }
+
+        public string GetIndexId(string table)
+        {
+            dataTable = new DataTable();
+            var conDb = OpenDataBase();
+            sqlDbCommand = new SqlCommand($"SELECT COALESCE(MAX(id), 0) + 1 FROM {table}", conDb);
+            sqlDbDataAdapter = new SqlDataAdapter(sqlDbCommand);
+            sqlDbDataAdapter.Fill(dataTable);
+            CloseDataBase(conDb);
+            return dataTable.Rows[0][0].ToString();
         }
     }
 }

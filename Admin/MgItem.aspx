@@ -52,9 +52,9 @@
                         <div class="w-96 h-auto">
                             <img
                                 id="imgView"
-                                src="../images/admin/imageEmpty.png"
+                                data-src="../images/admin/imageEmpty.png"
                                 alt=""
-                                class="placeImg bg-[#f8f9fe] w-full"
+                                class="placeImg bg-[#f8f9fe] w-full lazy-load"
                                 runat="server"/>
                         </div>
                     </div>
@@ -80,12 +80,12 @@
                                     <InsertParameters>
                                         <asp:Parameter Name="NameAr" Type="String"></asp:Parameter>
                                         <asp:Parameter Name="NameEn" Type="String"></asp:Parameter>
-                                        <asp:Parameter Name="Photo" Type="Object"></asp:Parameter>
+                                        <asp:Parameter Name="Photo" Type="String"></asp:Parameter>
                                     </InsertParameters>
                                     <UpdateParameters>
                                         <asp:Parameter Name="NameAr" Type="String"></asp:Parameter>
                                         <asp:Parameter Name="NameEn" Type="String"></asp:Parameter>
-                                        <asp:Parameter Name="Photo" Type="Object"></asp:Parameter>
+                                        <asp:Parameter Name="Photo" Type="String"></asp:Parameter>
                                         <asp:Parameter Name="Id" Type="Int32"></asp:Parameter>
                                     </UpdateParameters>
                                 </asp:SqlDataSource>
@@ -103,7 +103,7 @@
                                             <ItemTemplate>
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 w-24 h-20">
-                                                        <img class="w-full h-full rounded" src='data:image;base64,<%# Convert.ToBase64String((byte[])Eval("Photo")) %>' />
+                                                        <img class="w-full h-full rounded lazy-load" data-src='<%# "../Uploads/Dept/" + Eval("Photo") %>' />
                                                     </div>
                                                 </div>
                                             </ItemTemplate>
@@ -140,8 +140,8 @@
                 <!-- start no data -->
                 <div id="dvNoData" class="noData flex flex-col justify-center items-center" runat="server" visible="false">
                     <img
-                        src="../images/admin/noData.svg"
-                        class="w-full md:w-2/4 h-96" />
+                        data-src="../images/admin/noData.svg"
+                        class="w-full md:w-2/4 h-96 lazy-load" />
                     <div class="flex flex-col justify-center items-center mt-5">
                         <h1 class="capitalize text-2xl text-center font-black">لا توجد اصناف لعرضها
                         </h1>

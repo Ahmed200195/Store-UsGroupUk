@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace Store.Admin
 {
-    public partial class PeOrder : System.Web.UI.Page
+    public partial class PeOrder : Page
     {
         DataRow dataRow;
         ClsBasic clsBasic;
@@ -40,6 +40,12 @@ namespace Store.Admin
         protected void btnReceived_ServerClick(object sender, EventArgs e)
         {
             sqlProduct.Update();
+            Response.Redirect("Orders.aspx");
+        }
+
+        protected void btnDeleteOrder_ServerClick(object sender, EventArgs e)
+        {
+            sqlProduct.Delete();
             Response.Redirect("Orders.aspx");
         }
     }

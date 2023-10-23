@@ -6,6 +6,37 @@ window.onload = () => {
     loader.style.display = "none";
 };
 
+//lazyload
+document.addEventListener('DOMContentLoaded', function () {
+    const lazyImages = document.querySelectorAll('.lazy-load');
+
+    const options = {
+      root: null, // Use the viewport as the root
+      rootMargin: '0px',
+      threshold: 0.1 // 10% of the image must be visible
+    };
+
+    const observer = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          const image = entry.target;
+          const src = image.getAttribute('data-src');
+
+          image.onload = function () {
+            image.classList.add('loaded');
+            observer.unobserve(image);
+          };
+
+          image.src = src;
+        }
+      });
+    }, options);
+
+    lazyImages.forEach(function (image) {
+      observer.observe(image);
+    });
+  });
+
 // ������ ��� ������ <html>
 const htmlElement = document.documentElement;
 
@@ -36,6 +67,7 @@ function funMinsPlusPriceChange(btnOperation, operation) {
     let price = apperentElement.querySelector(".priceFromCart span");
     let qty = apperentElement.querySelector(".numberQty");
     let dataCount = apperentElement.dataset.count;
+    
 
     if (operation === "+") {
         if (parseInt(qty.textContent) < dataCount) {
@@ -52,6 +84,16 @@ function funMinsPlusPriceChange(btnOperation, operation) {
 
     // suptotal
     SuptotalPrice();
+
+    var parameter = { dvInfoProduct: $('#dvInfoProduct').html(), dataPk: selectedProducts  };
+    $.ajax({
+        type: "POST",
+        url: "../Client/WebServiceSendDt.asmx/SaveCart",
+        cache: false,
+        data: JSON.stringify(parameter),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    });
 }
 // function main
 
@@ -73,14 +115,41 @@ backToTop.addEventListener("click", (e) => {
 //----------------------------------------- end baxk to top ------------------------------------------------
 
 //----------------------------------------- start in search mobile ------------------------------------------------
-let iconSearchMobile = document.querySelector(".iconSearchMobile");
-let search = document.querySelector(".search");
+// let iconSearchMobile = document.querySelector(".iconSearchMobile");
+// let search = document.querySelector(".search");
 
-iconSearchMobile.addEventListener("click", (e) => {
-    search.style.display = "flex";
-    search.style.transform = "scale(1)";
+// iconSearchMobile.addEventListener("click", (e) => {
+//     search.style.display = "flex";
+//     search.style.transform = "scale(1)";
+// });
+//----------------------------------------- end in search mobile ------------------------------------------------
+
+
+//----------------------------------------- start in search mobile ------------------------------------------------
+const searchButton = document.getElementById("searchButton");
+const searchBox = document.getElementById("searchBox");
+
+searchButton.addEventListener("click", () => {
+  searchBox.classList.toggle("activeSearch");
+  searchBox.classList.toggle("notActiveSearch");
+});
+
+// أضف مستمع للنقر على الوثيقة لإخفاء مربع البحث إذا تم النقر خارجه (للهاتف الجوال فقط)
+document.addEventListener("click", function (event) {
+  const isMobile = window.innerWidth <= 768; // تعديل الحجم حسب متطلباتك
+
+  if (isMobile) {
+    if (
+      !searchBox.contains(event.target) &&
+      !searchButton.contains(event.target)
+    ) {
+      searchBox.classList.remove("activeSearch");
+      searchBox.classList.add("notActiveSearch");
+    }
+  }
 });
 //----------------------------------------- end in search mobile ------------------------------------------------
+
 
 // ------------------------------------------------ start in cart ------------------------------------------------
 
@@ -111,7 +180,7 @@ closeCartFun();
 //add to cart
 
 let addToCartButtons = document.querySelectorAll(".add-to-cart");
-let selectedProducts = []; // ������ ����� ��� ������� ���� �� ����� �����
+//let selectedProducts = []; // ������ ����� ��� ������� ���� �� ����� �����
 
 addToCartButtons.forEach((button) => {
     button.addEventListener("click", () => addToCart(button));
@@ -165,7 +234,6 @@ function addToCart(button) {
 function minsPlusNumberCount() {
     let plusCart = document.querySelectorAll(".elementCart .plus");
     let minsCart = document.querySelectorAll(".elementCart .mins");
-
     plusCart.forEach((plusBtn) => {
         plusBtn.addEventListener("click", () => {
             funMinsPlusPriceChange(plusBtn, "+");
@@ -224,10 +292,20 @@ function deletElementCart() {
             setTimeout(() => {
                 elementCart.remove();
                 SuptotalPrice();
-            }, 500);
 
-            deleteIdToArray(elementCart);
-            counterCart();
+                deleteIdToArray(elementCart);
+                counterCart();
+
+                var parameter = { dvInfoProduct: $('#dvInfoProduct').html(), dataPk: selectedProducts  };
+                $.ajax({
+                    type: "POST",
+                    url: "../Client/WebServiceSendDt.asmx/SaveCart",
+                    cache: false,
+                    data: JSON.stringify(parameter),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json'
+                });
+            }, 500);
         });
     });
 }
@@ -292,8 +370,7 @@ function filterProdcut(
         infoProductCart.forEach((cart) => {
             cart.innerHTML += `
                 <div class="elementCart flex mt-2" data-id="${dataId}" data-count="${dataCount}">
-                <figure class="relative w-1/4  ${langAttributeValue === "en" ? "mr-4" : "ml-4"
-                                }  ">
+                <figure class="relative w-1/4 ${langAttributeValue === "en" ? "mr-4" : "ml-4" }">
                 <img src="${productImg}" class="rounded h-full w-full" alt="" />
                 <span class="delete flex justify-center items-center absolute top-0 left-0 w-full h-full text-white">
                 <i class="fa-solid fa-xmark"></i>
@@ -305,7 +382,7 @@ function filterProdcut(
                 </h2>
                 <p class="priceFromCart capitalize text-sm text-gray-400 mb-2.5">
                 ${langAttributeValue === "en" ? "unit price" : "سعر الوحدة"
-                                }: <span>${productPrice}</span> ${langAttributeValue === "en" ? " kd" : "د.ك"
+                                }: <span>${productPrice}</span> ${langAttributeValue === "en" ? "kd" : "د.ك"
                                 }
                 </p>
 
@@ -331,11 +408,9 @@ function filterProdcut(
                 </div>
 
                 <div class="flex justify-between items-center mt-4">
-                <div class="flex ${langAttributeValue === "en" ? "flex-row" : "flex-row-reverse"
-                                } qty h-9">
+                <div class="flex ${langAttributeValue === "en" ? "flex-row" : "flex-row-reverse"} qty h-9">
                 <button type="button" class="px-2 py-1 rounded-l-md mins">-</button>
-                <span class="flex justify-center items-center w-11 text-center numberQty">${productCount ? productCount.textContent : "1"
-                                }</span>
+                <span class="flex justify-center items-center w-11 text-center numberQty">${productCount ? productCount.textContent : "1"}</span>
                 <button type="button" class="px-2 py-1 rounded-r-md plus">+</button>
                 </div>
                 <div class="suptotalTotalPrice">
@@ -348,7 +423,16 @@ function filterProdcut(
                 </div>
                 </div>
                 `;
-                langAttributeValue === "en"
+                var parameter = { dvInfoProduct: $('#dvInfoProduct').html(), dataPk: selectedProducts };
+                $.ajax({
+                    type: "POST",
+                    url: "../Client/WebServiceSendDt.asmx/SaveCart",
+                    cache: false,
+                    data: JSON.stringify(parameter),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function () {
+                        langAttributeValue === "en"
                     ? Swal.fire({
                         icon: 'success',
                         title: 'Added',
@@ -359,10 +443,13 @@ function filterProdcut(
                         title: 'تم الاضافة',
                         text: 'تم ارسال المنتج الى السلة',
                     });
+                    }
+                });
+                
                 setTimeout(function () {
-                    document.getElementsByClassName('swal2-container')[0].classList.add('hidden');
+                    document.getElementsByClassName('swal2-confirm')[0].click();
                 }, 1500)
-            minsPlusNumberCount(dataCount);
+            minsPlusNumberCount();
             SuptotalPrice();
         });
     }
@@ -646,6 +733,8 @@ if (productDetails) {
     };
 
     addEventOnElem(qtyMinusBtn, "click", decreaseProductQty);
+
+    console.log(qtyElem.textContent)
 }
 
 // start in shared product

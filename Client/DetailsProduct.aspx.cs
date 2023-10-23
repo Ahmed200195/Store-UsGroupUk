@@ -18,48 +18,74 @@ namespace Store.Client
         DataSet dataSet;
         protected void Page_Load(object sender, EventArgs e)
         {
-            Page.Title = Application["lang"].ToString() == "en" ? "UsGroupUk | Product Details" : "UsGroupUk | تفاصيل المنتج";
-            Name = Application["lang"].ToString() == "en" ? "NameEn" : "NameAr";
-            Info = Application["lang"].ToString() == "en" ? "InfoEn" : "InfoAr";
-            Size = Application["lang"].ToString() == "en" ? "Size" : "القياس";
-            Color = Application["lang"].ToString() == "en" ? "Color" : "اللون";
-            addToCart = Application["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة";
-            Off = Application["lang"].ToString() == "en" ? "OFF" : "خصم";
-            unitPrice = Application["lang"].ToString() == "en" ? "Unit Price" : "سعر الوحدة";
-            many = Application["lang"].ToString() == "en" ? "KD" : "د.ك";
+            if (Session["lang"] == null)
+            {
+                Session["lang"] = "ar";
+            }
+            Page.Title = Session["lang"].ToString() == "en" ? "UsGroupUk | Product Details" : "UsGroupUk | تفاصيل المنتج";
+            Name = Session["lang"].ToString() == "en" ? "NameEn" : "NameAr";
+            Info = Session["lang"].ToString() == "en" ? "InfoEn" : "InfoAr";
+            Size = Session["lang"].ToString() == "en" ? "Size" : "القياس";
+            Color = Session["lang"].ToString() == "en" ? "Color" : "اللون";
+            addToCart = Session["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة";
+            Off = Session["lang"].ToString() == "en" ? "OFF" : "خصم";
+            unitPrice = Session["lang"].ToString() == "en" ? "Unit Price" : "سعر الوحدة";
+            many = Session["lang"].ToString() == "en" ? "KD" : "د.ك";
 
             string queries = $@"
-                SELECT Product.Id, NameEn, NameAr, InfoEn, InfoAr, Size.Name as SizeName, Color.Name as ColorName, Photo, Price, Discount, DId FROM Product INNER JOIN Size ON Size.Id = SId INNER JOIN Color ON Color.Id = CId WHERE Product.Id = {Request.QueryString["id"]};
+                SELECT Product.Id, NameEn, NameAr, InfoEn, InfoAr, Size.Name as SizeName, Color.Name as ColorName, Photo, Price, Discount, DId FROM Product FULL OUTER JOIN Size ON Size.Id = SId FULL OUTER JOIN Color ON Color.Id = CId WHERE Product.Id = {Request.QueryString["id"]};
                 SELECT * FROM ProductPhotos WHERE PId = {Request.QueryString["id"]};
-                SELECT TOP 4 Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt, DId FROM Product INNER JOIN [Color] ON Color.Id = Product.CId INNER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 AND Product.Id IN (SELECT PId FROM LinkProduct WHERE Id IN (SELECT TOP 1 Id FROM InfoLinkProduct)) ORDER BY NEWID();
+                SELECT TOP 4 Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt, DId FROM Product FULL OUTER JOIN [Color] ON Color.Id = Product.CId FULL OUTER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 AND Product.Id IN (SELECT PId FROM LinkProduct WHERE Id IN (SELECT Id FROM InfoLinkProduct)) ORDER BY NEWID();
             ";
             clsBasic = new ClsBasic();
             dataSet = clsBasic.SelectMultiple(queries);
-
-
-            dataRow = dataSet.Tables[0].Rows[0];
+            
+            if (dataSet.Tables[0].Rows.Count > 0)
+            {
+				dataRow = dataSet.Tables[0].Rows[0];
+			}
+            else
+            {
+                dataRow = clsBasic.SelectData("Product.Id, NameEn, NameAr, InfoEn, InfoAr, Photo, Price, Discount, DId", $"Product WHERE Product.Id = {Request.QueryString["id"]};").Rows[0];
+			}
 
             ltImgSilder.Text = string.Empty;
             ltImgSilder.Text += $@"
                             <figure class=""product-banner min-w-full rounded-2xl"">
-                                <img src=""data:image;base64,{Convert.ToBase64String((byte[])dataRow["Photo"])}"" loading=""lazy"" alt=""{dataRow[Name]}""
-                                    class=""imgProduct img-cover w-full h-full rounded-2xl"" loading=""lazy"" />
+                                <img data-src=""../Uploads/Product/{dataRow["Photo"]}""  alt=""{dataRow[Name]}""
+                                    class=""imgProduct img-cover w-full h-full rounded-2xl lazy-load""  />
                             </figure>
                 ";
             foreach (DataRow row in dataSet.Tables[1].Rows)
             {
                 ltImgSilder.Text += $@"
                             <figure class=""product-banner min-w-full rounded-2xl"">
-                                <img src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}"" loading=""lazy"" alt=""{row["Name"]}""
-                                    class=""img-cover w-full h-full rounded-2xl"" loading=""lazy"" />
+                                <img data-src=""../Uploads/Product/{row["Name"]}""  alt=""{row["Name"]}""
+                                    class=""img-cover w-full h-full rounded-2xl lazy-load""  />
                             </figure>
                 ";
             }
 
             titleProduct.InnerText = dataRow[Name].ToString();
             InfoProdcut.InnerText = dataRow[Info].ToString();
-            snColor.InnerText = dataRow["ColorName"].ToString();
-            snSize.InnerText = dataRow["SizeName"].ToString();
+
+            string color =string.Empty, size = string.Empty;
+            if (dataRow.Table.Columns.Contains("ColorName"))
+            {
+				snColor.InnerText = dataRow["ColorName"].ToString();
+			}
+            else
+            {
+				titleColor.Visible= false;
+			}
+			if (dataRow.Table.Columns.Contains("SizeName"))
+			{
+				snSize.InnerText = dataRow["SizeName"].ToString();
+			}
+			else
+			{
+				titleSize.Visible = false;
+			}
 
             string disc = string.Empty, finalPrice = string.Empty, discPrice = string.Empty;
             finalPrice = dataRow["Price"].ToString();
@@ -103,12 +129,12 @@ namespace Store.Client
                         finalPrice = row["Discount"].ToString();
                     }
                     ltFrequentlyProduct.Text += $@"
-                    <div class=""carousel-cell w-2/4"">
+                    <div class=""carousel-cell md:w-2/4 w-full"">
                         <div
                             class=""productElement  relative  flex flex-col w-[95%] overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{row["Id"]}"" data-count=""{row["Cnt"]}"">
                             <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"">
-                                <img class=""imgProduct object-fill w-full h-full"" src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}""
-                                    alt=""product image"" loading=""lazy"" />
+                                <img class=""imgProduct object-fill w-full h-full lazy-load"" data-src=""../Uploads/Product/{row["Photo"]}""
+                                    alt=""product image""  />
                                 {disc}
                             </a>
                             <div class=""mt-4 px-5 pb-5"">

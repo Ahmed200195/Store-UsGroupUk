@@ -3,6 +3,8 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Web;
+using System.IO;
 
 namespace Store.Admin
 {
@@ -25,18 +27,37 @@ namespace Store.Admin
                     dataRow = clsBasic.SelectData("*", "Dept WHERE Id = " + Request.QueryString["id"]).Rows[0];
                     txtNameAr.Value = dataRow["NameAr"].ToString();
                     txtNameEn.Value = dataRow["NameEn"].ToString();
-                    imgView.Attributes["src"] = "data:image;base64," + Convert.ToBase64String((byte[])dataRow["Photo"]);
+                    imgView.Attributes["data-src"] = "../Uploads/Dept/" + dataRow["Photo"].ToString();
+                    ViewState["oldUpload"] = dataRow["Photo"].ToString();
                 }
             }
         }
 
         protected void btnAddDept_ServerClick(object sender, EventArgs e)
         {
+            ClsBasic clsBasic = new ClsBasic();
+            string id = clsBasic.GetIndexId("Dept"), fileName = "BackDept" + id;
+            string type = inputFile.PostedFile.ContentType;
+            fileName = fileName + "." + type.Substring(type.IndexOf('/') + 1);
+
             if (txtNameAr.Value != "" && txtNameEn.Value != "")
             {
                 if (btnAddDept.InnerText.Contains("تعديل"))
                 {
-                    sqlDept.UpdateCommand = !inputFile.HasFile ? sqlDept.UpdateCommand.Replace(", [Photo] = @Photo", "") : sqlDept.UpdateCommand;
+                    if (!inputFile.HasFile)
+                    {
+                        sqlDept.UpdateCommand = sqlDept.UpdateCommand.Replace(", [Photo] = @Photo", "");
+                    }
+                    else
+                    {
+                        string path = Path.Combine(Server.MapPath("~/Uploads/Dept"), "Dept" + inputFile.FileName);
+                        if (ViewState["oldUpload"].ToString() != "")
+                        {
+                            File.Delete(Path.Combine(Server.MapPath("~/Uploads/Dept"), ViewState["oldUpload"].ToString()));
+                        }
+                        inputFile.SaveAs(path);
+                        sqlDept.UpdateParameters["Photo"].DefaultValue = "Dept" + inputFile.FileName;
+                    }
                     sqlDept.Update();
                     Response.Redirect("~/Admin/MgItem.aspx?id=0");
                 }
@@ -44,6 +65,9 @@ namespace Store.Admin
                 {
                     if (inputFile.HasFile)
                     {
+                        string path = Path.Combine(Server.MapPath("~/Uploads/Dept"), fileName);
+                        inputFile.SaveAs(path);
+                        sqlDept.InsertParameters["Photo"].DefaultValue = fileName;
                         sqlDept.Insert();
                     }
                     else
@@ -74,25 +98,12 @@ namespace Store.Admin
         {
             e.Command.Parameters["@NameAr"].Value = txtNameAr.Value;
             e.Command.Parameters["@NameEn"].Value = txtNameEn.Value;
-            int len = inputFile.PostedFile.ContentLength;
-            byte[] pic = new byte[len + 1];
-            inputFile.PostedFile.InputStream.Read(pic, 0, len);
-            ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.VarBinary;
-            e.Command.Parameters["@Photo"].Value = pic;
         }
 
         protected void sqlDept_Updating(object sender, SqlDataSourceCommandEventArgs e)
         {
             e.Command.Parameters["@NameAr"].Value = txtNameAr.Value;
             e.Command.Parameters["@NameEn"].Value = txtNameEn.Value;
-            if (inputFile.HasFile)
-            {
-                int len = inputFile.PostedFile.ContentLength;
-                byte[] pic = new byte[len + 1];
-                inputFile.PostedFile.InputStream.Read(pic, 0, len);
-                ((SqlParameter)e.Command.Parameters["@Photo"]).SqlDbType = SqlDbType.VarBinary;
-                e.Command.Parameters["@Photo"].Value = pic;
-            }
             e.Command.Parameters["@Id"].Value = int.Parse(Request.QueryString["id"]);
         }
 

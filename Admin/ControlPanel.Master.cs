@@ -16,17 +16,26 @@ namespace Store.Admin
         protected void Page_Load(object sender, EventArgs e)
         {
             clsBasic = new ClsBasic();
-            //dataTable = clsBasic.SelectData("*", $"Login WHERE Email = '{Session["Email"]}' AND Password = '{Session["Password"]}'");
-            //if (dataTable.Rows.Count == 0)
-            //{
-            //    Session["Id"] = null;
-            //    Session["Email"] = null;
-            //    Session["Password"] = null;
-            //    Response.Redirect("~/User Check/Login.aspx");
-            //}
+            dataTable = clsBasic.SelectData("*", $"Login WHERE Email = '{Session["Email"]}' AND Password = '{Session["Password"]}'");
+            if (dataTable.Rows.Count == 0)
+            {
+                Session["Id"] = null;
+                Session["Email"] = null;
+                Session["Password"] = null;
+                Response.Redirect("~/User Check/Login.aspx");
+            }
+            dataTable = clsBasic.SelectData("Count(*)", "Client WHERE received = 0 OR received IS NULL");
+            if (dataTable.Rows.Count > 0)
+            {
+                cntOrders.InnerText = dataTable.Rows[0][0].ToString();
+			}
+            else
+            {
+				cntOrders.Visible = false;
+			}
             if (!IsPostBack)
             {
-                ddlDataByType.DataSource = clsBasic.SelectData("*", "Brand");
+                ddlDataByType.DataSource = clsBasic.SelectData("*", "Size");
                 ddlDataByType.DataValueField = "Id";
                 ddlDataByType.DataTextField = "Name";
                 ddlDataByType.DataBind();

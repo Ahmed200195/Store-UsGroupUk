@@ -23,25 +23,29 @@ namespace Store.Client
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Page.Title = Application["lang"].ToString() == "en" ? "UsGroupUk | Show Prodcuts" : "UsGroupUk | عرض المنتجات";
+            if (Session["lang"] == null)
+            {
+                Session["lang"] = "ar";
+            }
+            Page.Title = Session["lang"].ToString() == "en" ? "UsGroupUk | Show Prodcuts" : "UsGroupUk | عرض المنتجات";
                 OrginalUrl = HttpContext.Current.Request.Url.AbsoluteUri;
             if (!IsPostBack)
             {
-                Name = Application["lang"].ToString() == "en" ? "NameEn" : "NameAr";
-                Size = Application["lang"].ToString() == "en" ? "Size" : "القياس";
-                Color = Application["lang"].ToString() == "en" ? "Color" : "اللون";
-                addToCart = Application["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة";
-                Off = Application["lang"].ToString() == "en" ? "OFF" : "خصم";
-                All = Application["lang"].ToString() == "en" ? "All" : "الكل";
-                many = Application["lang"].ToString() == "en" ? "KD" : "د.ك";
-                item = Application["lang"].ToString() == "en" ? " ITEMS " : " العناصر ";
+                Name = Session["lang"].ToString() == "en" ? "NameEn" : "NameAr";
+                Size = Session["lang"].ToString() == "en" ? "Size" : "القياس";
+                Color = Session["lang"].ToString() == "en" ? "Color" : "اللون";
+                addToCart = Session["lang"].ToString() == "en" ? "Add to cart" : "أضف إلى السلة";
+                Off = Session["lang"].ToString() == "en" ? "OFF" : "خصم";
+                All = Session["lang"].ToString() == "en" ? "All" : "الكل";
+                many = Session["lang"].ToString() == "en" ? "KD" : "د.ك";
+                item = Session["lang"].ToString() == "en" ? " ITEMS " : " العناصر ";
 
 
                 ddlSortBy.Items.Clear();
-                ddlSortBy.Items.Add(Application["lang"].ToString() == "en" ? "Default" : "افتراضي");
-                ddlSortBy.Items.Add(Application["lang"].ToString() == "en" ? "name" : "الاسم");
-                ddlSortBy.Items.Add(Application["lang"].ToString() == "en" ? "Price: low to high" : "السعر: من الأعلى الى الأقل");
-                ddlSortBy.Items.Add(Application["lang"].ToString() == "en" ? "Price: high to low" : "السعر: من الأقل الى الأعلى");
+                ddlSortBy.Items.Add(Session["lang"].ToString() == "en" ? "Default" : "افتراضي");
+                ddlSortBy.Items.Add(Session["lang"].ToString() == "en" ? "name" : "الاسم");
+                ddlSortBy.Items.Add(Session["lang"].ToString() == "en" ? "Price: low to high" : "السعر: من الأعلى الى الأقل");
+                ddlSortBy.Items.Add(Session["lang"].ToString() == "en" ? "Price: high to low" : "السعر: من الأقل الى الأعلى");
 
                 HtmlInputText txtSearch = Master.FindControl("txtSearch") as HtmlInputText;
                 txtSearch.Value = Request.QueryString["search"] == "0" ? string.Empty : Request.QueryString["search"];
@@ -58,10 +62,10 @@ namespace Store.Client
                         whereSortBy = " ORDER BY " + Name;
                         break;
                     case 2:
-                        whereSortBy = "  ORDER BY Price";
+                        whereSortBy = "  ORDER BY Price DESC, Discount DESC";
                         break;
                     case 3:
-                        whereSortBy = "  ORDER BY Price DESC";
+                        whereSortBy = "  ORDER BY Price, Discount";
                         break;
                 }
 
@@ -75,9 +79,9 @@ namespace Store.Client
                 whereSaerch = Request.QueryString["search"] == "0" ? "" : " AND (NameAr + NameEn + infoAr + infoEn) LIKE '%" + Request.QueryString["search"] + "%'";
 
                 string queries = $@"
-                    SELECT * FROM Dept WHERE Id IN (SELECT DId FROM Product);
+                    SELECT * FROM Dept WHERE Id IN (SELECT DId FROM Product WHERE Cnt > 0);
                     SELECT * FROM Size;
-                    SELECT Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt FROM Product INNER JOIN [Color] ON Color.Id = Product.CId INNER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 {whereDept} {whereSize}  {whereColor} {whereSaerch} {whereSortBy}
+                    SELECT Product.Id, NameAr, NameEn, Price, Discount, Color.Name as ColorName, Size.Name as SizeNum, Photo, Cnt FROM Product FULL OUTER JOIN [Color] ON Color.Id = Product.CId FULL OUTER JOIN [Size] ON Size.Id = Product.SId WHERE Cnt > 0 {whereDept} {whereSize}  {whereColor} {whereSaerch} {whereSortBy}
                 ";
 
                 dataSet = clsBasic.SelectMultiple(queries);
@@ -116,9 +120,12 @@ namespace Store.Client
                 }
                 ltProdcut.Text = string.Empty;
                 cntProduct.InnerText = dtProduct.Rows.Count + item;
-                string disc = string.Empty, finalPrice = string.Empty, discPrice = string.Empty;
+                string disc = string.Empty, finalPrice = string.Empty, discPrice = string.Empty, dvColor, dvSize;
                 foreach (DataRow row in dtProduct.Rows)
                 {
+                    dvColor = row["ColorName"] == DBNull.Value ? "" : $"<h1 class=\"capitalize color\">{Color}: <span class=\"capitalize\">{row["ColorName"]}</span></h1>";
+                    dvSize = row["SizeNum"] == DBNull.Value ? "" : $"<h1 class=\"capitalize size\">{Size}: <span class=\"capitalize\">{row["SizeNum"]}</span></h1>";
+
                     finalPrice = row["Price"].ToString();
                     if (int.Parse(row["Discount"].ToString()) > 0)
                     {
@@ -131,13 +138,13 @@ namespace Store.Client
                     ltProdcut.Text += $@"
                                         <div
                                             class=""productElement relative  flex w-full  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 "" data-id=""{row["Id"]}"" data-count=""{row["Cnt"]}"">
-                                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_blank"">
-                                                <img class=""imgProduct object-fill w-full h-full"" src=""data:image;base64,{Convert.ToBase64String((byte[])row["Photo"])}""
-                                                    alt=""product image"" loading=""lazy"" />
+                                            <a class=""relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"" href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_self"">
+                                                <img class=""imgProduct object-fill w-full h-full lazy-load"" data-src=""../Uploads/Product/{row["Photo"]}""
+                                                    alt=""product image""  />
                                             {disc}
                                             </a>
                                             <div class=""mt-4 px-5 pb-5"">
-                                                <a href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_blank"">
+                                                <a href=""DetailsProduct.aspx?id={row["Id"]}&cnt={row["Cnt"]}"" target=""_self"">
                                                     <div>
                                                         <h5 class=""text-xl tracking-tight text-[#504f85] product-name"">{row[Name]}</h5>
                                                     </div>
@@ -151,8 +158,8 @@ namespace Store.Client
                                                     </div>
                                                 <!-- size  color -->
                                                 <div class=""flex justify-between mb-2"">
-                                                    <h1 class=""capitalize color"">{Color}: <span class=""capitalize"">{row["ColorName"]}</span></h1>
-                                                    <h1 class=""capitalize size"">{Size}: <span class=""capitalize"">{row["SizeNum"]}</span></h1>
+                                                    {dvColor}
+                                                    {dvSize}
                                                 </div>
                                                 </a>
                                                 <!-- add to cart -->
